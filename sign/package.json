@@ -1,14 +1,14 @@
 {
-  "name": "notation-azure-kv-sign",
+  "name": "notation-sign",
   "version": "1.0.0",
-  "description": "notation sign with notation akv plugin",
+  "description": "Notation sign with signing plugin",
   "main": "index.ts",
   "scripts": {
     "build": "ncc build index.ts -o dist --source-map --minify --license licenses.txt"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/notation-playground/notation-azure-kv-sign-actions.git"
+    "url": "git+https://github.com/notaryproject/notation-action.git"
   },
   "keywords": [],
   "author": "patrickzheng",
