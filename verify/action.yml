@@ -1,0 +1,18 @@
+name: notation-verify
+description: Verify target artifact with Notation
+inputs:
+  target_artifact_reference:
+     description: 'Reference of the target artifact to be verified. <registry>/<repo>@<digest>'
+     required: true
+  trust_policy_filepath:
+     description: 'file path of valid Notation trustpolicy.json'
+     required: true
+  trust_store_name:
+     description: 'trust store name which should align with trustpolicy.json'
+     required: true
+  trust_certificate_path:
+     description: 'path of trust certificate that will be added into Notation trust store'
+     required: true
+runs:
+  using: node16
+  main: dist/index.js
