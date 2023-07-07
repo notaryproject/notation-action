@@ -6,5 +6,6 @@
     "forceConsistentCasingInFileNames": true,    /* Ensure that casing is correct in imports. */
     "skipLibCheck": true,                        /* Skip type checking all .d.ts files. */
     "esModuleInterop": true                      /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
-  }
+  },
+  "types": ["node", "mv"]
 }
