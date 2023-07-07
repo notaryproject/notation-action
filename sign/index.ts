@@ -11,7 +11,7 @@ const plugin_name = core.getInput('plugin_name');
 // sign the target artifact with Notation
 async function sign() {
     try {
-        await setupAKVPlugin();
+        await setupPlugin();
         let output = execSync(`notation plugin ls`, { encoding: 'utf-8' });
         console.log('notation plugin list output:\n', output);
         const key_id = core.getInput('key_id');
@@ -42,8 +42,8 @@ async function sign() {
     }
 }
 
-// setup notation-azure-kv plugin and related permissions to Sign.
-async function setupAKVPlugin() {
+// setup plugin and related permissions to Sign.
+async function setupPlugin() {
     try {
         const plugin_url = core.getInput('plugin_url');
         console.log(`signing plugin url is ${plugin_url}`);
