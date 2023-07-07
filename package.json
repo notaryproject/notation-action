@@ -1,0 +1,27 @@
+{
+  "name": "setup-notation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Duffney/setup-notation.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Duffney/setup-notation/issues"
+  },
+  "homepage": "https://github.com/Duffney/setup-notation#readme",
+  "dependencies": {
+    "@actions/core": "^1.10.0",
+    "@actions/github": "^5.1.1",
+    "@actions/tool-cache": "^2.0.1",
+    "mv": "^2.1.1",
+    "semver": "^7.5.2"
+  }
+}

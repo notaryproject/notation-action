@@ -1,0 +1,21 @@
+on: [push]
+
+jobs:
+  hello_world_job:
+    runs-on: ubuntu-latest
+    name: Install Notation
+    steps:
+      # To use this repository's private action,
+      # you must check out the repository
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Notation
+        uses: ./ # Uses an action in the root directory
+        id: setup
+        with:
+          version: 1.0.0-rc.7
+          key_name: example
+      - name: check version
+        run: notation version
+      - name: check notation keys
+        run: notation key list
