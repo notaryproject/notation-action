@@ -1,5 +1,5 @@
 # Notation Action
-Github Action for notation setup, `notation sign` and `notation verify`.
+Github Action for `notation setup`, `notation sign` and `notation verify`.
 # Usage
 1. notation-verify:
     ```sh
