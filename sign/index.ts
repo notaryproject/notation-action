@@ -7,6 +7,9 @@ import * as fs from 'fs';
 import * as mv from 'mv';
 
 const plugin_name = core.getInput('plugin_name');
+const akv_subscription_id = process.env.AKV_SUBSCRIPTION_ID;
+const akv_name = process.env.AKV_NAME;
+const azure_service_principle_client_id = process.env.AZURE_SERVICE_PRINCIPLE_CLIENT_ID;
 
 // sign the target artifact with Notation
 async function sign() {
@@ -65,6 +68,9 @@ async function setupAKVPlugin() {
                 console.log(`Successfully changed permission for file "${destinationPath}"`);
             });
         });
+        execSync(`az account set -s ${akv_subscription_id}`, { encoding: 'utf-8' });
+        let output = execSync(`az keyvault set-policy -n ${akv_name} --secret-permissions get list --key-permissions sign --certificate-permissions get --spn ${azure_service_principle_client_id}`, { encoding: 'utf-8' });
+        console.log('az keyvault set-policy output:\n', output);
     } catch (e: unknown) {
         if (e instanceof Error) {
             core.setFailed(e);
