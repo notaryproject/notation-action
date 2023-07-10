@@ -1,5 +1,5 @@
 {
-  "name": "notation-sign",
+  "name": "notation-setup",
   "version": "1.0.0",
   "description": "Install and configure the Notation CLI and plugins.",
   "main": "index.js",
