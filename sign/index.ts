@@ -5,17 +5,18 @@ import * as tc from '@actions/tool-cache';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as mv from 'mv';
+import * as crypto from 'crypto';
 
 const plugin_name = core.getInput('plugin_name');
 
-// sign the target artifact with Notation
+// sign the target artifact with Notation.
 async function sign() {
     try {
         await setupPlugin();
         let output = execSync(`notation plugin ls`, { encoding: 'utf-8' });
         console.log('notation plugin list output:\n', output);
         const key_id = core.getInput('key_id');
-        const plugin_config = core.getInput('plugin_config')
+        const plugin_config = core.getInput('plugin_config');
         const target_artifact_ref = core.getInput('target_artifact_reference');
         let signOutput;
         if (process.env.NOTATION_EXPERIMENTAL) {
@@ -42,15 +43,21 @@ async function sign() {
     }
 }
 
-// setup plugin and related permissions to Sign.
+// setup the signing Sign.
 async function setupPlugin() {
     try {
         const plugin_url = core.getInput('plugin_url');
+        const plugin_checksum = core.getInput('plugin_checksum');
         console.log(`signing plugin url is ${plugin_url}`);
         const pluginPath = os.homedir() + `/.config/notation/plugins/${plugin_name}`;
         fs.mkdirSync(pluginPath, { recursive: true, });
 
         const pathToTarball = await tc.downloadTool(plugin_url);
+        const buff = fs.readFileSync(pathToTarball);
+        const sha256 = hash(buff);
+        if (sha256 !== plugin_checksum) {
+            throw new Error(`checksum of downloaded plugin ${sha256} does not match user input ${plugin_checksum}`);
+        }
         const extract = plugin_url.endsWith('.zip') ? tc.extractZip : tc.extractTar;
         const pathToPluginDownload = await extract(pathToTarball);
 
@@ -74,8 +81,13 @@ async function setupPlugin() {
     }
 }
 
+// hash computes SH256 of src file.
+function hash(src: Buffer) {
+    return crypto.createHash('sha256').update(src).digest('hex');
+}
+
 export = sign;
 
 if (require.main === module) {
-  sign();
+    sign();
 }
