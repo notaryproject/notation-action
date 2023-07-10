@@ -17,9 +17,6 @@ async function setup() {
     // Check if the NotationCli version is supported
     versionCheck(version);
 
-    // Check if the NotationCli version is supported
-    versionCheck(version);
-
     // Download the specific version of the tool, e.g. as a tarball/zipball
     const download = getDownloadObject(version);
     console.log(download)
