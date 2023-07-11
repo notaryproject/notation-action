@@ -1,5 +1,6 @@
 import * as core from '@actions/core';
 import { execSync } from 'child_process';
+import * as fs from 'fs';
 
 // verify target artifact with Notation
 async function verify() {
@@ -7,12 +8,13 @@ async function verify() {
         const target_artifact_ref = core.getInput('target_artifact_reference');
         const trust_policy_filepath = core.getInput('trust_policy_filepath');
         const trust_store_name = core.getInput('trust_store_name');
-        const trust_certificate_path = core.getInput('trust_certificate_path');
+        const trust_certificate_dir = core.getInput('trust_certificate_dir');
+        let certFiles = readDir(trust_certificate_dir);
         let output;
         execSync(`notation policy import ${trust_policy_filepath}`);
         output = execSync(`notation policy show`, { encoding: 'utf-8' });
         console.log(output);
-        execSync(`notation cert add -t ca -s ${trust_store_name} ${trust_certificate_path}`, { encoding: 'utf-8' });
+        execSync(`notation cert add -t ca -s ${trust_store_name} ${certFiles.join(' ')}`, { encoding: 'utf-8' });
         output = execSync(`notation cert ls`, { encoding: 'utf-8' });
         console.log(output);
         if (process.env.NOTATION_EXPERIMENTAL) {
@@ -28,6 +30,13 @@ async function verify() {
             core.setFailed('Unknown error');
         }
     }
+}
+
+// readDir returns a list of file names under input dir.
+function readDir(dir: string): string[] {
+    return fs.readdirSync(dir, {withFileTypes: true, recursive: false})
+      .filter(item => !item.isDirectory())
+      .map(item => item.name)
 }
 
 export = verify;

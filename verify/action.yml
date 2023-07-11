@@ -10,8 +10,8 @@ inputs:
   trust_store_name:
      description: 'trust store name which should align with trustpolicy.json'
      required: true
-  trust_certificate_path:
-     description: 'path of trust certificate that will be added into Notation trust store'
+  trust_certificate_dir:
+     description: 'dir that contains trust certificates that will be added into Notation trust store'
      required: true
 runs:
   using: node16
