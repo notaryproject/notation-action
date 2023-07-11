@@ -18,19 +18,20 @@ async function sign() {
         const key_id = core.getInput('key_id');
         const plugin_config = core.getInput('plugin_config');
         const target_artifact_ref = core.getInput('target_artifact_reference');
+        const signature_format = core.getInput('signature_format');
         let signOutput;
         if (process.env.NOTATION_EXPERIMENTAL) {
             if (plugin_config) {
-                signOutput = execSync(`notation sign --signature-format cose --allow-referrers-api --id ${key_id} --plugin ${plugin_name} --plugin-config=${plugin_config} ${target_artifact_ref}`, { encoding: 'utf-8' });
+                signOutput = execSync(`notation sign --signature-format ${signature_format} --allow-referrers-api --id ${key_id} --plugin ${plugin_name} --plugin-config=${plugin_config} ${target_artifact_ref}`, { encoding: 'utf-8' });
             } else {
-                signOutput = execSync(`notation sign --signature-format cose --allow-referrers-api --id ${key_id} --plugin ${plugin_name} ${target_artifact_ref}`, { encoding: 'utf-8' });
+                signOutput = execSync(`notation sign --signature-format ${signature_format} --allow-referrers-api --id ${key_id} --plugin ${plugin_name} ${target_artifact_ref}`, { encoding: 'utf-8' });
             }
             console.log('notation sign output:\n', signOutput);
         } else {
             if (plugin_config) {
-                signOutput = execSync(`notation sign --signature-format cose --id ${key_id} --plugin ${plugin_name} --plugin-config=${plugin_config} ${target_artifact_ref}`, { encoding: 'utf-8' });
+                signOutput = execSync(`notation sign --signature-format ${signature_format} --id ${key_id} --plugin ${plugin_name} --plugin-config=${plugin_config} ${target_artifact_ref}`, { encoding: 'utf-8' });
             } else {
-                signOutput = execSync(`notation sign --signature-format cose --id ${key_id} --plugin ${plugin_name} ${target_artifact_ref}`, { encoding: 'utf-8' });
+                signOutput = execSync(`notation sign --signature-format ${signature_format} --id ${key_id} --plugin ${plugin_name} ${target_artifact_ref}`, { encoding: 'utf-8' });
             }
             console.log('notation sign output:\n', signOutput);
         }

@@ -16,6 +16,10 @@ inputs:
   target_artifact_reference:
      description: 'Reference of the target artifact to be signed. <registry>/<repo>@<digest>'
      required: true
+  signature_format:
+     description: 'signature envelope format, options: jws, cose'
+     required: false
+     default: jws
   plugin_config:
      description: 'plugin config for signing with the plugin'
      required: false
