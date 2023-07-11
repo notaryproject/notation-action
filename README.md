@@ -18,6 +18,5 @@ Github Action for `notation setup`, `notation sign` and `notation verify`.
       with:
         target_artifact_reference: myRegistry.azurecr.io/myRepo@sha256:aaabbb
         trust_policy_filepath: .github/trustpolicy/trustpolicy.json
-        trust_store_name: myTrustStore
         trust_certificate_dir: .github/truststore
     ```

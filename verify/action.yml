@@ -7,11 +7,17 @@ inputs:
   trust_policy_filepath:
      description: 'file path of valid Notation trustpolicy.json'
      required: true
-  trust_store_name:
-     description: 'trust store name which should align with trustpolicy.json'
-     required: true
-  trust_certificate_dir:
-     description: 'dir that contains trust certificates that will be added into Notation trust store'
+  trust_store_dir:
+     description: 
+      'dir containing one or more CA trust stores with certificates that will be added into Notation trust store. An example:
+         .github/truststore
+            |- trust_store1
+               |- certificate1
+               |- certificate2
+            |- trust_store2
+               |- certificate3
+               |- certificate4
+      '
      required: true
 runs:
   using: node16
