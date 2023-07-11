@@ -19,8 +19,9 @@ Github Action for `notation setup`, `notation sign` and `notation verify`.
       with:
         plugin_name: azure-kv
         plugin_url: https://github.com/Azure/notation-azure-kv/releases/download/v1.0.0-rc.2/notation-azure-kv_1.0.0-rc.2_linux_amd64.tar.gz
-        plugin_checksum: 4242054463089F4b04019805f2c009267dbcc9689e386BC88d3c4fc4E095e52c
+        plugin_checksum: 4242054463089f4b04019805f2c009267dbcc9689e386bc88d3c4fc4E095e52c
         key_id: https://testnotationakv.vault.azure.net/keys/notationLeafCert/c585b8ad8fc542b28e41e555d9b3a1fd
         target_artifact_reference: myRegistry.azurecr.io/myRepo@sha256:aaabbb
+        signature_format: cose
         plugin_config: ca_certs=.github/cert-bundle/cert-bundle.crt
     ```
