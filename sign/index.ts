@@ -16,7 +16,7 @@ async function sign() {
         let output = execSync(`notation plugin ls`, { encoding: 'utf-8' });
         console.log('notation plugin list output:\n', output);
         const key_id = core.getInput('key_id');
-        const plugin_config = core.getInput('plugin_config').toLowerCase();
+        const plugin_config = core.getInput('plugin_config');
         const target_artifact_ref = core.getInput('target_artifact_reference');
         let signOutput;
         if (process.env.NOTATION_EXPERIMENTAL) {
@@ -47,7 +47,7 @@ async function sign() {
 async function setupPlugin() {
     try {
         const plugin_url = core.getInput('plugin_url');
-        const plugin_checksum = core.getInput('plugin_checksum');
+        const plugin_checksum = core.getInput('plugin_checksum').toLowerCase();
         console.log(`signing plugin url is ${plugin_url}`);
         const pluginPath = os.homedir() + `/.config/notation/plugins/${plugin_name}`;
         fs.mkdirSync(pluginPath, { recursive: true, });
