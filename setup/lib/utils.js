@@ -54,12 +54,4 @@ function addPluginCert(keyName,keyId){
     } // Add logic for additional Notation plugins here
 }
 
-function versionCheck(version){
-    const supportedVersion = '0.12.0-beta.1'
-    if (semver.lt(version, supportedVersion)) {
-        core.setFailed('Unsupported NotationCli version');
-        throw new Error(`NotationCli v${version} is not supported by this version of the setup_notation GitHub Action.`);
-    }
-}
-
-module.exports = { getDownloadObject, getDownloadPluginObject, addPluginCert, versionCheck}
+module.exports = { getDownloadObject, getDownloadPluginObject, addPluginCert }

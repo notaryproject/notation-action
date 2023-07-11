@@ -1,7 +1,7 @@
 const path = require('path');
 const core = require('@actions/core');
 const tc = require('@actions/tool-cache');
-const { getDownloadObject, getDownloadPluginObject, addPluginCert, versionCheck } = require('./lib/utils');
+const { getDownloadObject, getDownloadPluginObject, addPluginCert} = require('./lib/utils');
 const fs = require('fs');
 const mv = require('mv');
 const { version } = require('os');
@@ -13,9 +13,6 @@ async function setup() {
     const version = core.getInput('version');
     const keyName = core.getInput('key_name');
     
-    // Check if the NotationCli version is supported
-    versionCheck(version);
-
     // Download the specific version of the tool, e.g. as a tarball/zipball
     const download = getDownloadObject(version);
     console.log(download)
