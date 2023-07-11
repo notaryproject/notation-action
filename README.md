@@ -8,8 +8,7 @@ Github Action for `notation setup`, `notation sign` and `notation verify`.
       with:
         target_artifact_reference: <target_artifact_reference_in_remote_registry>
         trust_policy_filepath: <file_path_to_user_defined_trustpolicy.json>
-        trust_store_name: <user_chosen_ca_trust_store_name>
-        trust_certificate_path: <path_to_user_trust_certificate>
+        trust_store_dir: <dir_to_user_trust_store>
     ```
    For example,
     ```sh
@@ -18,5 +17,15 @@ Github Action for `notation setup`, `notation sign` and `notation verify`.
       with:
         target_artifact_reference: myRegistry.azurecr.io/myRepo@sha256:aaabbb
         trust_policy_filepath: .github/trustpolicy/trustpolicy.json
-        trust_certificate_dir: .github/truststore
+        trust_store_dir: .github/truststore
+    ```
+    where `.github/truststore` MUST be in following structure:
+    ```
+    .github/truststore
+      |- trust_store1
+          |- certificate1
+          |- certificate2
+      |- trust_store2
+          |- certificate3
+          |- certificate4
     ```

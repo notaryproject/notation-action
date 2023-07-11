@@ -8,7 +8,7 @@ async function verify() {
     try {
         const target_artifact_ref = core.getInput('target_artifact_reference');
         const trust_policy_filepath = core.getInput('trust_policy_filepath');
-        const trust_store_dir = core.getInput('trust_certificate_dir'); // .github/truststore
+        const trust_store_dir = core.getInput('trust_store_dir'); // .github/truststore
         let output;
         execSync(`notation policy import ${trust_policy_filepath}`);
         output = execSync(`notation policy show`, { encoding: 'utf-8' });
