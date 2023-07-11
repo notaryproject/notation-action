@@ -16,7 +16,7 @@ async function sign() {
         let output = execSync(`notation plugin ls`, { encoding: 'utf-8' });
         console.log('notation plugin list output:\n', output);
         const key_id = core.getInput('key_id');
-        const plugin_config = core.getInput('plugin_config');
+        const plugin_config = core.getInput('plugin_config').toLowerCase();
         const target_artifact_ref = core.getInput('target_artifact_reference');
         let signOutput;
         if (process.env.NOTATION_EXPERIMENTAL) {
@@ -83,7 +83,7 @@ async function setupPlugin() {
 
 // hash computes SH256 of src file.
 function hash(src: Buffer) {
-    return crypto.createHash('sha256').update(src).digest('hex');
+    return crypto.createHash('sha256').update(src).digest('hex').toLowerCase();
 }
 
 export = sign;
