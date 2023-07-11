@@ -8,18 +8,8 @@ inputs:
     description: Version of Notation CLI to install
     required: false
     default: 1.0.0-rc.7
-  key_name:
-    description: Name of the signing key for Notation
-    required: false
-    default: self-signed
-  certificate_key_id:
-    description: Key identifier for the signing certificate
-    required: false
-  plugin_name:
-    description: Name of the Notation plugin to install
-    required: false
-  plugin_version:
-    description: Version of the Notation plugin to install
+  url:
+    description: URL of Notation CLI to install
     required: false
 runs:
   using: node16
