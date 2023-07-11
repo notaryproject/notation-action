@@ -1,6 +1,7 @@
 import * as core from '@actions/core';
 import { execSync } from 'child_process';
 import * as fs from 'fs';
+import * as path from 'path';
 
 // verify target artifact with Notation
 async function verify() {
@@ -9,8 +10,6 @@ async function verify() {
         const trust_policy_filepath = core.getInput('trust_policy_filepath');
         const trust_store_name = core.getInput('trust_store_name');
         const trust_certificate_dir = core.getInput('trust_certificate_dir');
-        console.log(trust_policy_filepath);
-        console.log(trust_certificate_dir);
         let certFiles = readDir(trust_certificate_dir);
         let output;
         execSync(`notation policy import ${trust_policy_filepath}`);
@@ -38,7 +37,7 @@ async function verify() {
 function readDir(dir: string): string[] {
     return fs.readdirSync(dir, {withFileTypes: true, recursive: false})
       .filter(item => !item.isDirectory())
-      .map(item => item.name)
+      .map(item => path.resolve(dir, item.name));
 }
 
 export = verify;
