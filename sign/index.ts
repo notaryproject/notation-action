@@ -58,6 +58,7 @@ async function setupPlugin() {
         if (sha256 !== plugin_checksum) {
             throw new Error(`checksum of downloaded plugin ${sha256} does not match user input ${plugin_checksum}`);
         }
+        console.log("Successfully checked download checksum against user input")
         const extract = plugin_url.endsWith('.zip') ? tc.extractZip : tc.extractTar;
         const pathToPluginDownload = await extract(pathToTarball);
 
