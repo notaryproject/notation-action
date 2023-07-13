@@ -9,7 +9,7 @@ inputs:
     required: true
   trust_store:
     description: |
-      dir of trust store following Notation trust store spec: https://github.com/notaryproject/notaryproject/blob/main/specs/trust-store-trust-policy.md#trust-store
+      dir of trust store following Notation trust store spec: https://github.com/notaryproject/notaryproject/blob/main/specs/trust-store-trust-policy.md#trust-store.
       An example:
         .github/truststore
           |- x509
