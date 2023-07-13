@@ -2,23 +2,26 @@ name: notation-verify
 description: Verify target artifact with Notation
 inputs:
   target_artifact_reference:
-     description: 'Reference of the target artifact to be verified. <registry>/<repo>@<digest>'
-     required: true
-  trust_policy_filepath:
-     description: 'file path of valid Notation trustpolicy.json'
-     required: true
-  trust_store_dir:
-     description: 
-      'dir containing one or more CA trust stores with certificates that will be added into Notation trust store. An example:
-         .github/truststore
-            |- trust_store1
-               |- certificate1
-               |- certificate2
-            |- trust_store2
-               |- certificate3
-               |- certificate4
-      '
-     required: true
+    description: 'Reference of the target artifact to be verified. <registry>/<repo>@<digest>'
+    required: true
+  trust_policy:
+    description: 'file path of valid Notation trustpolicy.json'
+    required: true
+  trust_store:
+    description: |
+      dir of trust store following Notation trust store spec: https://github.com/notaryproject/notaryproject/blob/main/specs/trust-store-trust-policy.md#trust-store
+      An example:
+        .github/truststore
+          |- x509
+            |- ca
+              |- <my_trust_store1>
+                |- <my_certificate1>
+                |- <my_certificate2>
+            |- signingAuthority
+              |- <my_trust_store2>
+                |- <my_certificate3>
+                |- <my_certificate4>
+    required: true
 runs:
   using: node16
   main: dist/index.js
