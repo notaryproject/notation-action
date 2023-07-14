@@ -86,7 +86,9 @@ function hash(src: Buffer) {
 
 async function execute(command: string) {
     const execOut = await exec.getExecOutput(command);
-    console.log(execOut.stdout || execOut.stderr);
+    if (execOut.stderr) {
+        throw new Error(execOut.stderr)
+    }
 }
 
 export = sign;
