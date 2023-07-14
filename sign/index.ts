@@ -67,7 +67,7 @@ async function setupPlugin() {
             console.log(`Successfully moved the plugin file to ${destinationPath}`);
             fs.chmod(destinationPath, 0o755, (err) => {
                 if (err) throw err;
-                console.log(`Successfully changed permission for file "${destinationPath}"`);
+                console.log(`Successfully changed permission for plugin file`);
             });
         });
     } catch (e: unknown) {
