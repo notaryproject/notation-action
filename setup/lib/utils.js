@@ -29,4 +29,4 @@ function getDownloadObject(version) {
     };
 }
 
-module.exports = { getDownloadObject, getDownloadPluginObject }
+module.exports = { getDownloadObject }
