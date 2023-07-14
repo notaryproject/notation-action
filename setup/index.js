@@ -35,17 +35,6 @@ async function setup() {
     // Expose the tool by adding it to the PATH
     core.addPath(path.join(pathToCLI, download.binPath));
 
-    // Install Notation plugin
-    const pluginName = core.getInput('plugin_name');
-    const pluginVersion = core.getInput('plugin_version');
-
-    if (pluginName) {
-      setupPlugin(pluginName, pluginVersion, keyName);
-    } else {
-      // Generate a local signing certificate
-      const output = execSync(`notation cert generate-test --default "${keyName}"`, { encoding: 'utf-8' });
-      console.log('notation cert output:\n', output);
-    }
 
   } catch (e) {
     core.setFailed(e);
