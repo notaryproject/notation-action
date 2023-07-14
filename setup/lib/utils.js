@@ -29,29 +29,4 @@ function getDownloadObject(version) {
     };
 }
 
-function getDownloadPluginObject(name, version) {
-    if (name == "notation-azure-kv") {
-        const platform = os.platform();
-        const filename = `${name}_${version}_${mapOS(platform)}_${arch}`;
-        const extension = platform === 'win32' ? 'zip' : 'tar.gz';
-        const url = `https://github.com/Azure/notation-azure-kv/releases/download/v${version}/${filename}.${extension}`;
-        const HOME = process.env.HOME;
-        const pluginPath = HOME + "/.config/notation/plugins/azure-kv"
-        return {
-            url,
-            filename,
-            pluginPath
-        };
-    } else { // Add logic for additional Notation plugins here
-        setFailed(`Plugin ${name} is not currently supported`)
-    }
-}
-
-function addPluginCert(keyName,keyId){
-    if (keyId.includes('vault.azure.net')){
-        const output = execSync(`notation key add --plugin azure-kv --id ${keyId} --default ${keyName}`, { encoding: 'utf-8' });
-        console.log('notation cert output:\n', output);
-    } // Add logic for additional Notation plugins here
-}
-
-module.exports = { getDownloadObject, getDownloadPluginObject, addPluginCert }
+module.exports = { getDownloadObject, getDownloadPluginObject }
