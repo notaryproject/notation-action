@@ -1,6 +1,6 @@
 import * as os from 'os';
 import * as core from '@actions/core';
-import { execSync } from 'child_process';
+import * as exec from '@actions/exec';
 import * as tc from '@actions/tool-cache';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -13,27 +13,23 @@ const plugin_name = core.getInput('plugin_name');
 async function sign() {
     try {
         await setupPlugin();
-        let output = execSync(`notation plugin ls`, { encoding: 'utf-8' });
-        console.log('notation plugin list output:\n', output);
+        await execute(`notation plugin ls`);
         const key_id = core.getInput('key_id');
         const plugin_config = core.getInput('plugin_config');
         const target_artifact_ref = core.getInput('target_artifact_reference');
         const signature_format = core.getInput('signature_format');
-        let signOutput;
         if (process.env.NOTATION_EXPERIMENTAL) {
             if (plugin_config) {
-                signOutput = execSync(`notation sign --signature-format ${signature_format} --allow-referrers-api --id ${key_id} --plugin ${plugin_name} --plugin-config=${plugin_config} ${target_artifact_ref}`, { encoding: 'utf-8' });
+                await execute(`notation sign --signature-format ${signature_format} --allow-referrers-api --id ${key_id} --plugin ${plugin_name} --plugin-config=${plugin_config} ${target_artifact_ref}`);
             } else {
-                signOutput = execSync(`notation sign --signature-format ${signature_format} --allow-referrers-api --id ${key_id} --plugin ${plugin_name} ${target_artifact_ref}`, { encoding: 'utf-8' });
+                await execute(`notation sign --signature-format ${signature_format} --allow-referrers-api --id ${key_id} --plugin ${plugin_name} ${target_artifact_ref}`);
             }
-            console.log('notation sign output:\n', signOutput);
         } else {
             if (plugin_config) {
-                signOutput = execSync(`notation sign --signature-format ${signature_format} --id ${key_id} --plugin ${plugin_name} --plugin-config=${plugin_config} ${target_artifact_ref}`, { encoding: 'utf-8' });
+                await execute(`notation sign --signature-format ${signature_format} --id ${key_id} --plugin ${plugin_name} --plugin-config=${plugin_config} ${target_artifact_ref}`);
             } else {
-                signOutput = execSync(`notation sign --signature-format ${signature_format} --id ${key_id} --plugin ${plugin_name} ${target_artifact_ref}`, { encoding: 'utf-8' });
+                await execute(`notation sign --signature-format ${signature_format} --id ${key_id} --plugin ${plugin_name} ${target_artifact_ref}`);
             }
-            console.log('notation sign output:\n', signOutput);
         }
     } catch (e: unknown) {
         if (e instanceof Error) {
@@ -86,6 +82,11 @@ async function setupPlugin() {
 // hash computes SH256 of src file.
 function hash(src: Buffer) {
     return crypto.createHash('sha256').update(src).digest('hex').toLowerCase();
+}
+
+async function execute(command: string) {
+    const execOut = await exec.getExecOutput(command);
+    console.log(execOut.stdout || execOut.stderr);
 }
 
 export = sign;
