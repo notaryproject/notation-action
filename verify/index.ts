@@ -1,5 +1,5 @@
 import * as core from '@actions/core';
-import { execSync } from 'child_process';
+import * as exec from '@actions/exec';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -11,22 +11,18 @@ async function verify() {
         const target_artifact_ref = core.getInput('target_artifact_reference');
         const trust_policy = core.getInput('trust_policy'); // .github/trustpolicy/trustpolicy.json
         const trust_store = core.getInput('trust_store'); // .github/truststore
-        let output;
         // configure Notation trust policys
-        execSync(`notation policy import ${trust_policy}`);
-        output = execSync(`notation policy show`, { encoding: 'utf-8' });
-        console.log(output);
+        await exec.getExecOutput(`notation policy import ${trust_policy}`);
+        await exec.getExecOutput(`notation policy show`);
         // configure Notation trust store
-        configTrustStore(trust_store);
-        output = execSync(`notation cert ls`, { encoding: 'utf-8' });
-        console.log(output);
+        await configTrustStore(trust_store);
+        await exec.getExecOutput(`notation cert ls`);
         // verify core logic
         if (process.env.NOTATION_EXPERIMENTAL) {
-            output = execSync(`notation verify --allow-referrers-api ${target_artifact_ref} -v`, { encoding: 'utf-8' });
+            await exec.getExecOutput(`notation verify --allow-referrers-api ${target_artifact_ref} -v`);
         } else {
-            output = execSync(`notation verify ${target_artifact_ref} -v`, { encoding: 'utf-8' });
+            await exec.getExecOutput(`notation verify ${target_artifact_ref} -v`);
         }
-        console.log('notation verify output:\n', output);
     } catch (e: unknown) {
         if (e instanceof Error) {
             core.setFailed(e);
@@ -38,7 +34,7 @@ async function verify() {
 
 // configTrustStore configures Notation trust store based on specs.
 // Reference: https://github.com/notaryproject/notaryproject/blob/main/specs/trust-store-trust-policy.md#trust-store
-function configTrustStore(dir: string) {
+async function configTrustStore(dir: string) {
     let trustStoreX509 = path.resolve(dir, X509); // .github/truststore/x509
     if (!fs.existsSync(trustStoreX509)) {
         throw new Error("cannot find dir: <trust_store>/x509");
@@ -51,7 +47,7 @@ function configTrustStore(dir: string) {
             let trustStore = trustStores[j]; // .github/truststore/x509/ca/<my_store>
             let trustStoreName = path.basename(trustStore); // <my_store>
             let certFile = getFileFromDir(trustStore); // [.github/truststore/x509/ca/<my_store>/<my_cert1>, .github/truststore/x509/ca/<my_store>/<my_cert2>, ...]
-            execSync(`notation cert add -t ${trustStoreType} -s ${trustStoreName} ${certFile.join(' ')}`, { encoding: 'utf-8' });
+            await exec.getExecOutput(`notation cert add -t ${trustStoreType} -s ${trustStoreName} ${certFile.join(' ')}`);
         }
     }
 }
@@ -59,15 +55,15 @@ function configTrustStore(dir: string) {
 // getSubdir gets all sub dirs under dir without recursive
 function getSubdir(dir: string): string[] {
     return fs.readdirSync(dir, {withFileTypes: true, recursive: false})
-    .filter(item => item.isDirectory())
-    .map(item => path.resolve(dir, item.name));
+            .filter(item => item.isDirectory())
+            .map(item => path.resolve(dir, item.name));
 }
 
 // getSubdir gets all files under dir without recursive
 function getFileFromDir(dir: string): string[] {
     return fs.readdirSync(dir, {withFileTypes: true, recursive: false})
-    .filter(item => !item.isDirectory())
-    .map(item => path.resolve(dir, item.name));
+            .filter(item => !item.isDirectory())
+            .map(item => path.resolve(dir, item.name));
 }
 
 export = verify;

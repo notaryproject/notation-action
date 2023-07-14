@@ -19,18 +19,18 @@ Github Action for `setup notation`, `notation sign` and `notation verify`.
         trust_policy: .github/trustpolicy/trustpolicy.json
         trust_store: .github/truststore
     ```
-    where `.github/truststore` MUST follow the Notation trust store specs (https://github.com/notaryproject/notaryproject/blob/main/specs/trust-store-trust-policy.md#trust-store).
+    where `.github/truststore` MUST follow the Notation [trust store specs](https://github.com/notaryproject/notaryproject/blob/main/specs/trust-store-trust-policy.md#trust-store).
     
     For example,
     ```
     .github/truststore
-      |- x509
-        |- ca
-          |- <my_trust_store1>
-            |- <my_certificate1>
-            |- <my_certificate2>
-        |- signingAuthority
-          |- <my_trust_store2>
-            |- <my_certificate3>
-            |- <my_certificate4>
+    └── x509
+        ├── ca
+        │   └── <my_trust_store1>
+        │       ├── <my_certificate1>
+        │       └── <my_certificate2>
+        └── signingAuthority
+            └── <my_trust_store2>
+                ├── <my_certificate3>
+                └── <my_certificate4>
     ```

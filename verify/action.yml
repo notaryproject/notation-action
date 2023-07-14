@@ -11,16 +11,16 @@ inputs:
     description: |
       dir of trust store following Notation trust store spec: https://github.com/notaryproject/notaryproject/blob/main/specs/trust-store-trust-policy.md#trust-store.
       An example:
-        .github/truststore
-          |- x509
-            |- ca
-              |- <my_trust_store1>
-                |- <my_certificate1>
-                |- <my_certificate2>
-            |- signingAuthority
-              |- <my_trust_store2>
-                |- <my_certificate3>
-                |- <my_certificate4>
+      .github/truststore
+      └── x509
+          ├── ca
+          │   └── <my_trust_store1>
+          │       ├── <my_certificate1>
+          │       └── <my_certificate2>
+          └── signingAuthority
+              └── <my_trust_store2>
+                  ├── <my_certificate3>
+                  └── <my_certificate4>
     required: true
 runs:
   using: node16

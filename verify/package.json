@@ -15,7 +15,8 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@actions/core": "^1.10.0",
-    "@types/watch": "^1.0.3",
-    "@types/node": "^20.4.0"
+    "@actions/exec": "^1.1.1",
+    "@types/node": "^20.4.0",
+    "@types/watch": "^1.0.3"
   }
 }
