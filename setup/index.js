@@ -25,7 +25,7 @@ async function setup() {
 
     const currentPath = path.join(pathToCLI, "notation")
     const destinationPath = path.join(pathToCLI, "/", download.binPath, "/", "notation")
-    fs.rename(currentPath, destinationPath, function (err) {
+    mv(currentPath, destinationPath, function (err) {
       if (err) {
         throw err
       } else {
