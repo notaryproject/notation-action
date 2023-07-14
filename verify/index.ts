@@ -47,7 +47,7 @@ async function configTrustStore(dir: string) {
             let trustStore = trustStores[j]; // .github/truststore/x509/ca/<my_store>
             let trustStoreName = path.basename(trustStore); // <my_store>
             let certFile = getFileFromDir(trustStore); // [.github/truststore/x509/ca/<my_store>/<my_cert1>, .github/truststore/x509/ca/<my_store>/<my_cert2>, ...]
-            await exec.getExecOutput(`notation cert add -t ${trustStoreType} -s ${trustStoreName} ${certFile}`);
+            await exec.getExecOutput(`notation cert add -t ${trustStoreType} -s ${trustStoreName} ${certFile.map(cert => `'${cert}'`).join(' ')}`);
         }
     }
 }
