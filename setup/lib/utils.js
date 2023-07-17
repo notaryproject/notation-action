@@ -1,9 +1,5 @@
-const { setFailed } = require('@actions/core');
 const os = require('os');
 const path = require('path');
-const execSync = require('child_process').execSync;
-const semver = require('semver');
-const core = require('@actions/core');
 const arch = "amd64";
 
 // os in [darwin, linux, win32...] (https://nodejs.org/api/os.html#os_os_platform)

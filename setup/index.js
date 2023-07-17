@@ -4,8 +4,6 @@ const tc = require('@actions/tool-cache');
 const { getDownloadObject } = require('./lib/utils');
 const fs = require('fs');
 const mv = require('mv');
-const { version } = require('os');
-const execSync = require('child_process').execSync;
 
 async function setup() {
   try {
