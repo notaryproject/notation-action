@@ -46,7 +46,7 @@ async function setupPlugin() {
         const plugin_url = core.getInput('plugin_url');
         const plugin_checksum = core.getInput('plugin_checksum').toLowerCase();
         console.log(`signing plugin url is ${plugin_url}`);
-        const pluginPath = os.homedir() + `/.config/notation/plugins/${plugin_name}`;
+        const pluginPath = getConfigHome() + `/.config/notation/plugins/${plugin_name}`;
         fs.mkdirSync(pluginPath, { recursive: true, });
 
         const pathToTarball = await tc.downloadTool(plugin_url);
@@ -88,4 +88,28 @@ export = sign;
 
 if (require.main === module) {
     sign();
+}
+
+function getConfigHome(): string { 
+    const platform = os.platform(); 
+    switch (platform) {
+        case 'win32': 
+            if (!process.env.APPDATA) { 
+                throw new Error('APPDATA is undefined'); 
+            } 
+            return process.env.APPDATA; 
+        case 'darwin': 
+            if (!process.env.HOME) {
+                throw new Error('HOME is undefined'); 
+            } 
+            return path.join(process.env.HOME, 'Library', 'Application Support'); 
+        case 'linux': 
+            const configHome = path.join(process.env.HOME || '', '.config'); 
+            if (!configHome) {
+                throw new Error('XDG_CONFIG_HOME is undefined'); 
+            } 
+            return configHome; 
+        default: 
+            throw new Error(`Unknown platform: ${platform}`);
+    }
 }
