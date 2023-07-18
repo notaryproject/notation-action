@@ -1,15 +1,4 @@
-# Org-Level Maintainers (in alphabetical order)
-# Pattern: [First Name] [Last Name] <[Email Address]> ([GitHub Handle])
-Feynman Zhou <feynmanzhou@microsoft.com> (@FeynmanZhou)
-Justin Cormack <justin.cormack@docker.com> (@justincormack)
-Milind Gokarn <gokarnm@amazon.com> (@gokarnm)
-Niaz Khan <niazfk@amazon.com> (@niazfk)
-Pritesh Bandi <priteshbandi@gmail.com> (@priteshbandi)
-Steve Lasker <StevenLasker@hotmail.com> (@stevelasker)
-Toddy Mladenov <toddysm@gmail.com> (@toddysm)
-Vani Rao <vaninrao@amazon.com> (@vaninrao10)
-Yi Zha <yizha1@microsoft.com> (@yizha1)
-
+# Org-Level Maintainers are available in https://github.com/notaryproject/.github/blob/main/MAINTAINERS
 # Repo-Level Maintainers (in alphabetical order)
 # Note: This is for the notaryproject/notation-action repo
 Josh Duffney <jduffney@microsoft.com> (@duffney)
