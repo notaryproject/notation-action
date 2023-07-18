@@ -1,5 +1,6 @@
 # Org-Level Maintainers are available in https://github.com/notaryproject/.github/blob/main/MAINTAINERS
 # Repo-Level Maintainers (in alphabetical order)
+# Pattern: [First Name] [Last Name] <[Email Address]> ([GitHub Handle])
 # Note: This is for the notaryproject/notation-action repo
 Josh Duffney <jduffney@microsoft.com> (@duffney)
 Patrick Zheng <patrickzheng@microsoft.com> (@Two-Hearts)
