@@ -35,7 +35,7 @@ async function verify() {
 // configTrustStore configures Notation trust store based on specs.
 // Reference: https://github.com/notaryproject/notaryproject/blob/main/specs/trust-store-trust-policy.md#trust-store
 async function configTrustStore(dir: string) {
-    let trustStoreX509 = path.resolve(dir, X509); // .github/truststore/x509
+    let trustStoreX509 = path.join(dir, X509); // .github/truststore/x509
     if (!fs.existsSync(trustStoreX509)) {
         throw new Error("cannot find dir: <trust_store>/x509");
     }
@@ -46,7 +46,10 @@ async function configTrustStore(dir: string) {
         for (let j = 0; j < trustStores.length; ++j) {
             let trustStore = trustStores[j]; // .github/truststore/x509/ca/<my_store>
             let trustStoreName = path.basename(trustStore); // <my_store>
-            let certFile = getFileFromDir(trustStore).map(cert => `"${cert}"`); // [.github/truststore/x509/ca/<my_store>/<my_cert1>, .github/truststore/x509/ca/<my_store>/<my_cert2>, ...]
+            let certFile = getFileFromDir(trustStore); // [.github/truststore/x509/ca/<my_store>/<my_cert1>, .github/truststore/x509/ca/<my_store>/<my_cert2>, ...]
+            // for (const cert of certFile) {
+            //     await exec.getExecOutput(`notation cert add -t ${trustStoreType} -s ${trustStoreName} "${cert}"`);
+            // }
             exec.getExecOutput(`notation cert add -t ${trustStoreType} -s ${trustStoreName}`, certFile);
         }
     }
@@ -56,14 +59,14 @@ async function configTrustStore(dir: string) {
 function getSubdir(dir: string): string[] {
     return fs.readdirSync(dir, {withFileTypes: true, recursive: false})
             .filter(item => item.isDirectory())
-            .map(item => path.resolve(dir, item.name));
+            .map(item => path.join(dir, item.name));
 }
 
 // getSubdir gets all files under dir without recursive
 function getFileFromDir(dir: string): string[] {
     return fs.readdirSync(dir, {withFileTypes: true, recursive: false})
             .filter(item => !item.isDirectory())
-            .map(item => path.resolve(dir, item.name));
+            .map(item => path.join(dir, item.name));
 }
 
 export = verify;
