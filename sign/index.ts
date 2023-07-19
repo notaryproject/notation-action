@@ -13,22 +13,22 @@ const plugin_name = core.getInput('plugin_name');
 async function sign() {
     try {
         await setupPlugin();
-        await exec.getExecOutput(`notation plugin ls`);
+        await exec.getExecOutput('notation', ['plugin', 'ls']);
         const key_id = core.getInput('key_id');
         const plugin_config = core.getInput('plugin_config');
         const target_artifact_ref = core.getInput('target_artifact_reference');
         const signature_format = core.getInput('signature_format');
         if (process.env.NOTATION_EXPERIMENTAL) {
             if (plugin_config) {
-                await exec.getExecOutput(`notation sign --signature-format ${signature_format} --allow-referrers-api --id ${key_id} --plugin ${plugin_name} --plugin-config=${plugin_config} ${target_artifact_ref}`);
+                await exec.getExecOutput('notation', ['sign', '--allow-referrers-api', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, `--plugin-config=${plugin_config}`, target_artifact_ref]);
             } else {
-                await exec.getExecOutput(`notation sign --signature-format ${signature_format} --allow-referrers-api --id ${key_id} --plugin ${plugin_name} ${target_artifact_ref}`);
+                await exec.getExecOutput('notation', ['sign', '--allow-referrers-api', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, target_artifact_ref]);
             }
         } else {
             if (plugin_config) {
-                await exec.getExecOutput(`notation sign --signature-format ${signature_format} --id ${key_id} --plugin ${plugin_name} --plugin-config=${plugin_config} ${target_artifact_ref}`);
+                await exec.getExecOutput('notation', ['sign', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, `--plugin-config=${plugin_config}`, target_artifact_ref]);
             } else {
-                await exec.getExecOutput(`notation sign --signature-format ${signature_format} --id ${key_id} --plugin ${plugin_name} ${target_artifact_ref}`);
+                await exec.getExecOutput('notation', ['sign', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, target_artifact_ref]);
             }
         }
     } catch (e: unknown) {
@@ -84,12 +84,8 @@ function hash(src: Buffer) {
     return crypto.createHash('sha256').update(src).digest('hex').toLowerCase();
 }
 
-export = sign;
-
-if (require.main === module) {
-    sign();
-}
-
+// getConfigHome gets Notation config home dir based on platform
+// reference: https://notaryproject.dev/docs/concepts/directory-structure/#user-level
 function getConfigHome(): string { 
     const platform = os.platform(); 
     switch (platform) {
@@ -105,4 +101,10 @@ function getConfigHome(): string {
         default: 
             throw new Error(`Unknown platform: ${platform}`);
     }
+}
+
+export = sign;
+
+if (require.main === module) {
+    sign();
 }
