@@ -12,16 +12,16 @@ async function verify() {
         const trust_policy = core.getInput('trust_policy'); // .github/trustpolicy/trustpolicy.json
         const trust_store = core.getInput('trust_store'); // .github/truststore
         // configure Notation trust policys
-        await exec.getExecOutput(`notation policy import ${trust_policy}`);
-        await exec.getExecOutput(`notation policy show`);
+        await exec.getExecOutput('notation', ['policy', 'import', trust_policy]);
+        await exec.getExecOutput('notation', ['policy', 'show']);
         // configure Notation trust store
         await configTrustStore(trust_store);
-        await exec.getExecOutput(`notation cert ls`);
+        await exec.getExecOutput('notation', ['cert', 'ls']);
         // verify core logic
         if (process.env.NOTATION_EXPERIMENTAL) {
-            await exec.getExecOutput(`notation verify --allow-referrers-api ${target_artifact_ref} -v`);
+            await exec.getExecOutput('notation', ['verify', '--allow-referrers-api', target_artifact_ref, '-v']);
         } else {
-            await exec.getExecOutput(`notation verify ${target_artifact_ref} -v`);
+            await exec.getExecOutput('notation', ['verify', target_artifact_ref, '-v']);
         }
     } catch (e: unknown) {
         if (e instanceof Error) {
@@ -47,7 +47,7 @@ async function configTrustStore(dir: string) {
             let trustStore = trustStores[j]; // .github/truststore/x509/ca/<my_store>
             let trustStoreName = path.basename(trustStore); // <my_store>
             let certFile = getFileFromDir(trustStore); // [.github/truststore/x509/ca/<my_store>/<my_cert1>, .github/truststore/x509/ca/<my_store>/<my_cert2>, ...]
-            exec.getExecOutput(`notation cert add -t ${trustStoreType} -s ${trustStoreName}`, certFile);
+            exec.getExecOutput('notation', ['cert', 'add', '-t', trustStoreType, '-s', trustStoreName, ...certFile]);
         }
     }
 }
