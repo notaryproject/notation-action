@@ -1,0 +1,28 @@
+name: notation-sign
+description: notation sign with plugin
+inputs:
+  plugin_name:
+    description: name of the signing plugin
+    required: true
+  plugin_url:
+    description: download url of the signing plugin
+    required: true
+  plugin_checksum:
+    description: SHA256 of the signing plugin
+    required: true
+  key_id:
+    description: Key identifier for the signing key pair from the plugin
+    required: true
+  target_artifact_reference:
+     description: 'Reference of the target artifact to be signed. <registry>/<repo>@<digest>'
+     required: true
+  signature_format:
+     description: 'signature envelope format, options: jws, cose'
+     required: false
+     default: jws
+  plugin_config:
+     description: 'plugin config for signing with the plugin'
+     required: false
+runs:
+  using: node16
+  main: dist/index.js
