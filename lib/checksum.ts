@@ -1,6 +1,7 @@
 import * as crypto from 'crypto';
 import * as fs from 'fs';
-import {getPlatform, getArch} from '../lib/install';
+import {getPlatform, getArch} from './install';
+import notationReleases from './data/notation_releases.json';
 
 // validateCheckSum validates checksum of file at path against user input
 // ground truth.
@@ -16,12 +17,10 @@ export function validateCheckSum(path: string, groundTruth: string) {
 // getNotationCheckSum returns checksum of user specified official Notation CLI
 // release.
 export function getNotationCheckSum(version: string): string {
-    const versionData = fs.readFileSync("./data/notation_releases.json", 'utf8');
-    const versionList = JSON.parse(versionData);
     const platform = getPlatform();
     const architecture = getArch();
-    for (const release of versionList) {
-        if (release["version"] === version) {
+    for (const release of notationReleases as any) {
+        if (release[version] === version) {
             return release[platform][architecture]["checksum"];
         }
     }
