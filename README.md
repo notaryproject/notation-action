@@ -1,7 +1,27 @@
-# Notation Action
-Github Action for `setup notation`, `notation sign` and `notation verify`.
+# Notation Github Actions
+Github Actions for [Notation](https://notaryproject.dev/).
 
-## notation sign
+Supported actions: `Notation: Setup`, `Notation: Sign` and `Notation: Verify`.
+
+# Usage
+## Notation: Setup
+```yaml
+- name: setup Notation CLI
+  uses: notaryproject/notation-action/setup@main
+  with:
+    version: <version_of_official_Notation_CLI_release>
+    url: <url_of_customized_Notation_CLI>
+    checksum: <SHA256_of_the_customized_Notation_CLI>
+```
+For example,
+```yaml
+- name: setup Notation CLI
+  uses: notaryproject/notation-action/setup@main
+  with:
+    version: 1.0.0-rc.7
+```
+
+## Notation: Sign
 ```yaml
 - name: sign releasd artifact with signing plugin
   uses: notaryproject/notation-action/sign@main
@@ -27,7 +47,7 @@ For example,
     signature_format: cose
     plugin_config: ca_certs=.github/cert-bundle/cert-bundle.crt
 ```
-## notation verify
+## Notation: Verify
 ```yaml
 - name: verify released artifact
   uses: notaryproject/notation-action/verify@main
