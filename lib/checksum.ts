@@ -3,15 +3,14 @@ import * as fs from 'fs';
 import {getPlatform, getArch} from './install';
 import notationReleases from './data/notation_releases.json';
 
-// validateCheckSum validates checksum of file at path against user input
-// ground truth.
+// validateCheckSum validates checksum of file at path against ground truth.
 export function validateCheckSum(path: string, groundTruth: string) {
     const buff = fs.readFileSync(path);
     const sha256 = hash(buff);
     if (sha256 !== groundTruth) {
-        throw new Error(`checksum of downloaded plugin ${sha256} does not match user input ${groundTruth}`);
+        throw new Error(`checksum of downloaded plugin ${sha256} does not match ground truth ${groundTruth}`);
     }
-    console.log("Successfully checked download checksum against user input")
+    console.log("Successfully checked download checksum against ground truth")
 }
 
 // getNotationCheckSum returns checksum of user specified official Notation CLI
