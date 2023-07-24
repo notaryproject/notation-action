@@ -1,0 +1,16 @@
+name: setup-gh
+description: Setup Notation CLI on GitHub Action runners
+branding:
+  icon: check-circle
+  color: blue
+inputs:
+  version:
+    description: Version of Notation CLI to install
+    required: false
+    default: 1.0.0-rc.7
+  url:
+    description: URL of Notation CLI to install
+    required: false
+runs:
+  using: node16
+  main: dist/index.js
