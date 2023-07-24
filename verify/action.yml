@@ -1,5 +1,8 @@
-name: notation-verify
-description: Verify target artifact with Notation
+name: 'Notation: Verify'
+description: notation verify target artifact
+branding:
+  icon: check-circle
+  color: blue
 inputs:
   target_artifact_reference:
     description: 'Reference of the target artifact to be verified. <registry>/<repo>@<digest>'
@@ -9,7 +12,7 @@ inputs:
     required: true
   trust_store:
     description: |
-      dir of trust store following Notation trust store spec: https://github.com/notaryproject/notaryproject/blob/main/specs/trust-store-trust-policy.md#trust-store.
+      dir of trust store following Notation trust store [spec](https://github.com/notaryproject/notaryproject/blob/main/specs/trust-store-trust-policy.md#trust-store).
       An example:
       .github/truststore
       └── x509

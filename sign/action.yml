@@ -1,5 +1,8 @@
-name: notation-sign
-description: notation sign with plugin
+name: 'Notation: Sign'
+description: notation sign target artifact with plugin
+branding:
+  icon: check-circle
+  color: blue
 inputs:
   plugin_name:
     description: name of the signing plugin

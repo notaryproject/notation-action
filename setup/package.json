@@ -1,11 +1,10 @@
 {
   "name": "notation-setup",
   "version": "1.0.0",
-  "description": "Install and configure the Notation CLI and plugins.",
-  "main": "index.js",
+  "description": "Install and configure the Notation CLI",
+  "main": "index.ts",
   "scripts": {
-    "build": "ncc build index.js -o dist --source-map --minify --license licenses.txt",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "ncc build index.ts -o dist --source-map --minify --license licenses.txt"
   },
   "repository": {
     "type": "git",
@@ -18,10 +17,9 @@
     "@actions/core": "^1.10.0",
     "@actions/github": "^5.1.1",
     "@actions/tool-cache": "^2.0.1",
+    "@types/mv": "^2.1.2",
+    "@types/node": "^20.4.4",
     "mv": "^2.1.1",
     "semver": "^7.5.2"
-  },
-  "devDependencies": {
-    "@vercel/ncc": "^0.36.1"
   }
 }

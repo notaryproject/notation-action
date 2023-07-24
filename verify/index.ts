@@ -5,19 +5,23 @@ import * as path from 'path';
 
 const X509 = "x509";
 
-// verify target artifact with Notation
-async function verify() {
+// verify verifies the target artifact with Notation
+async function verify(): Promise<void> {
     try {
+        // inputs from user
         const target_artifact_ref = core.getInput('target_artifact_reference');
         const trust_policy = core.getInput('trust_policy'); // .github/trustpolicy/trustpolicy.json
         const trust_store = core.getInput('trust_store'); // .github/truststore
-        // configure Notation trust policys
+
+        // configure Notation trust policy
         await exec.getExecOutput('notation', ['policy', 'import', trust_policy]);
         await exec.getExecOutput('notation', ['policy', 'show']);
+
         // configure Notation trust store
         await configTrustStore(trust_store);
         await exec.getExecOutput('notation', ['cert', 'ls']);
-        // verify core logic
+
+        // verify core process
         if (process.env.NOTATION_EXPERIMENTAL) {
             await exec.getExecOutput('notation', ['verify', '--allow-referrers-api', target_artifact_ref, '-v']);
         } else {
@@ -27,7 +31,7 @@ async function verify() {
         if (e instanceof Error) {
             core.setFailed(e);
         } else {
-            core.setFailed('Unknown error');
+            core.setFailed('Unknown error during notation verify');
         }
     }
 }
@@ -37,7 +41,7 @@ async function verify() {
 async function configTrustStore(dir: string) {
     let trustStoreX509 = path.join(dir, X509); // .github/truststore/x509
     if (!fs.existsSync(trustStoreX509)) {
-        throw new Error("cannot find dir: <trust_store>/x509");
+        throw new Error(`cannot find trust store dir: ${trustStoreX509}`);
     }
     let trustStoreTypes = getSubdir(trustStoreX509); // [.github/truststore/x509/ca, .github/truststore/x509/signingAuthority, ...]
     for (let i = 0; i < trustStoreTypes.length; ++i) {
@@ -59,7 +63,7 @@ function getSubdir(dir: string): string[] {
             .map(item => path.join(dir, item.name));
 }
 
-// getSubdir gets all files under dir without recursive
+// getFileFromDir gets all files under dir without recursive
 function getFileFromDir(dir: string): string[] {
     return fs.readdirSync(dir, {withFileTypes: true, recursive: false})
             .filter(item => !item.isDirectory())
