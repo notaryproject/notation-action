@@ -20,7 +20,7 @@ export function getNotationCheckSum(version: string): string {
     const platform = getPlatform();
     const architecture = getArch();
     for (const release of notationReleases as any) {
-        if (release[version] === version) {
+        if (release["version"] === version) {
             return release[platform][architecture]["checksum"];
         }
     }
