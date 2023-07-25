@@ -1,7 +1,7 @@
 import * as core from '@actions/core';
 import * as tc from '@actions/tool-cache';
-import {validateCheckSum, getNotationCheckSum} from '../lib/checksum';
-import { getNotationDownloadURL } from '../lib/install';
+import {validateCheckSum, getNotationCheckSum} from './lib/checksum';
+import { getNotationDownloadURL } from './lib/install';
 
 // setup sets up the Notation CLI.
 async function setup(): Promise<void> {

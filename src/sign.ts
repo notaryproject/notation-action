@@ -4,8 +4,8 @@ import * as tc from '@actions/tool-cache';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as mv from 'mv';
-import {validateCheckSum} from '../lib/checksum';
-import {getConfigHome} from '../lib/install';
+import {validateCheckSum} from './lib/checksum';
+import {getConfigHome} from './lib/install';
 
 const plugin_name = core.getInput('plugin_name');
 

@@ -1,0 +1,22 @@
+{
+    "name": "notation",
+    "version": "1.0.0",
+    "description": "Notation Github Actions",
+    "scripts": {
+      "build": "tsc --build"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/notaryproject/notation-action.git"
+    },
+    "keywords": [],
+    "license": "Apache-2.0",
+    "dependencies": {
+      "@actions/core": "^1.10.0",
+      "@actions/exec": "^1.1.1",
+      "@actions/tool-cache": "^2.0.1",
+      "@types/mv": "^2.1.2",
+      "@types/node": "^20.4.0",
+      "mv": "^2.1.1"
+    }
+  }
