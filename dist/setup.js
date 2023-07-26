@@ -1,0 +1,80 @@
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+const core = __importStar(require("@actions/core"));
+const tc = __importStar(require("@actions/tool-cache"));
+const checksum_1 = require("./lib/checksum");
+const install_1 = require("./lib/install");
+// setup sets up the Notation CLI.
+function setup() {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            // inputs from user
+            const version = core.getInput('version');
+            const notation_url = core.getInput('url');
+            const notation_checksum = core.getInput('checksum').toLowerCase();
+            // sanity check
+            if (notation_url && !notation_checksum) {
+                throw new Error("user provided url of customized Notation CLI release but without SHA256 checksum");
+            }
+            // download Notation CLI and validate checksum
+            const downloadURL = (0, install_1.getNotationDownloadURL)(version, notation_url);
+            console.log(`Downloading Notation CLI from ${downloadURL}`);
+            const pathToTarball = yield tc.downloadTool(downloadURL);
+            if (notation_url) {
+                yield (0, checksum_1.validateCheckSum)(pathToTarball, notation_checksum);
+            }
+            else {
+                yield (0, checksum_1.validateCheckSum)(pathToTarball, (0, checksum_1.getNotationCheckSum)(version));
+            }
+            // extract the tarball/zipball onto host runner
+            const extract = downloadURL.endsWith('.zip') ? tc.extractZip : tc.extractTar;
+            const pathToCLI = yield extract(pathToTarball);
+            // add `notation` to PATH
+            core.addPath(pathToCLI);
+        }
+        catch (e) {
+            if (e instanceof Error) {
+                core.setFailed(e);
+            }
+            else {
+                core.setFailed('Unknown error during notation setup');
+            }
+        }
+    });
+}
+if (require.main === module) {
+    setup();
+}
+module.exports = setup;
+//# sourceMappingURL=setup.js.map
