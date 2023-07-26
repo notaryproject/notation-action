@@ -100,16 +100,6 @@ function setupPlugin() {
                     throw err;
                 console.log(`Successfully changed permission of plugin binary`);
             });
-            // const currentPath = path.join(pathToPluginDownload, "/", `notation-${plugin_name}`);
-            // const destinationPath = path.join(pluginPath, "/", `notation-${plugin_name}`);
-            // mv.default(currentPath, destinationPath, function (err: Error) {
-            //     if (err) throw err;
-            //     console.log(`Successfully moved the plugin binary to ${destinationPath}`);
-            //     fs.chmod(destinationPath, 0o755, (err) => {
-            //         if (err) throw err;
-            //         console.log(`Successfully changed permission of plugin binary`);
-            //     });
-            // });
         }
         catch (e) {
             if (e instanceof Error) {
