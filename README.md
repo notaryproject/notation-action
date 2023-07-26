@@ -3,8 +3,8 @@ Github Actions for [Notation](https://notaryproject.dev/).
 
 Supported actions: `Notation: Setup`, `Notation: Sign` and `Notation: Verify`.
 
-# Usage
-## Notation: Setup
+## Usage
+### Notation: Setup
 ```yaml
 - name: setup Notation CLI
   uses: notaryproject/notation-action/setup@main
@@ -21,7 +21,7 @@ For example,
     version: 1.0.0-rc.7
 ```
 
-## Notation: Sign
+### Notation: Sign
 ```yaml
 - name: sign releasd artifact with signing plugin
   uses: notaryproject/notation-action/sign@main
@@ -47,7 +47,7 @@ For example,
     signature_format: cose
     plugin_config: ca_certs=.github/cert-bundle/cert-bundle.crt
 ```
-## Notation: Verify
+### Notation: Verify
 ```yaml
 - name: verify released artifact
   uses: notaryproject/notation-action/verify@main
