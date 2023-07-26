@@ -44,9 +44,6 @@ function setup() {
             const notation_url = core.getInput('url');
             const notation_checksum = core.getInput('checksum').toLowerCase();
             // sanity check
-            if (!(notation_url || version)) {
-                throw new Error("user needs to provide either version of official Notation CLI or url of customized Notation CLI release");
-            }
             if (notation_url && !notation_checksum) {
                 throw new Error("user provided url of customized Notation CLI release but without SHA256 checksum");
             }
@@ -54,7 +51,12 @@ function setup() {
             const downloadURL = (0, install_1.getNotationDownloadURL)(version, notation_url);
             console.log(`Downloading Notation CLI from ${downloadURL}`);
             const pathToTarball = yield tc.downloadTool(downloadURL);
-            notation_url ? (0, checksum_1.validateCheckSum)(pathToTarball, notation_checksum) : (0, checksum_1.validateCheckSum)(pathToTarball, (0, checksum_1.getNotationCheckSum)(version));
+            if (notation_url) {
+                yield (0, checksum_1.validateCheckSum)(pathToTarball, notation_checksum);
+            }
+            else {
+                yield (0, checksum_1.validateCheckSum)(pathToTarball, (0, checksum_1.getNotationCheckSum)(version));
+            }
             // extract the tarball/zipball onto host runner
             const extract = downloadURL.endsWith('.zip') ? tc.extractZip : tc.extractTar;
             const pathToCLI = yield extract(pathToTarball);

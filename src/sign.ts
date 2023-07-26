@@ -54,7 +54,7 @@ async function setupPlugin() {
 
         // download signing plugin and validate checksum
         const pathToTarball = await tc.downloadTool(plugin_url);
-        validateCheckSum(pathToTarball, plugin_checksum);
+        await validateCheckSum(pathToTarball, plugin_checksum);
         
         // extract and install the plugin
         const extract = plugin_url.endsWith('.zip') ? tc.extractZip : tc.extractTar;

@@ -89,7 +89,7 @@ function setupPlugin() {
             console.log(`signing plugin url is ${plugin_url}`);
             // download signing plugin and validate checksum
             const pathToTarball = yield tc.downloadTool(plugin_url);
-            (0, checksum_1.validateCheckSum)(pathToTarball, plugin_checksum);
+            yield (0, checksum_1.validateCheckSum)(pathToTarball, plugin_checksum);
             // extract and install the plugin
             const extract = plugin_url.endsWith('.zip') ? tc.extractZip : tc.extractTar;
             const pathToPluginDownload = yield extract(pathToTarball);
