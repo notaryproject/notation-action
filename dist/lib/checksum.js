@@ -58,7 +58,10 @@ function getNotationCheckSum(version) {
     const architecture = (0, install_1.getArch)();
     for (const release of notation_releases_json_1.default) {
         if (release["version"] === version) {
-            return release[platform][architecture]["checksum"];
+            console.log(`Notation CLI version is ${version}`);
+            let checksum = release[platform][architecture]["checksum"];
+            console.log(`Notation CLI checksum is ${checksum}`);
+            return checksum;
         }
     }
     throw new Error(`Notation release does not support user input version ${version}`);

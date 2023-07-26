@@ -3,7 +3,6 @@ import * as exec from '@actions/exec';
 import * as tc from '@actions/tool-cache';
 import * as path from 'path';
 import * as fs from 'fs';
-import * as mv from 'mv';
 import {validateCheckSum} from './lib/checksum';
 import {getConfigHome} from './lib/install';
 
@@ -58,19 +57,24 @@ async function setupPlugin() {
         
         // extract and install the plugin
         const extract = plugin_url.endsWith('.zip') ? tc.extractZip : tc.extractTar;
-        const pathToPluginDownload = await extract(pathToTarball);
         const pluginPath = path.join(getConfigHome(), `notation/plugins/${plugin_name}`);
         fs.mkdirSync(pluginPath, { recursive: true, });
-        const currentPath = path.join(pathToPluginDownload, "/", `notation-${plugin_name}`);
-        const destinationPath = path.join(pluginPath, "/", `notation-${plugin_name}`);
-        mv.default(currentPath, destinationPath, function (err: Error) {
+        await extract(pathToTarball, pluginPath);
+        console.log(`Successfully moved the plugin binary to ${pluginPath}`);
+        fs.chmod(pluginPath, 0o755, (err) => {
             if (err) throw err;
-            console.log(`Successfully moved the plugin binary to ${destinationPath}`);
-            fs.chmod(destinationPath, 0o755, (err) => {
-                if (err) throw err;
-                console.log(`Successfully changed permission of plugin binary`);
-            });
+            console.log(`Successfully changed permission of plugin binary`);
         });
+        // const currentPath = path.join(pathToPluginDownload, "/", `notation-${plugin_name}`);
+        // const destinationPath = path.join(pluginPath, "/", `notation-${plugin_name}`);
+        // mv.default(currentPath, destinationPath, function (err: Error) {
+        //     if (err) throw err;
+        //     console.log(`Successfully moved the plugin binary to ${destinationPath}`);
+        //     fs.chmod(destinationPath, 0o755, (err) => {
+        //         if (err) throw err;
+        //         console.log(`Successfully changed permission of plugin binary`);
+        //     });
+        // });
     } catch (e: unknown) {
         if (e instanceof Error) {
             core.setFailed(e);

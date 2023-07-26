@@ -19,7 +19,10 @@ export function getNotationCheckSum(version: string): string {
     const architecture = getArch();
     for (const release of notationReleases as any) {
         if (release["version"] === version) {
-            return release[platform][architecture]["checksum"];
+            console.log(`Notation CLI version is ${version}`);
+            let checksum = release[platform][architecture]["checksum"];
+            console.log(`Notation CLI checksum is ${checksum}`);
+            return checksum;
         }
     }
     throw new Error(`Notation release does not support user input version ${version}`);

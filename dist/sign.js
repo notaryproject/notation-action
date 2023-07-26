@@ -36,7 +36,6 @@ const exec = __importStar(require("@actions/exec"));
 const tc = __importStar(require("@actions/tool-cache"));
 const path = __importStar(require("path"));
 const fs = __importStar(require("fs"));
-const mv = __importStar(require("mv"));
 const checksum_1 = require("./lib/checksum");
 const install_1 = require("./lib/install");
 const plugin_name = core.getInput('plugin_name');
@@ -92,21 +91,25 @@ function setupPlugin() {
             yield (0, checksum_1.validateCheckSum)(pathToTarball, plugin_checksum);
             // extract and install the plugin
             const extract = plugin_url.endsWith('.zip') ? tc.extractZip : tc.extractTar;
-            const pathToPluginDownload = yield extract(pathToTarball);
             const pluginPath = path.join((0, install_1.getConfigHome)(), `notation/plugins/${plugin_name}`);
             fs.mkdirSync(pluginPath, { recursive: true, });
-            const currentPath = path.join(pathToPluginDownload, "/", `notation-${plugin_name}`);
-            const destinationPath = path.join(pluginPath, "/", `notation-${plugin_name}`);
-            mv.default(currentPath, destinationPath, function (err) {
+            yield extract(pathToTarball, pluginPath);
+            console.log(`Successfully moved the plugin binary to ${pluginPath}`);
+            fs.chmod(pluginPath, 0o755, (err) => {
                 if (err)
                     throw err;
-                console.log(`Successfully moved the plugin binary to ${destinationPath}`);
-                fs.chmod(destinationPath, 0o755, (err) => {
-                    if (err)
-                        throw err;
-                    console.log(`Successfully changed permission of plugin binary`);
-                });
+                console.log(`Successfully changed permission of plugin binary`);
             });
+            // const currentPath = path.join(pathToPluginDownload, "/", `notation-${plugin_name}`);
+            // const destinationPath = path.join(pluginPath, "/", `notation-${plugin_name}`);
+            // mv.default(currentPath, destinationPath, function (err: Error) {
+            //     if (err) throw err;
+            //     console.log(`Successfully moved the plugin binary to ${destinationPath}`);
+            //     fs.chmod(destinationPath, 0o755, (err) => {
+            //         if (err) throw err;
+            //         console.log(`Successfully changed permission of plugin binary`);
+            //     });
+            // });
         }
         catch (e) {
             if (e instanceof Error) {
