@@ -1,9 +1,17 @@
-# Notation Github Actions
-Github Actions for [Notation](https://notaryproject.dev/).
+# GitHub Actions for Notation
 
-Supported actions: `Notation: Setup`, `Notation: Sign` and `Notation: Verify`.
+This repository contains the implementation of [GitHub Actions](https://docs.github.com/en/actions) for [Notation](https://notaryproject.dev/). It provides multiple actions for signing and verifying OCI artifacts with Notation in CI/CD. This project is still in early development status.
+
+The following three actions are available:
+
+- `setup`: Install Notation
+- `sign`: Sign an OCI artifact with a specified plugin
+- `verify`: Verify a signature
+
+> **Note** The Notary Project documentation is available [here](https://notaryproject.dev/docs/). You can also find the Notary Project [README](https://github.com/notaryproject/.github/blob/main/README.md) to learn about the overall Notary Project.
 
 ## Usage
+
 ### Notation: Setup
 ```yaml
 - name: setup Notation CLI
@@ -56,6 +64,7 @@ For example,
     trust_policy: <file_path_to_user_defined_trustpolicy.json>
     trust_store: <dir_to_user_trust_store>
 ```
+
 For example,
 ```yaml
 - name: verify released artifact
@@ -65,6 +74,7 @@ For example,
     trust_policy: .github/trustpolicy/trustpolicy.json
     trust_store: .github/truststore
 ```
+
 where `.github/truststore` MUST follow the Notation [trust store specs](https://github.com/notaryproject/notaryproject/blob/main/specs/trust-store-trust-policy.md#trust-store).
 
 For example,
@@ -79,3 +89,4 @@ For example,
         └── <my_trust_store2>
             ├── <my_certificate3>
             └── <my_certificate4>
+```
