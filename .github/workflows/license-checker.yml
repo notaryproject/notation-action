@@ -15,7 +15,9 @@ name: License Checker
 
 on:
   push:
-    branches: main
+    branches: 
+      main
+      license
   pull_request:
     branches: main
 
