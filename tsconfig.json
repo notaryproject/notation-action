@@ -12,4 +12,4 @@
       "resolveJsonModule": true,                   /* Allows importing modules with a .json extension. */
     },
     "exclude": ["node_modules"]
-  }
+}
