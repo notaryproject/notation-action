@@ -32,19 +32,20 @@ async function sign(): Promise<void> {
         // inputs from user
         const key_id = core.getInput('key_id');
         const plugin_config = core.getInput('plugin_config');
+        const pluginConfigList = getPluginConfigList(plugin_config);
         const target_artifact_ref = core.getInput('target_artifact_reference');
         const signature_format = core.getInput('signature_format');
 
         // sign core process
         if (process.env.NOTATION_EXPERIMENTAL) {
             if (plugin_config) {
-                await exec.getExecOutput('notation', ['sign', '--allow-referrers-api', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, `--plugin-config=${plugin_config}`, target_artifact_ref]);
+                await exec.getExecOutput('notation', ['sign', '--allow-referrers-api', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, ...pluginConfigList, target_artifact_ref]);
             } else {
                 await exec.getExecOutput('notation', ['sign', '--allow-referrers-api', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, target_artifact_ref]);
             }
         } else {
             if (plugin_config) {
-                await exec.getExecOutput('notation', ['sign', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, `--plugin-config=${plugin_config}`, target_artifact_ref]);
+                await exec.getExecOutput('notation', ['sign', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, ...pluginConfigList, target_artifact_ref]);
             } else {
                 await exec.getExecOutput('notation', ['sign', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, target_artifact_ref]);
             }
@@ -87,6 +88,15 @@ async function setupPlugin() {
             core.setFailed('Unknown error during setting up notation signing plugin');
         }
     }
+}
+
+function getPluginConfigList(pluginConfig: string): string[] {
+    let pluginConfigList: string[] = [];
+    for (const config of pluginConfig.split(/\r|\n/)) {
+        let param = `--plugin-config=${config}`;
+        pluginConfigList.push(param);
+    }
+    return pluginConfigList;
 }
 
 export = sign;
