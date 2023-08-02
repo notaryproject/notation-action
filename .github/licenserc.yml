@@ -41,3 +41,7 @@ header:
     - 'dist'
 
   comment: on-failure
+
+dependency:
+  files:
+    - package.json
