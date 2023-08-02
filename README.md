@@ -32,7 +32,7 @@ For example,
     key_id: <key_identifier_to_sign>
     target_artifact_reference: <target_artifact_reference_in_remote_registry>
     signature_format: <signature_envelope_format>
-    plugin_config: <newline_separated_list_of_plugin_defined_configs>
+    plugin_config: <JSON_array_string_of_plugin_defined_configs>
 ```
 For example,
 ```yaml
@@ -45,9 +45,7 @@ For example,
     key_id: https://testnotationakv.vault.azure.net/keys/notationLeafCert/c585b8ad8fc542b28e41e555d9b3a1fd
     target_artifact_reference: myRegistry.azurecr.io/myRepo@sha256:aaabbb
     signature_format: cose
-    plugin_config: |-
-      ca_certs=.github/cert-bundle/cert-bundle.crt
-      self_signed=false
+    plugin_config: '["ca_certs=.github/cert-bundle/cert-bundle.crt", "self_signed=false"]'
 ```
 ### Notation: Verify
 ```yaml
