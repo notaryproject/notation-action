@@ -91,7 +91,10 @@ async function setupPlugin() {
 }
 
 function getPluginConfigList(pluginConfig: string): string[] {
-    let pluginConfigList = JSON.parse(pluginConfig);
+    let pluginConfigList: string[] = JSON.parse(pluginConfig);
+    if (!Array.isArray(pluginConfigList)) {
+        throw new Error("plugin_config is not a JSON array");
+    }
     for (let i = 0; i < pluginConfigList.length; ++i) {
         pluginConfigList[i] = "--plugin-config=" + pluginConfigList[i];
     }
