@@ -127,6 +127,9 @@ function setupPlugin() {
     });
 }
 function getPluginConfigList(pluginConfig) {
+    if (!pluginConfig) {
+        return [];
+    }
     let pluginConfigList = JSON.parse(pluginConfig);
     if (!Array.isArray(pluginConfigList)) {
         throw new Error("plugin_config is not a JSON array");
