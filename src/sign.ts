@@ -38,17 +38,9 @@ async function sign(): Promise<void> {
 
         // sign core process
         if (process.env.NOTATION_EXPERIMENTAL) {
-            if (plugin_config) {
-                await exec.getExecOutput('notation', ['sign', '--allow-referrers-api', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, ...pluginConfigList, target_artifact_ref]);
-            } else {
-                await exec.getExecOutput('notation', ['sign', '--allow-referrers-api', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, target_artifact_ref]);
-            }
+            await exec.getExecOutput('notation', ['sign', '--allow-referrers-api', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, ...pluginConfigList, target_artifact_ref]);
         } else {
-            if (plugin_config) {
-                await exec.getExecOutput('notation', ['sign', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, ...pluginConfigList, target_artifact_ref]);
-            } else {
-                await exec.getExecOutput('notation', ['sign', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, target_artifact_ref]);
-            }
+            await exec.getExecOutput('notation', ['sign', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, ...pluginConfigList, target_artifact_ref]);
         }
     } catch (e: unknown) {
         if (e instanceof Error) {

@@ -67,20 +67,10 @@ function sign() {
             const signature_format = core.getInput('signature_format');
             // sign core process
             if (process.env.NOTATION_EXPERIMENTAL) {
-                if (plugin_config) {
-                    yield exec.getExecOutput('notation', ['sign', '--allow-referrers-api', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, ...pluginConfigList, target_artifact_ref]);
-                }
-                else {
-                    yield exec.getExecOutput('notation', ['sign', '--allow-referrers-api', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, target_artifact_ref]);
-                }
+                yield exec.getExecOutput('notation', ['sign', '--allow-referrers-api', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, ...pluginConfigList, target_artifact_ref]);
             }
             else {
-                if (plugin_config) {
-                    yield exec.getExecOutput('notation', ['sign', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, ...pluginConfigList, target_artifact_ref]);
-                }
-                else {
-                    yield exec.getExecOutput('notation', ['sign', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, target_artifact_ref]);
-                }
+                yield exec.getExecOutput('notation', ['sign', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, ...pluginConfigList, target_artifact_ref]);
             }
         }
         catch (e) {
