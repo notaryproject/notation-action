@@ -91,10 +91,9 @@ async function setupPlugin() {
 }
 
 function getPluginConfigList(pluginConfig: string): string[] {
-    let pluginConfigList: string[] = [];
-    for (const config of pluginConfig.split(/\r|\n/)) {
-        let param = `--plugin-config=${config}`;
-        pluginConfigList.push(param);
+    let pluginConfigList = JSON.parse(pluginConfig);
+    for (let i = 0; i < pluginConfigList.length; ++i) {
+        pluginConfigList[i] = "--plugin-config=" + pluginConfigList[i];
     }
     return pluginConfigList;
 }
