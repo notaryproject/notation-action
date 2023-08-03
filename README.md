@@ -32,7 +32,7 @@ For example,
     key_id: <key_identifier_to_sign>
     target_artifact_reference: <target_artifact_reference_in_remote_registry>
     signature_format: <signature_envelope_format>
-    plugin_config: <JSON_array_string_of_plugin_defined_configs>
+    plugin_config: <list_of_plugin_defined_configs>
 ```
 For example,
 ```yaml

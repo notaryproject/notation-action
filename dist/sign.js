@@ -123,8 +123,9 @@ function getPluginConfigList(pluginConfig) {
     let pluginConfigList = [];
     for (let config of pluginConfig.split(/\r|\n/)) {
         config = config.trim();
-        if (config)
+        if (config) {
             pluginConfigList.push("--plugin-config=" + config);
+        }
     }
     return pluginConfigList;
 }
