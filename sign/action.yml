@@ -37,7 +37,7 @@ inputs:
     required: false
     default: jws
   plugin_config:
-    description: JSON array string of {key}={value} pairs that are passed as it is to the signing plugin
+    description: list of {key}={value} pairs that are passed as it is to the signing plugin
     required: false
 runs:
   using: node16

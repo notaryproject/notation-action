@@ -86,12 +86,10 @@ function getPluginConfigList(pluginConfig: string): string[] {
     if (!pluginConfig) {
         return [];
     }
-    let pluginConfigList: string[] = JSON.parse(pluginConfig);
-    if (!Array.isArray(pluginConfigList)) {
-        throw new Error("plugin_config is not a JSON array");
-    }
-    for (let i = 0; i < pluginConfigList.length; ++i) {
-        pluginConfigList[i] = "--plugin-config=" + pluginConfigList[i];
+    let pluginConfigList: string[] = [];
+    for (let config of pluginConfig.split(/\r|\n/)) {
+        config = config.trim();
+        if (config) pluginConfigList.push("--plugin-config="+config);
     }
     return pluginConfigList;
 }

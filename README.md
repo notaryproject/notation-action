@@ -45,7 +45,9 @@ For example,
     key_id: https://testnotationakv.vault.azure.net/keys/notationLeafCert/c585b8ad8fc542b28e41e555d9b3a1fd
     target_artifact_reference: myRegistry.azurecr.io/myRepo@sha256:aaabbb
     signature_format: cose
-    plugin_config: '["ca_certs=.github/cert-bundle/cert-bundle.crt", "self_signed=false"]'
+    plugin_config: |-
+      ca_certs=.github/cert-bundle/cert-bundle.crt
+      self_signed=false
 ```
 ### Notation: Verify
 ```yaml
