@@ -90,7 +90,7 @@ function getPluginConfigList(pluginConfig: string): string[] {
     for (let config of pluginConfig.split(/\r|\n/)) {
         config = config.trim();
         if (config) {
-            pluginConfigList.push("--plugin-config="+config); 
+            pluginConfigList.push("--plugin-config=" + config); 
         }
     }
     return pluginConfigList;
