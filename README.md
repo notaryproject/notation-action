@@ -90,7 +90,7 @@ For example,
 ```
 `.github/trustpolicy/trustpolicy.json` MUST follow the Notation [trust policy specs](https://github.com/notaryproject/specifications/blob/v1.0.0-rc.2/specs/trust-store-trust-policy.md#trust-policy).
 
-`.github/truststore` MUST follow the Notation [trust store specs](https://github.com/notaryproject/notaryproject/blob/v1.0.0-rc.2/specs/trust-store-trust-policy.md#trust-store). For example,
+`.github/truststore` MUST follow the Notation [trust store specs](https://github.com/notaryproject/specifications/blob/v1.0.0-rc.2/specs/trust-store-trust-policy.md#trust-store). For example,
 ```
 .github/truststore
 └── x509
