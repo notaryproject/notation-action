@@ -53,7 +53,6 @@ const fs = __importStar(require("fs"));
 const checksum_1 = require("./lib/checksum");
 const install_1 = require("./lib/install");
 const plugin_name = core.getInput('plugin_name');
-// sign signs the target artifact with Notation.
 function sign() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
