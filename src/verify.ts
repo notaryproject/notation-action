@@ -27,6 +27,7 @@ async function verify(): Promise<void> {
         const target_artifact_ref = core.getInput('target_artifact_reference');
         const trust_policy = core.getInput('trust_policy'); // .github/trustpolicy/trustpolicy.json
         const trust_store = core.getInput('trust_store'); // .github/truststore
+        const allow_referrers_api = core.getInput('allow_referrers_api');
 
         // configure Notation trust policy
         await exec.getExecOutput('notation', ['policy', 'import', trust_policy]);
@@ -37,7 +38,9 @@ async function verify(): Promise<void> {
         await exec.getExecOutput('notation', ['cert', 'ls']);
 
         // verify core process
-        if (process.env.NOTATION_EXPERIMENTAL) {
+        if (allow_referrers_api.toLowerCase() === 'true') {
+            // if process.env.NOTATION_EXPERIMENTAL is not set, notation would
+            // fail the command as expected.
             await exec.getExecOutput('notation', ['verify', '--allow-referrers-api', target_artifact_ref, '-v']);
         } else {
             await exec.getExecOutput('notation', ['verify', target_artifact_ref, '-v']);
@@ -52,7 +55,7 @@ async function verify(): Promise<void> {
 }
 
 // configTrustStore configures Notation trust store based on specs.
-// Reference: https://github.com/notaryproject/notaryproject/blob/main/specs/trust-store-trust-policy.md#trust-store
+// Reference: https://github.com/notaryproject/specifications/blob/v1.0.0-rc.2/specs/trust-store-trust-policy.md#trust-store
 async function configTrustStore(dir: string) {
     let trustStoreX509 = path.join(dir, X509); // .github/truststore/x509
     if (!fs.existsSync(trustStoreX509)) {
