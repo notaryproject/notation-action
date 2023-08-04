@@ -67,7 +67,7 @@ function sign() {
             const allow_referrers_api = core.getInput('allow_referrers_api');
             // sign core process
             let notationCommand = ['sign', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, ...pluginConfigList];
-            if (allow_referrers_api === 'true') {
+            if (allow_referrers_api.toLowerCase() === 'true') {
                 // if process.env.NOTATION_EXPERIMENTAL is not set, notation would
                 // fail the command as expected.
                 notationCommand.push('--allow-referrers-api');
