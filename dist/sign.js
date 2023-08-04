@@ -53,7 +53,6 @@ const fs = __importStar(require("fs"));
 const checksum_1 = require("./lib/checksum");
 const install_1 = require("./lib/install");
 const plugin_name = core.getInput('plugin_name');
-// sign signs the target artifact with Notation.
 function sign() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -65,13 +64,15 @@ function sign() {
             const pluginConfigList = getPluginConfigList(plugin_config);
             const target_artifact_ref = core.getInput('target_artifact_reference');
             const signature_format = core.getInput('signature_format');
+            const allow_referrers_api = core.getInput('allow_referrers_api');
             // sign core process
-            if (process.env.NOTATION_EXPERIMENTAL) {
-                yield exec.getExecOutput('notation', ['sign', '--allow-referrers-api', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, ...pluginConfigList, target_artifact_ref]);
+            let notationCommand = ['sign', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, ...pluginConfigList];
+            if (allow_referrers_api.toLowerCase() === 'true') {
+                // if process.env.NOTATION_EXPERIMENTAL is not set, notation would
+                // fail the command as expected.
+                notationCommand.push('--allow-referrers-api');
             }
-            else {
-                yield exec.getExecOutput('notation', ['sign', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, ...pluginConfigList, target_artifact_ref]);
-            }
+            yield exec.getExecOutput('notation', [...notationCommand, target_artifact_ref]);
         }
         catch (e) {
             if (e instanceof Error) {
