@@ -25,7 +25,7 @@ inputs:
     description: url of customized Notation CLI to install
     required: false
   checksum:
-    description: sha256 of the customized Notation CLI. Required if 'url' is present.
+    description: SHA256 of the customized Notation CLI. Required if 'url' is present.
     required: false
 runs:
   using: node16

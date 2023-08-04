@@ -24,7 +24,7 @@ inputs:
     description: download url of the signing plugin
     required: true
   plugin_checksum:
-    description: sha256 of the signing plugin
+    description: SHA256 of the signing plugin
     required: true
   key_id:
     description: key identifier for the signing key pair from the plugin
