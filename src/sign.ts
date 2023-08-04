@@ -38,7 +38,9 @@ async function sign(): Promise<void> {
 
         // sign core process
         let notationCommand: string[] = ['sign', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, ...pluginConfigList];
-        if (process.env.NOTATION_EXPERIMENTAL && allow_referrers_api === 'true') {
+        if (allow_referrers_api === 'true') {
+            // if process.env.NOTATION_EXPERIMENTAL is not set, notation would
+            // fail the command as expected.
             notationCommand.push('--allow-referrers-api');
         }
         await exec.getExecOutput('notation', [...notationCommand, target_artifact_ref]);

@@ -43,7 +43,8 @@ inputs:
     description: |
       if 'true', use the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/main/spec.md#listing-referrers) to store signatures in the registry, 
       if Referrers API is not supported, fallback to the [Referrers tag schema](https://github.com/opencontainers/distribution-spec/blob/main/spec.md#referrers-tag-schema);
-      if 'false', use the Referrers tag schema by default
+      if 'false', use the Referrers tag schema by default.
+      When set to 'true', it requires the 'NOTATION_EXPERIMENTAL=1' environment variable.
       options: 'true', 'false'
     required: false
     default: 'false'

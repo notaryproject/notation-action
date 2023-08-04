@@ -66,11 +66,11 @@ function sign() {
             const signature_format = core.getInput('signature_format');
             const allow_referrers_api = core.getInput('allow_referrers_api');
             // sign core process
-            if (process.env.NOTATION_EXPERIMENTAL) {
-                yield exec.getExecOutput('notation', ['sign', '--allow-referrers-api', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, ...pluginConfigList, target_artifact_ref]);
-            }
-            else {
-                yield exec.getExecOutput('notation', ['sign', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, ...pluginConfigList, target_artifact_ref]);
+            let notationCommand = ['sign', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, ...pluginConfigList];
+            if (allow_referrers_api === 'true') {
+                // if process.env.NOTATION_EXPERIMENTAL is not set, notation would
+                // fail the command as expected.
+                notationCommand.push('--allow-referrers-api');
             }
             yield exec.getExecOutput('notation', [...notationCommand, target_artifact_ref]);
         }

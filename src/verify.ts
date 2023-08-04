@@ -38,7 +38,9 @@ async function verify(): Promise<void> {
         await exec.getExecOutput('notation', ['cert', 'ls']);
 
         // verify core process
-        if (process.env.NOTATION_EXPERIMENTAL && allow_referrers_api === 'true') {
+        if (allow_referrers_api === 'true') {
+            // if process.env.NOTATION_EXPERIMENTAL is not set, notation would
+            // fail the command as expected.
             await exec.getExecOutput('notation', ['verify', '--allow-referrers-api', target_artifact_ref, '-v']);
         } else {
             await exec.getExecOutput('notation', ['verify', target_artifact_ref, '-v']);
