@@ -50,7 +50,7 @@ For example,
       ca_certs=.github/cert-bundle/cert-bundle.crt
       self_signed=false
 ```
-Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/main/spec.md#listing-referrers),
+Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0-rc.3/spec.md#listing-referrers),
 ```yaml
 - name: sign releasd artifact with notation-azure-kv plugin
   uses: notaryproject/notation-action/sign@main
@@ -88,9 +88,9 @@ For example,
     trust_policy: .github/trustpolicy/trustpolicy.json
     trust_store: .github/truststore
 ```
-where `.github/truststore` MUST follow the Notation [trust store specs](https://github.com/notaryproject/notaryproject/blob/main/specs/trust-store-trust-policy.md#trust-store).
+`.github/trustpolicy/trustpolicy.json` MUST follow the Notation [trust policy specs](https://github.com/notaryproject/specifications/blob/v1.0.0-rc.2/specs/trust-store-trust-policy.md#trust-policy).
 
-For example,
+`.github/truststore` MUST follow the Notation [trust store specs](https://github.com/notaryproject/notaryproject/blob/v1.0.0-rc.2/specs/trust-store-trust-policy.md#trust-store). For example,
 ```
 .github/truststore
 └── x509
@@ -103,7 +103,7 @@ For example,
             ├── <my_certificate3>
             └── <my_certificate4>
 ```
-Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/main/spec.md#listing-referrers),
+Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0-rc.3/spec.md#listing-referrers),
 ```yaml
 - name: verify released artifact
   uses: notaryproject/notation-action/verify@main

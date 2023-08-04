@@ -55,7 +55,7 @@ async function verify(): Promise<void> {
 }
 
 // configTrustStore configures Notation trust store based on specs.
-// Reference: https://github.com/notaryproject/notaryproject/blob/main/specs/trust-store-trust-policy.md#trust-store
+// Reference: https://github.com/notaryproject/specifications/blob/v1.0.0-rc.2/specs/trust-store-trust-policy.md#trust-store
 async function configTrustStore(dir: string) {
     let trustStoreX509 = path.join(dir, X509); // .github/truststore/x509
     if (!fs.existsSync(trustStoreX509)) {
