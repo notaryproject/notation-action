@@ -31,7 +31,7 @@ async function sign(): Promise<void> {
         // inputs from user
         const key_id = core.getInput('key_id');
         const plugin_config = core.getInput('plugin_config');
-        const pluginConfigList: string[] = getPluginConfigList(plugin_config);
+        const pluginConfigList = getPluginConfigList(plugin_config);
         const target_artifact_ref = core.getInput('target_artifact_reference');
         const signature_format = core.getInput('signature_format');
         const allow_referrers_api = core.getInput('allow_referrers_api');
