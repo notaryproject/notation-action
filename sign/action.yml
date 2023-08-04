@@ -27,18 +27,18 @@ inputs:
     description: SHA256 of the signing plugin
     required: true
   key_id:
-    description: Key identifier for the signing key pair from the plugin
+    description: key identifier for the signing key pair from the plugin
     required: true
   target_artifact_reference:
-     description: 'Reference of the target artifact to be signed. <registry>/<repo>@<digest>'
-     required: true
+    description: reference of the target artifact to be signed. <registry>/<repo>@<digest>
+    required: true
   signature_format:
-     description: 'signature envelope format, options: jws, cose'
-     required: false
-     default: jws
+    description: 'signature envelope format, options: jws, cose'
+    required: false
+    default: jws
   plugin_config:
-     description: 'plugin config for signing with the plugin'
-     required: false
+    description: list of {key}={value} pairs that are passed as it is to the signing plugin
+    required: false
 runs:
   using: node16
   main: ../dist/sign.js
