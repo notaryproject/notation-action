@@ -1,4 +1,18 @@
 "use strict";
+/*
+ * Copyright The Notary Project Authors.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -44,6 +58,7 @@ function verify() {
             const target_artifact_ref = core.getInput('target_artifact_reference');
             const trust_policy = core.getInput('trust_policy'); // .github/trustpolicy/trustpolicy.json
             const trust_store = core.getInput('trust_store'); // .github/truststore
+            const allow_referrers_api = core.getInput('allow_referrers_api');
             // configure Notation trust policy
             yield exec.getExecOutput('notation', ['policy', 'import', trust_policy]);
             yield exec.getExecOutput('notation', ['policy', 'show']);
@@ -51,7 +66,7 @@ function verify() {
             yield configTrustStore(trust_store);
             yield exec.getExecOutput('notation', ['cert', 'ls']);
             // verify core process
-            if (process.env.NOTATION_EXPERIMENTAL) {
+            if (process.env.NOTATION_EXPERIMENTAL && allow_referrers_api === 'true') {
                 yield exec.getExecOutput('notation', ['verify', '--allow-referrers-api', target_artifact_ref, '-v']);
             }
             else {

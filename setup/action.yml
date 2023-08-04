@@ -18,14 +18,14 @@ branding:
   color: blue
 inputs:
   version:
-    description: Version of official Notation CLI [release](https://github.com/notaryproject/notation/releases). This field is ignored if 'url' is present.
+    description: version of official Notation CLI [release](https://github.com/notaryproject/notation/releases). This field is ignored if 'url' is present.
     required: false
     default: 1.0.0-rc.7
   url:
-    description: URL of customized Notation CLI to install.
+    description: url of customized Notation CLI to install
     required: false
   checksum:
-    description: SHA256 of the customized Notation CLI. Required if 'url' is present.
+    description: sha256 of the customized Notation CLI. Required if 'url' is present.
     required: false
 runs:
   using: node16

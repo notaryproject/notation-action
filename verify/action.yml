@@ -18,10 +18,10 @@ branding:
   color: blue
 inputs:
   target_artifact_reference:
-    description: 'Reference of the target artifact to be verified. <registry>/<repo>@<digest>'
+    description: 'reference of the target artifact to be verified. <registry>/<repo>@<digest> or <registry>/<repo>:<tag>'
     required: true
   trust_policy:
-    description: 'file path of valid Notation trustpolicy.json'
+    description: file path of valid Notation trustpolicy.json
     required: true
   trust_store:
     description: |
@@ -38,6 +38,14 @@ inputs:
                   ├── <my_certificate3>
                   └── <my_certificate4>
     required: true
+  allow_referrers_api:
+    description: |
+      if 'true', use the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/main/spec.md#listing-referrers) to verify signatures, 
+      if Referrers API is not supported, fallback to the [Referrers tag schema](https://github.com/opencontainers/distribution-spec/blob/main/spec.md#referrers-tag-schema);
+      if 'false', use the Referrers tag schema by default.
+      options: 'true', 'false'
+    required: false
+    default: 'false'
 runs:
   using: node16
   main: ../dist/verify.js

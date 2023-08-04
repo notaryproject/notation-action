@@ -1,4 +1,18 @@
 "use strict";
+/*
+ * Copyright The Notary Project Authors.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -39,7 +53,6 @@ const fs = __importStar(require("fs"));
 const checksum_1 = require("./lib/checksum");
 const install_1 = require("./lib/install");
 const plugin_name = core.getInput('plugin_name');
-// sign signs the target artifact with Notation.
 function sign() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -48,25 +61,16 @@ function sign() {
             // inputs from user
             const key_id = core.getInput('key_id');
             const plugin_config = core.getInput('plugin_config');
+            const pluginConfigList = getPluginConfigList(plugin_config);
             const target_artifact_ref = core.getInput('target_artifact_reference');
             const signature_format = core.getInput('signature_format');
+            const allow_referrers_api = core.getInput('allow_referrers_api');
             // sign core process
-            if (process.env.NOTATION_EXPERIMENTAL) {
-                if (plugin_config) {
-                    yield exec.getExecOutput('notation', ['sign', '--allow-referrers-api', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, `--plugin-config=${plugin_config}`, target_artifact_ref]);
-                }
-                else {
-                    yield exec.getExecOutput('notation', ['sign', '--allow-referrers-api', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, target_artifact_ref]);
-                }
+            let notationCommand = ['sign', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, ...pluginConfigList];
+            if (process.env.NOTATION_EXPERIMENTAL && allow_referrers_api === 'true') {
+                notationCommand.push('--allow-referrers-api');
             }
-            else {
-                if (plugin_config) {
-                    yield exec.getExecOutput('notation', ['sign', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, `--plugin-config=${plugin_config}`, target_artifact_ref]);
-                }
-                else {
-                    yield exec.getExecOutput('notation', ['sign', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, target_artifact_ref]);
-                }
-            }
+            yield exec.getExecOutput('notation', [...notationCommand, target_artifact_ref]);
         }
         catch (e) {
             if (e instanceof Error) {
@@ -110,6 +114,19 @@ function setupPlugin() {
             }
         }
     });
+}
+function getPluginConfigList(pluginConfig) {
+    if (!pluginConfig) {
+        return [];
+    }
+    let pluginConfigList = [];
+    for (let config of pluginConfig.split(/\r|\n/)) {
+        config = config.trim();
+        if (config) {
+            pluginConfigList.push("--plugin-config=" + config);
+        }
+    }
+    return pluginConfigList;
 }
 if (require.main === module) {
     sign();

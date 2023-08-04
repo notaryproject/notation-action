@@ -27,6 +27,7 @@ async function verify(): Promise<void> {
         const target_artifact_ref = core.getInput('target_artifact_reference');
         const trust_policy = core.getInput('trust_policy'); // .github/trustpolicy/trustpolicy.json
         const trust_store = core.getInput('trust_store'); // .github/truststore
+        const allow_referrers_api = core.getInput('allow_referrers_api');
 
         // configure Notation trust policy
         await exec.getExecOutput('notation', ['policy', 'import', trust_policy]);
@@ -37,7 +38,7 @@ async function verify(): Promise<void> {
         await exec.getExecOutput('notation', ['cert', 'ls']);
 
         // verify core process
-        if (process.env.NOTATION_EXPERIMENTAL) {
+        if (process.env.NOTATION_EXPERIMENTAL && allow_referrers_api === 'true') {
             await exec.getExecOutput('notation', ['verify', '--allow-referrers-api', target_artifact_ref, '-v']);
         } else {
             await exec.getExecOutput('notation', ['verify', target_artifact_ref, '-v']);
