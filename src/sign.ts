@@ -23,7 +23,7 @@ import {getConfigHome} from './lib/install';
 
 const plugin_name = core.getInput('plugin_name');
 
-
+// sign signs the target artifact with Notation.
 async function sign(): Promise<void> {
     try {
         await setupPlugin();
