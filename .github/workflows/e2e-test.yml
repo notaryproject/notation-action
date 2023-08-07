@@ -50,6 +50,8 @@ jobs:
       # Sign artifact using notation plugin
       - name: Sign artifact
         uses: notaryproject/notation-action/sign@main
+        env:
+          E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
           plugin_name: local-signer
           plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-local-signer_0.1.0_linux_amd64.tar.gz
@@ -58,7 +60,7 @@ jobs:
           target_artifact_reference: ${{ env.target_artifact_reference }}
           signature_format: cose
           plugin_config: |-
-            env=${{secrets.E2E_SIGNING_KEY}}
+            env=E2E_SIGNING_KEY
       
       # Verify artifact
       - name: Verify artifact
