@@ -1,4 +1,4 @@
-module github.com/shizhMSFT/notation-local-signer
+module notation-local-signer
 
 go 1.20
 
