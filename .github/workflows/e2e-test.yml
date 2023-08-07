@@ -65,6 +65,6 @@ jobs:
         uses: notaryproject/notation-action/verify@main
         with:
           target_artifact_reference: ${{ env.target_artifact_reference }}
-          trust_policy: .github/trustpolicy/trustpolicy.json
-          trust_store: .github/truststore
+          trust_policy: .github/testdata/trustpolicy/trustpolicy.json
+          trust_store: .github/testdata/truststore
  
