@@ -33,6 +33,7 @@ jobs:
     #     with:
     #       driver-opts: network=host
       - name: Build and push to local registry
+        id: push
         uses: docker/build-push-action@v4
         with:
           context: .github/testdata
@@ -41,3 +42,6 @@ jobs:
       - name: Retrieve digest
         run: |
           echo "target_artifact_reference=localhost:5000/e2e@${{ steps.push.outputs.digest }}" >> "$GITHUB_ENV"
+      
+      - name: Setup Notation
+        uses: notaryproject/notation-action/setup@main
