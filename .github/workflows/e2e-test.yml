@@ -43,5 +43,28 @@ jobs:
         run: |
           echo "target_artifact_reference=localhost:5000/e2e@${{ steps.push.outputs.digest }}" >> "$GITHUB_ENV"
       
+      # Setting up Notation CLI on the runner
       - name: Setup Notation
         uses: notaryproject/notation-action/setup@main
+      
+      # Sign artifact using notation plugin
+      - name: Sign artifact
+        uses: notaryproject/notation-action/sign@main
+        with:
+          plugin_name: local-signer
+          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-local-signer_0.1.0_linux_amd64.tar.gz
+          plugin_checksum: 0732f03c9ec9529959a4915ffbf0d5483247dcb4b1687a540a6733f4f3968548
+          key_id: .github/testdata/truststore/x509/ca/e2e/notation.crt
+          target_artifact_reference: ${{ env.target_artifact_reference }}
+          signature_format: cose
+          plugin_config: |-
+            env=${{ secrets.E2E_SIGNING_KEY }}
+      
+      # Verify artifact
+      - name: Verify artifact
+        uses: notaryproject/notation-action/verify@main
+        with:
+          target_artifact_reference: ${{ env.target_artifact_reference }}
+          trust_policy: .github/trustpolicy/trustpolicy.json
+          trust_store: .github/truststore
+ 
