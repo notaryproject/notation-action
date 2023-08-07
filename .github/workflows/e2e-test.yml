@@ -58,7 +58,7 @@ jobs:
           target_artifact_reference: ${{ env.target_artifact_reference }}
           signature_format: cose
           plugin_config: |-
-            env=${{ secrets.E2E_SIGNING_KEY }}
+            env=${{secrets.E2E_SIGNING_KEY}}
       
       # Verify artifact
       - name: Verify artifact
