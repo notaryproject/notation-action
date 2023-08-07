@@ -19,7 +19,8 @@ builds:
     ldflags:
       - -s -w
 archives:
-  - format: tar.gz
+  - name_template: "{{.Binary}}_{{.Version}}_{{.Os}}_{{.Arch}}"
+    format: tar.gz
     format_overrides:
       - goos: windows
         format: zip
