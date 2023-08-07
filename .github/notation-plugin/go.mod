@@ -1,4 +1,4 @@
-module .github/notation-plugin/cmd/notation-local-signer
+module notation-local-signer
 
 go 1.20
 

@@ -1,7 +1,8 @@
 # Check the documentation at https://goreleaser.com for more options
 builds:
   - id: notation-local-signer
-    main: .github/notation-plugin/cmd/notation-local-signer
+    dir: .github/notation-plugin
+    main: ./cmd/notation-local-signer
     binary: notation-local-signer
     env:
       - CGO_ENABLED=0
