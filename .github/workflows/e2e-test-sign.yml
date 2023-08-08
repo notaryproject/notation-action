@@ -59,6 +59,7 @@ jobs:
             env=E2E_SIGNING_KEY
       
       - name: Sign artifact with invalid plugin name
+        continue-on-error: true
         id: invalid-plugin-name
         uses: notaryproject/notation-action/sign@main
         env:
