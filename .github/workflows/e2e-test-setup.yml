@@ -24,19 +24,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      # Setting up Notation CLI on the runner
       - name: Setup Notation
         uses: notaryproject/notation-action/setup@main
 
-      # Setting up Notation CLI using URL
-      - name: Setup Notation
+      - name: Setup Notation using URL
         uses: notaryproject/notation-action/setup@main
         with:
             url: https://github.com/notaryproject/notation/releases/download/v1.0.0-rc.6/notation_1.0.0-rc.6_linux_amd64.tar.gz
             checksum: bca21002cfb611f9ffc2930e88ecdb74471806770d0c64d45e39f4971692bcf5
-    
-      # Setting up Notation CLI using URL but without checksum
-      - name: Setup Notation
+
+      - name: Setup Notation using URL but without checksum
+        id: no-checksum
         uses: notaryproject/notation-action/setup@main
         with:
           url: https://github.com/notaryproject/notation/releases/download/v1.0.0-rc.6/notation_1.0.0-rc.6_linux_amd64.tar.gz
+      - name: 'Should Fail: Setup Notation using URL but without checksum'
+        if: ${{ success() || steps.no-checksum.conclusion != 'failure' }}
+        run: |
+            echo "Setup Notation using URL but without checksum should fail, but succeeded."
+            exit 1
