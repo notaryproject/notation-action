@@ -36,6 +36,7 @@ func runGetMetadata() error {
 		Name:                      "local-signer",
 		Description:               "Sign artifacts with local keys",
 		Version:                   "0.1.0",
+		URL:                       "https://github.com/Two-Hearts/notation-action",
 		SupportedContractVersions: []string{proto.ContractVersion},
 		Capabilities:              []proto.Capability{proto.CapabilitySignatureGenerator},
 	})
