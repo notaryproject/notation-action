@@ -11,14 +11,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: e2e-test
+name: e2e-test-sign
 
 on:
   push:
   pull_request:
 
 jobs:
-  e2e-test:
+  e2e-test-sign:
     runs-on: ubuntu-latest
     services:
       registry:
@@ -43,8 +43,8 @@ jobs:
       - name: Setup Notation
         uses: notaryproject/notation-action/setup@main
       
-      # Sign artifact using notation plugin
-      - name: Sign artifact
+      # E2E test cases on Notation: Sign
+      - name: Sign artifact using notation plugin
         uses: notaryproject/notation-action/sign@main
         env:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
@@ -58,11 +58,30 @@ jobs:
           plugin_config: |-
             env=E2E_SIGNING_KEY
       
-      # Verify artifact
-      - name: Verify artifact
-        uses: notaryproject/notation-action/verify@main
+      - name: Sign artifact with invalid plugin name
+        id: invalid-plugin-name
+        uses: notaryproject/notation-action/sign@main
+        env:
+          E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
+          plugin_name: invalid
+          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-local-signer_0.1.0_linux_amd64.tar.gz
+          plugin_checksum: adb7651f68e942b84f8451093ba45175029438baf6497d99106462a3a63c278e
+          key_id: .github/e2e/truststore/x509/ca/e2e/notation.crt
           target_artifact_reference: ${{ env.target_artifact_reference }}
-          trust_policy: .github/e2e/trustpolicy/trustpolicy.json
-          trust_store: .github/e2e/truststore
+          signature_format: cose
+          plugin_config: |-
+            env=E2E_SIGNING_KEY
+      - name: 'Should Fail: Sign artifact with invalid plugin name'
+        if: steps.invalid-plugin-name.outcome != 'failure'
+        run: |
+            echo "Sign artifact with invalid plugin name should fail, but succeeded."
+            exit 1
+      # # Verify artifact
+      # - name: Verify artifact
+      #   uses: notaryproject/notation-action/verify@main
+      #   with:
+      #     target_artifact_reference: ${{ env.target_artifact_reference }}
+      #     trust_policy: .github/e2e/trustpolicy/trustpolicy.json
+      #     trust_store: .github/e2e/truststore
  
