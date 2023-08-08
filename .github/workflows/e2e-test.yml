@@ -37,7 +37,7 @@ jobs:
           tags: localhost:5000/e2e:latest
       - name: Retrieve digest
         run: |
-          echo "target_artifact_reference=localhost:5000/e2e@${{ steps.push.outputs.digest }}" >> "$GITHUB_ENV"
+          echo "target_artifact_reference=localhost:5000/e2e@${{ steps.prepare.outputs.digest }}" >> "$GITHUB_ENV"
       
       # Setting up Notation CLI on the runner
       - name: Setup Notation
