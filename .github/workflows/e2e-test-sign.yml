@@ -57,6 +57,22 @@ jobs:
           signature_format: cose
           plugin_config: |-
             env=E2E_SIGNING_KEY
+        
+      - name: Sign artifact with multiple plugin_config
+        uses: notaryproject/notation-action/sign@main
+        env:
+          E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
+        with:
+          plugin_name: local-signer
+          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-local-signer_0.1.0_linux_amd64.tar.gz
+          plugin_checksum: adb7651f68e942b84f8451093ba45175029438baf6497d99106462a3a63c278e
+          key_id: .github/e2e/truststore/x509/ca/e2e/notation.crt
+          target_artifact_reference: ${{ env.target_artifact_reference }}
+          signature_format: cose
+          plugin_config: |-
+            env=E2E_SIGNING_KEY
+            key=val
+            foo=bar
       
       - name: Sign artifact with invalid plugin name
         continue-on-error: true
@@ -78,6 +94,98 @@ jobs:
         run: |
             echo "Sign artifact with invalid plugin name should fail, but succeeded."
             exit 1
+
+      - name: Sign artifact with invalid plugin url
+        continue-on-error: true
+        id: invalid-plugin-url
+        uses: notaryproject/notation-action/sign@main
+        env:
+          E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
+        with:
+          plugin_name: local-signer
+          plugin_url: invalid
+          plugin_checksum: adb7651f68e942b84f8451093ba45175029438baf6497d99106462a3a63c278e
+          key_id: .github/e2e/truststore/x509/ca/e2e/notation.crt
+          target_artifact_reference: ${{ env.target_artifact_reference }}
+          signature_format: cose
+          plugin_config: |-
+            env=E2E_SIGNING_KEY
+      - name: 'Should Fail: Sign artifact with invalid plugin url'
+        if: steps.invalid-plugin-url.outcome != 'failure'
+        run: |
+            echo "Sign artifact with invalid plugin url should fail, but succeeded."
+            exit 1
+      
+      - name: Sign artifact missing plugin checksum
+        continue-on-error: true
+        id: missing-plugin-checksum
+        uses: notaryproject/notation-action/sign@main
+        env:
+          E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
+        with:
+          plugin_name: local-signer
+          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-local-signer_0.1.0_linux_amd64.tar.gz
+          key_id: .github/e2e/truststore/x509/ca/e2e/notation.crt
+          target_artifact_reference: ${{ env.target_artifact_reference }}
+          signature_format: cose
+          plugin_config: |-
+            env=E2E_SIGNING_KEY
+      - name: 'Should Fail: Sign artifact missing plugin checksum'
+        if: steps.missing-plugin-checksum.outcome != 'failure'
+        run: |
+            echo "Sign artifact missing plugin checksum should fail, but succeeded."
+            exit 1
+      
+      - name: Sign artifact with invalid plugin checksum
+        continue-on-error: true
+        id: invalid-plugin-checksum
+        uses: notaryproject/notation-action/sign@main
+        env:
+          E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
+        with:
+          plugin_name: local-signer
+          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-local-signer_0.1.0_linux_amd64.tar.gz
+          plugin_checksum: invalid
+          key_id: .github/e2e/truststore/x509/ca/e2e/notation.crt
+          target_artifact_reference: ${{ env.target_artifact_reference }}
+          signature_format: cose
+          plugin_config: |-
+            env=E2E_SIGNING_KEY
+      - name: 'Should Fail: Sign artifact with invalid plugin checksum'
+        if: steps.invalid-plugin-checksum.outcome != 'failure'
+        run: |
+            echo "Sign artifact with invalid plugin checksum should fail, but succeeded."
+            exit 1
+
+      - name: Sign artifact missing target artifact reference
+        continue-on-error: true
+        id: missing-artifact-reference
+        uses: notaryproject/notation-action/sign@main
+        env:
+          E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
+        with:
+          plugin_name: local-signer
+          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-local-signer_0.1.0_linux_amd64.tar.gz
+          plugin_checksum: adb7651f68e942b84f8451093ba45175029438baf6497d99106462a3a63c278e
+          key_id: .github/e2e/truststore/x509/ca/e2e/notation.crt
+          signature_format: cose
+          plugin_config: |-
+            env=E2E_SIGNING_KEY
+      - name: 'Should Fail: Sign artifact missing target artifact reference'
+        if: steps.missing-artifact-reference.outcome != 'failure'
+        run: |
+            echo "Sign artifact missing target artifact reference should fail, but succeeded."
+            exit 1
+
+
+
+
+
+
+
+
+
+
       # # Verify artifact
       # - name: Verify artifact
       #   uses: notaryproject/notation-action/verify@main
