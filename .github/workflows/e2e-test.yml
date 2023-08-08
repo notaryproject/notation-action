@@ -29,10 +29,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Build and push to local registry
-        id: push
+        id: prepare
         uses: docker/build-push-action@v4
         with:
-          context: .github/testdata
+          context: .github/e2e
           push: true
           tags: localhost:5000/e2e:latest
       - name: Retrieve digest
@@ -52,7 +52,7 @@ jobs:
           plugin_name: local-signer
           plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-local-signer_0.1.0_linux_amd64.tar.gz
           plugin_checksum: 0732f03c9ec9529959a4915ffbf0d5483247dcb4b1687a540a6733f4f3968548
-          key_id: .github/testdata/truststore/x509/ca/e2e/notation.crt
+          key_id: .github/e2e/truststore/x509/ca/e2e/notation.crt
           target_artifact_reference: ${{ env.target_artifact_reference }}
           signature_format: cose
           plugin_config: |-
@@ -63,6 +63,6 @@ jobs:
         uses: notaryproject/notation-action/verify@main
         with:
           target_artifact_reference: ${{ env.target_artifact_reference }}
-          trust_policy: .github/testdata/trustpolicy/trustpolicy.json
-          trust_store: .github/testdata/truststore
+          trust_policy: .github/e2e/trustpolicy/trustpolicy.json
+          trust_store: .github/e2e/truststore
  

@@ -39,6 +39,7 @@ header:
     - 'tsconfig.json'
     - '**/data/**'
     - 'dist'
+    - 'e2e'
 
   comment: on-failure
 
