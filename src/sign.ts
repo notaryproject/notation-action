@@ -70,7 +70,8 @@ async function setupPlugin() {
         const extract = plugin_url.endsWith('.zip') ? tc.extractZip : tc.extractTar;
         const pluginPath = path.join(getConfigHome(), `notation/plugins/${plugin_name}`);
         fs.mkdirSync(pluginPath, { recursive: true, });
-        await extract(pathToTarball, pluginPath);
+        const pluginBinaryPath = await extract(pathToTarball, pluginPath);
+        console.log(`pluginBinaryPath is ${pluginBinaryPath}`);
         console.log(`Successfully moved the plugin binary to ${pluginPath}`);
         fs.chmod(pluginPath, 0o755, (err) => {
             if (err) throw err;
