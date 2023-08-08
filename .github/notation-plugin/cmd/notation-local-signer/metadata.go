@@ -33,11 +33,9 @@ func getMetadataCommand() *cobra.Command {
 
 func runGetMetadata() error {
 	return json.NewEncoder(os.Stdout).Encode(proto.GetMetadataResponse{
-		Name:        "local-signer",
-		Description: "Sign artifacts with local keys",
-		Version:     "0.1.0",
-		// URL:                       "https://github.com/notaryproject/notation-action/tree/e2e-notation-plugin/.github/notation-plugin",
-		URL:                       "https://github.com/Two-Hearts/notation-action/tree/e2e-notation-plugin/.github/notation-plugin",
+		Name:                      "local-signer",
+		Description:               "Sign artifacts with local keys",
+		Version:                   "0.1.0",
 		SupportedContractVersions: []string{proto.ContractVersion},
 		Capabilities:              []proto.Capability{proto.CapabilitySignatureGenerator},
 	})
