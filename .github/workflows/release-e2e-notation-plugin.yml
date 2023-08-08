@@ -1,4 +1,4 @@
-name: release-github
+name: release-e2e-notation-plugin
 
 on:
   push:
