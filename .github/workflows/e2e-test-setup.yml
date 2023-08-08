@@ -76,6 +76,7 @@ jobs:
         uses: notaryproject/notation-action/setup@main
         with:
           url: invalid
+          checksum: test
       - name: 'Should Fail: Setup Notation using invalid URL'
         if: steps.invalid-url.outcome != 'failure'
         run: |
