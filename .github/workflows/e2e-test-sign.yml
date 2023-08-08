@@ -160,7 +160,7 @@ jobs:
       - name: Sign artifact missing target artifact reference
         continue-on-error: true
         id: missing-artifact-reference
-        uses: notaryproject/notation-action/sign@main
+        uses: Two-Hearts/notation-action/sign@e2e
         env:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
