@@ -57,6 +57,20 @@ jobs:
           signature_format: cose
           plugin_config: |-
             env=E2E_SIGNING_KEY
+      
+      - name: Sign artifact using notation plugin with different version
+        uses: Two-Hearts/notation-action/sign@fix
+        env:
+          E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
+        with:
+          plugin_name: local-signer
+          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.2.0/notation-local-signer_0.2.0_linux_amd64.tar.gz
+          plugin_checksum: c68057f80c9a1f629c471fe15dac01affc0da5a15d9c5e4f3165903bbe314b77
+          key_id: .github/e2e/truststore/x509/ca/e2e/notation.crt
+          target_artifact_reference: ${{ env.target_artifact_reference }}
+          signature_format: cose
+          plugin_config: |-
+            env=E2E_SIGNING_KEY
         
       - name: Sign artifact with multiple plugin_config
         uses: Two-Hearts/notation-action/sign@fix
