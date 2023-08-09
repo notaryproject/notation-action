@@ -41,7 +41,7 @@ async function verify(): Promise<void> {
         }
 
         // configure Notation trust policy
-        await exec.getExecOutput('notation', ['policy', 'import', trust_policy]);
+        await exec.getExecOutput('notation', ['policy', 'import', '--force', trust_policy]);
         await exec.getExecOutput('notation', ['policy', 'show']);
 
         // configure Notation trust store

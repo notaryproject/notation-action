@@ -70,7 +70,7 @@ function verify() {
                 throw new Error("input trust_store is required");
             }
             // configure Notation trust policy
-            yield exec.getExecOutput('notation', ['policy', 'import', trust_policy]);
+            yield exec.getExecOutput('notation', ['policy', 'import', '--force', trust_policy]);
             yield exec.getExecOutput('notation', ['policy', 'show']);
             // configure Notation trust store
             yield configTrustStore(trust_store);
