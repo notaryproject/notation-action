@@ -131,6 +131,7 @@ function setupPlugin() {
 function checkPluginExistence(pluginPath) {
     return __awaiter(this, void 0, void 0, function* () {
         const pluginBinaryPath = path.join(pluginPath, `notation-${plugin_name}`);
+        console.log(`pluginBinaryPath is ${pluginBinaryPath}`);
         if (fs.existsSync(pluginBinaryPath)) {
             const sha256 = yield (0, checksum_1.hash)(pluginPath);
             return sha256 === plugin_checksum;

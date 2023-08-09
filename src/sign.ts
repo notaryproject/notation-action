@@ -97,6 +97,7 @@ async function setupPlugin() {
 
 async function checkPluginExistence(pluginPath: string): Promise<boolean> {
     const pluginBinaryPath = path.join(pluginPath, `notation-${plugin_name}`);
+    console.log(`pluginBinaryPath is ${pluginBinaryPath}`);
     if (fs.existsSync(pluginBinaryPath)) {
         const sha256 = await hash(pluginPath);
         return sha256 === plugin_checksum;
