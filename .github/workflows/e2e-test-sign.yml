@@ -57,7 +57,7 @@ jobs:
           signature_format: cose
           plugin_config: |-
             env=E2E_SIGNING_KEY
-              
+
       - name: Sign artifact with multiple plugin_config
         uses: Two-Hearts/notation-action/sign@fix
         env:
@@ -157,6 +157,23 @@ jobs:
             echo "Sign artifact with invalid plugin checksum should fail, but succeeded."
             exit 1
 
+      - name: Sign artifact missing key id
+        continue-on-error: true
+        id: missing-key-id
+        uses: Two-Hearts/notation-action/sign@fix
+        env:
+          E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
+        with:
+          plugin_name: test
+          plugin_url: https://test
+          plugin_checksum: abcdef
+          target_artifact_reference: test
+      - name: 'Should Fail: Sign artifact missing key id'
+        if: steps.missing-key-id.outcome != 'failure'
+        run: |
+            echo "Sign artifact missing key id should fail, but succeeded."
+            exit 1
+
       - name: Sign artifact missing target artifact reference
         continue-on-error: true
         id: missing-artifact-reference
@@ -164,19 +181,15 @@ jobs:
         env:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
-          plugin_name: local-signer
-          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-local-signer_0.1.0_linux_amd64.tar.gz
-          plugin_checksum: adb7651f68e942b84f8451093ba45175029438baf6497d99106462a3a63c278e
-          key_id: .github/e2e/truststore/x509/ca/e2e/notation.crt
-          signature_format: cose
-          plugin_config: |-
-            env=E2E_SIGNING_KEY
+          plugin_name: test
+          plugin_url: https://test
+          plugin_checksum: abcdef
+          key_id: test
       - name: 'Should Fail: Sign artifact missing target artifact reference'
         if: steps.missing-artifact-reference.outcome != 'failure'
         run: |
             echo "Sign artifact missing target artifact reference should fail, but succeeded."
             exit 1
-
 
 
 
