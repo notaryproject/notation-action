@@ -63,16 +63,16 @@ jobs:
         uses: Two-Hearts/notation-action/verify@fix
         with:
             target_artifact_reference: ${{ env.target_artifact_reference }}
-            trust_policy: .github/trustpolicy/trustpolicy.json
-            trust_store: .github/truststore
+            trust_policy: .github/e2e/trustpolicy/trustpolicy.json
+            trust_store: .github/e2e/truststore
       
       - name: Verify released artifact missing target artifact reference
         continue-on-error: true
         id: missing-artifact-reference
         uses: Two-Hearts/notation-action/verify@fix
         with:
-            trust_policy: .github/trustpolicy/trustpolicy.json
-            trust_store: .github/truststore
+            trust_policy: .github/e2e/trustpolicy/trustpolicy.json
+            trust_store: .github/e2e/truststore
       - name: 'Should Fail: Verify released artifact missing target artifact reference'
         if: steps.missing-artifact-reference.outcome != 'failure'
         run: |
@@ -85,7 +85,7 @@ jobs:
         uses: Two-Hearts/notation-action/verify@fix
         with:
             target_artifact_reference: ${{ env.target_artifact_reference }}
-            trust_store: .github/truststore
+            trust_store: .github/e2e/truststore
       - name: 'Should Fail: Verify released artifact missing trust policy'
         if: steps.missing-trust-policy.outcome != 'failure'
         run: |
@@ -98,8 +98,8 @@ jobs:
         uses: Two-Hearts/notation-action/verify@fix
         with:
             target_artifact_reference: ${{ env.target_artifact_reference }}
-            trust_policy: .github/trustpolicy/invalid-trustpolicy.json
-            trust_store: .github/truststore
+            trust_policy: .github/e2e/trustpolicy/invalid-trustpolicy.json
+            trust_store: .github/e2e/truststore
       - name: 'Should Fail: Verify released artifact with invalid trust policy'
         if: steps.invalid-trust-policy.outcome != 'failure'
         run: |
@@ -112,7 +112,7 @@ jobs:
         uses: Two-Hearts/notation-action/verify@fix
         with:
             target_artifact_reference: ${{ env.target_artifact_reference }}
-            trust_policy: .github/trustpolicy/trustpolicy.json
+            trust_policy: .github/e2e/trustpolicy/trustpolicy.json
       - name: 'Should Fail: Verify released artifact missing trust store'
         if: steps.missing-trust-store.outcome != 'failure'
         run: |
@@ -125,8 +125,8 @@ jobs:
         uses: Two-Hearts/notation-action/verify@fix
         with:
             target_artifact_reference: ${{ env.target_artifact_reference }}
-            trust_policy: .github/trustpolicy/trustpolicy.json
-            trust_store: .github/truststore/invalid-trust-store
+            trust_policy: .github/e2e/trustpolicy/trustpolicy.json
+            trust_store: .github/e2e/truststore/invalid-trust-store
       - name: 'Should Fail: Verify released artifact with invalid trust store structure'
         if: steps.invalid-trust-store.outcome != 'failure'
         run: |
