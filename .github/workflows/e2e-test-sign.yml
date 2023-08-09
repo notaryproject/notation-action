@@ -190,20 +190,3 @@ jobs:
         run: |
             echo "Sign artifact missing target artifact reference should fail, but succeeded."
             exit 1
-
-
-
-
-
-
-
-
-
-      # # Verify artifact
-      # - name: Verify artifact
-      #   uses: notaryproject/notation-action/verify@main
-      #   with:
-      #     target_artifact_reference: ${{ env.target_artifact_reference }}
-      #     trust_policy: .github/e2e/trustpolicy/trustpolicy.json
-      #     trust_store: .github/e2e/truststore
- 
