@@ -74,20 +74,17 @@ async function setupPlugin() {
             throw new Error(`checksum of downloaded plugin ${sha256} does not match ground truth ${plugin_checksum}`);
         }
         console.log("Successfully checked download checksum against ground truth")
-        const pluginBinaryPath = path.join(pathToTarball, `notation-${plugin_name}`);
-        console.log(`pluginBinaryPath is ${pluginBinaryPath}`);
-        console.log(fs.existsSync(pluginBinaryPath));
+        await validateDownloadPluginName(pathToTarball);
 
         // extract and install the plugin
         const extract = plugin_url.endsWith('.zip') ? tc.extractZip : tc.extractTar;
-        await extract(pathToTarball);
         fs.mkdirSync(notationPluginPath, { recursive: true, });
         await extract(pathToTarball, notationPluginPath);
         console.log(`Successfully moved the plugin binary to ${notationPluginPath}`);
-        fs.chmod(notationPluginPath, 0o755, (err) => {
-            if (err) throw err;
-            console.log(`Successfully changed permission of plugin binary`);
-        });
+        // fs.chmod(notationPluginPath, 0o755, (err) => {
+        //     if (err) throw err;
+        //     console.log(`Successfully changed permission of plugin binary`);
+        // });
     } catch (e: unknown) {
         if (e instanceof Error) {
             throw e;
@@ -99,15 +96,17 @@ async function setupPlugin() {
 
 function checkPluginExistence(notationPluginPath: string): boolean {
     const pluginBinaryPath = path.join(notationPluginPath, `notation-${plugin_name}`);
-    return fs.existsSync(pluginBinaryPath)
+    return fs.existsSync(pluginBinaryPath);
 }
 
-// function validateDownloadPluginName(pluginPath: string) {
-//     const expectedPluginBinary = path.join(pluginPath, `notation-${plugin_name}`);
-//     if (!fs.existsSync(expectedPluginBinary)) {
-//         throw new Error("Downloaded plugin does not match plugin_name, expected ");
-//     }
-// }
+async function validateDownloadPluginName(pathToTarball: string) {
+    const extract = plugin_url.endsWith('.zip') ? tc.extractZip : tc.extractTar;
+    const curDir = await extract(pathToTarball);
+    const expectedPluginBinaryPath = path.join(curDir, `notation-${plugin_name}`);
+    if (!fs.existsSync(expectedPluginBinaryPath)) {
+        throw new Error(`Downloaded plugin does not match user input plugin_name, expected notation-${plugin_name} not found`);
+    }
+}
 
 function getPluginConfigList(pluginConfig: string): string[] {
     if (!pluginConfig) {
