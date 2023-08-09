@@ -57,29 +57,15 @@ jobs:
           signature_format: cose
           plugin_config: |-
             env=E2E_SIGNING_KEY
-      
-      - name: Sign artifact using notation plugin with different version
-        uses: Two-Hearts/notation-action/sign@fix
-        env:
-          E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
-        with:
-          plugin_name: local-signer
-          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.2.0/notation-local-signer_0.2.0_linux_amd64.tar.gz
-          plugin_checksum: fdf3bbccb475e0b956207ba269a906136044f9d869a7959bd9693b679a5c6a7c
-          key_id: .github/e2e/truststore/x509/ca/e2e/notation.crt
-          target_artifact_reference: ${{ env.target_artifact_reference }}
-          signature_format: cose
-          plugin_config: |-
-            env=E2E_SIGNING_KEY
-        
+              
       - name: Sign artifact with multiple plugin_config
         uses: Two-Hearts/notation-action/sign@fix
         env:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
           plugin_name: local-signer
-          plugin_url: https://github.com/Azure/notation-azure-kv/releases/download/v1.0.0-rc.3/notation-azure-kv_1.0.0-rc.3_linux_amd64.tar.gz
-          plugin_checksum: 8e224572aa2f6d4f8f906217aaac78bfaaa0e272c039fe89443b5c4567b80bc5
+          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-local-signer_0.1.0_linux_amd64.tar.gz
+          plugin_checksum: adb7651f68e942b84f8451093ba45175029438baf6497d99106462a3a63c278e
           key_id: .github/e2e/truststore/x509/ca/e2e/notation.crt
           target_artifact_reference: ${{ env.target_artifact_reference }}
           signature_format: cose
@@ -96,8 +82,8 @@ jobs:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
           plugin_name: invalid
-          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.2.0/notation-local-signer_0.2.0_linux_amd64.tar.gz
-          plugin_checksum: fdf3bbccb475e0b956207ba269a906136044f9d869a7959bd9693b679a5c6a7c
+          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-local-signer_0.1.0_linux_amd64.tar.gz
+          plugin_checksum: adb7651f68e942b84f8451093ba45175029438baf6497d99106462a3a63c278e
           key_id: .github/e2e/truststore/x509/ca/e2e/notation.crt
           target_artifact_reference: ${{ env.target_artifact_reference }}
           signature_format: cose
@@ -116,7 +102,7 @@ jobs:
         env:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
-          plugin_name: local-signer
+          plugin_name: test
           plugin_url: invalid
           plugin_checksum: adb7651f68e942b84f8451093ba45175029438baf6497d99106462a3a63c278e
           key_id: .github/e2e/truststore/x509/ca/e2e/notation.crt
@@ -137,7 +123,7 @@ jobs:
         env:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
-          plugin_name: local-signer
+          plugin_name: test
           plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-local-signer_0.1.0_linux_amd64.tar.gz
           key_id: .github/e2e/truststore/x509/ca/e2e/notation.crt
           target_artifact_reference: ${{ env.target_artifact_reference }}
@@ -157,7 +143,7 @@ jobs:
         env:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
-          plugin_name: local-signer
+          plugin_name: test
           plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-local-signer_0.1.0_linux_amd64.tar.gz
           plugin_checksum: invalid
           key_id: .github/e2e/truststore/x509/ca/e2e/notation.crt
@@ -179,8 +165,8 @@ jobs:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
           plugin_name: local-signer
-          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.2.0/notation-local-signer_0.2.0_linux_amd64.tar.gz
-          plugin_checksum: fdf3bbccb475e0b956207ba269a906136044f9d869a7959bd9693b679a5c6a7c
+          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-local-signer_0.1.0_linux_amd64.tar.gz
+          plugin_checksum: adb7651f68e942b84f8451093ba45175029438baf6497d99106462a3a63c278e
           key_id: .github/e2e/truststore/x509/ca/e2e/notation.crt
           signature_format: cose
           plugin_config: |-
