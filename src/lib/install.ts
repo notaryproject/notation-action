@@ -74,3 +74,8 @@ export function getArch(): string {
           throw new Error(`Unsupported architecture: ${architecture}`);
   }
 }
+
+export function getBinaryExtension(): string {
+    const platform = getPlatform();
+    return platform === 'windows' ? '.exe' : '';
+}

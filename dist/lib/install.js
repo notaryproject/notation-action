@@ -37,7 +37,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getArch = exports.getPlatform = exports.getConfigHome = exports.getNotationDownloadURL = void 0;
+exports.getBinaryExtension = exports.getArch = exports.getPlatform = exports.getConfigHome = exports.getNotationDownloadURL = void 0;
 const os = __importStar(require("os"));
 const path = __importStar(require("path"));
 // Get the URL to download Notatoin CLI
@@ -99,4 +99,9 @@ function getArch() {
     }
 }
 exports.getArch = getArch;
+function getBinaryExtension() {
+    const platform = getPlatform();
+    return platform === 'windows' ? '.exe' : '';
+}
+exports.getBinaryExtension = getBinaryExtension;
 //# sourceMappingURL=install.js.map
