@@ -1,0 +1,134 @@
+# Copyright The Notary Project Authors.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: e2e-test-sign
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  e2e-test-sign:
+    runs-on: ubuntu-latest
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build and push to local registry
+        id: prepare
+        uses: docker/build-push-action@v4
+        with:
+          context: .github/e2e
+          push: true
+          tags: localhost:5000/e2e:latest
+      - name: Retrieve digest
+        run: |
+          echo "target_artifact_reference=localhost:5000/e2e@${{ steps.prepare.outputs.digest }}" >> "$GITHUB_ENV"
+      
+      # Setting up Notation CLI on the runner
+      - name: Setup Notation
+        uses: Two-Hearts/notation-action/setup@fix
+      
+      # Sign artifact
+      - name: Sign artifact using notation plugin
+        uses: Two-Hearts/notation-action/sign@fix
+        env:
+          E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
+        with:
+          plugin_name: local-signer
+          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-local-signer_0.1.0_linux_amd64.tar.gz
+          plugin_checksum: adb7651f68e942b84f8451093ba45175029438baf6497d99106462a3a63c278e
+          key_id: .github/e2e/truststore/x509/ca/e2e/notation.crt
+          target_artifact_reference: ${{ env.target_artifact_reference }}
+          signature_format: cose
+          plugin_config: |-
+            env=E2E_SIGNING_KEY
+    
+      # E2E test cases on Notation: Verify
+      - name: Verify released artifact
+        uses: Two-Hearts/notation-action/verify@fix
+        with:
+            target_artifact_reference: ${{ env.target_artifact_reference }}
+            trust_policy: .github/trustpolicy/trustpolicy.json
+            trust_store: .github/truststore
+      
+      - name: Verify released artifact missing target artifact reference
+        continue-on-error: true
+        id: missing-artifact-reference
+        uses: Two-Hearts/notation-action/verify@fix
+        with:
+            trust_policy: .github/trustpolicy/trustpolicy.json
+            trust_store: .github/truststore
+      - name: 'Should Fail: Verify released artifact missing target artifact reference'
+        if: steps.missing-artifact-reference.outcome != 'failure'
+        run: |
+            echo "Verify released artifact missing target artifact reference should fail, but succeeded."
+            exit 1
+        
+      - name: Verify released artifact missing trust policy
+        continue-on-error: true
+        id: missing-trust-policy
+        uses: Two-Hearts/notation-action/verify@fix
+        with:
+            target_artifact_reference: ${{ env.target_artifact_reference }}
+            trust_store: .github/truststore
+      - name: 'Should Fail: Verify released artifact missing trust policy'
+        if: steps.missing-trust-policy.outcome != 'failure'
+        run: |
+            echo "Verify released artifact missing trust policy should fail, but succeeded."
+            exit 1
+        
+      - name: Verify released artifact with invalid trust policy
+        continue-on-error: true
+        id: invalid-trust-policy
+        uses: Two-Hearts/notation-action/verify@fix
+        with:
+            target_artifact_reference: ${{ env.target_artifact_reference }}
+            trust_policy: .github/trustpolicy/invalid-trustpolicy.json
+            trust_store: .github/truststore
+      - name: 'Should Fail: Verify released artifact with invalid trust policy'
+        if: steps.invalid-trust-policy.outcome != 'failure'
+        run: |
+            echo "Verify released artifact with invalid trust policy should fail, but succeeded."
+            exit 1
+
+      - name: Verify released artifact missing trust store
+        continue-on-error: true
+        id: missing-trust-store
+        uses: Two-Hearts/notation-action/verify@fix
+        with:
+            target_artifact_reference: ${{ env.target_artifact_reference }}
+            trust_policy: .github/trustpolicy/trustpolicy.json
+      - name: 'Should Fail: Verify released artifact missing trust store'
+        if: steps.missing-trust-store.outcome != 'failure'
+        run: |
+            echo "Verify released artifact missing trust store should fail, but succeeded."
+            exit 1
+    
+      - name: Verify released artifact with invalid trust store structure
+        continue-on-error: true
+        id: invalid-trust-store
+        uses: Two-Hearts/notation-action/verify@fix
+        with:
+            target_artifact_reference: ${{ env.target_artifact_reference }}
+            trust_policy: .github/trustpolicy/trustpolicy.json
+            trust_store: .github/truststore/invalid-trust-store
+      - name: 'Should Fail: Verify released artifact with invalid trust store structure'
+        if: steps.invalid-trust-store.outcome != 'failure'
+        run: |
+            echo "Verify released artifact with invalid trust store structure should fail, but succeeded."
+            exit 1
