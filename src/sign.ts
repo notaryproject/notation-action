@@ -81,10 +81,6 @@ async function setupPlugin() {
         fs.mkdirSync(notationPluginPath, { recursive: true, });
         await extract(pathToTarball, notationPluginPath);
         console.log(`Successfully moved the plugin binary to ${notationPluginPath}`);
-        // fs.chmod(notationPluginPath, 0o755, (err) => {
-        //     if (err) throw err;
-        //     console.log(`Successfully changed permission of plugin binary`);
-        // });
     } catch (e: unknown) {
         if (e instanceof Error) {
             throw e;
