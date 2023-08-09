@@ -31,7 +31,7 @@ export function getNotationCheckSum(version: string): string {
             return checksum;
         }
     }
-    throw new Error(`Notation release does not support user input version ${version}`);
+    throw new Error(`Notation CLI release does not support user input version ${version}`);
 }
 
 // hash computes SH256 of file at path.

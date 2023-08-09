@@ -67,7 +67,7 @@ function getConfigHome() {
         case 'linux':
             return process.env.XDG_CONFIG_HOME ? process.env.XDG_CONFIG_HOME : path.join(os.homedir(), '.config');
         default:
-            throw new Error(`Unknown platform: ${platform}`);
+            throw new Error(`unknown platform: ${platform}`);
     }
 }
 exports.getConfigHome = getConfigHome;
@@ -82,7 +82,7 @@ function getPlatform() {
         case 'win32':
             return 'windows';
         default:
-            throw new Error(`Unsupported platform: ${platform}`);
+            throw new Error(`unsupported platform: ${platform}`);
     }
 }
 exports.getPlatform = getPlatform;
@@ -95,7 +95,7 @@ function getArch() {
         case 'arm64':
             return 'arm64';
         default:
-            throw new Error(`Unsupported architecture: ${architecture}`);
+            throw new Error(`unsupported architecture: ${architecture}`);
     }
 }
 exports.getArch = getArch;

@@ -63,14 +63,15 @@ function setup() {
             }
             // download Notation CLI and validate checksum
             const downloadURL = (0, install_1.getNotationDownloadURL)(version, notation_url);
-            console.log(`Downloading Notation CLI from ${downloadURL}`);
+            console.log(`downloading Notation CLI from ${downloadURL}`);
             const pathToTarball = yield tc.downloadTool(downloadURL);
+            console.log("downloading Notation CLI completed");
             const sha256 = yield (0, checksum_1.hash)(pathToTarball);
             const groundTruth = notation_url ? notation_checksum : (0, checksum_1.getNotationCheckSum)(version);
             if (sha256 !== groundTruth) {
                 throw new Error(`checksum of downloaded Notation CLI ${sha256} does not match ground truth ${groundTruth}`);
             }
-            console.log("Successfully checked download checksum against ground truth");
+            console.log("successfully checked download checksum against ground truth");
             // extract the tarball/zipball onto host runner
             const extract = downloadURL.endsWith('.zip') ? tc.extractZip : tc.extractTar;
             const pathToCLI = yield extract(pathToTarball);
@@ -82,7 +83,7 @@ function setup() {
                 core.setFailed(e);
             }
             else {
-                core.setFailed('Unknown error during notation setup');
+                core.setFailed('unknown error during notation setup');
             }
         }
     });

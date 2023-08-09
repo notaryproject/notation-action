@@ -49,7 +49,7 @@ async function verify(): Promise<void> {
         if (e instanceof Error) {
             core.setFailed(e);
         } else {
-            core.setFailed('Unknown error during notation verify');
+            core.setFailed('unknown error during notation verify');
         }
     }
 }

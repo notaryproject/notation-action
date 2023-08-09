@@ -33,14 +33,15 @@ async function setup(): Promise<void> {
 
         // download Notation CLI and validate checksum
         const downloadURL = getNotationDownloadURL(version, notation_url);
-        console.log(`Downloading Notation CLI from ${downloadURL}`);
+        console.log(`downloading Notation CLI from ${downloadURL}`);
         const pathToTarball: string = await tc.downloadTool(downloadURL);
+        console.log("downloading Notation CLI completed")
         const sha256 = await hash(pathToTarball);
         const groundTruth = notation_url ? notation_checksum : getNotationCheckSum(version);
         if (sha256 !== groundTruth) {
             throw new Error(`checksum of downloaded Notation CLI ${sha256} does not match ground truth ${groundTruth}`);
         }
-        console.log("Successfully checked download checksum against ground truth")
+        console.log("successfully checked download checksum against ground truth")
         
         // extract the tarball/zipball onto host runner
         const extract = downloadURL.endsWith('.zip') ? tc.extractZip : tc.extractTar;
@@ -52,7 +53,7 @@ async function setup(): Promise<void> {
         if (e instanceof Error) {
             core.setFailed(e);
         } else {
-            core.setFailed('Unknown error during notation setup');
+            core.setFailed('unknown error during notation setup');
         }
     }
 }
