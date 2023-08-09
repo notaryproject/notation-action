@@ -82,13 +82,15 @@ async function setupPlugin() {
         console.log(`input plugin_name is ${plugin_name}`);
         console.log(`input plugin url is ${plugin_url}`);
         console.log(`input plugin checksum is ${plugin_checksum}`);
+
+        // check if plugin is already installed
         const notationPluginPath = path.join(getConfigHome(), `notation/plugins/${plugin_name}`);
         if (checkPluginExistence(notationPluginPath)) {
             console.log(`plugin ${plugin_name} is already installed`);
             return
         }
 
-        // download signing plugin and validate checksum
+        // download signing plugin, validate checksum and plugin name
         console.log("downloading signing plugin...")
         const pathToTarball = await tc.downloadTool(plugin_url);
         console.log("downloading signing plugin completed")
@@ -100,7 +102,7 @@ async function setupPlugin() {
         await validateDownloadPluginName(pathToTarball);
         console.log("successfully validated downloaded plugin name")
 
-        // extract and install the plugin
+        // install the plugin
         const extract = plugin_url.endsWith('.zip') ? tc.extractZip : tc.extractTar;
         fs.mkdirSync(notationPluginPath, { recursive: true, });
         await extract(pathToTarball, notationPluginPath);
