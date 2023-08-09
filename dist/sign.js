@@ -106,6 +106,7 @@ function setupPlugin() {
             }
             console.log("Successfully checked download checksum against ground truth");
             const pluginBinaryPath = path.join(pathToTarball, `notation-${plugin_name}`);
+            console.log(`pluginBinaryPath is ${pluginBinaryPath}`);
             console.log(fs.existsSync(pluginBinaryPath));
             // extract and install the plugin
             const extract = plugin_url.endsWith('.zip') ? tc.extractZip : tc.extractTar;
