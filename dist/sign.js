@@ -65,7 +65,7 @@ const plugin_checksum = core.getInput('plugin_checksum').toLowerCase();
 if (!plugin_checksum) {
     throw new Error("input plugin_checksum is required");
 }
-const notationPluginName = `notation-${plugin_name}` + (0, install_1.getBinaryExtension)();
+const notationPluginBinary = `notation-${plugin_name}` + (0, install_1.getBinaryExtension)();
 // sign signs the target artifact with Notation.
 function sign() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -134,7 +134,7 @@ function setupPlugin() {
             fs.mkdirSync(notationPluginPath, { recursive: true, });
             yield extract(pathToTarball, notationPluginPath);
             console.log(`successfully extracted the plugin binary to ${notationPluginPath}`);
-            fs.chmod(path.join(notationPluginPath, notationPluginName), 0o755, (err) => {
+            fs.chmod(path.join(notationPluginPath, notationPluginBinary), 0o755, (err) => {
                 if (err)
                     throw err;
                 console.log(`successfully changed permission of plugin binary`);
@@ -152,7 +152,7 @@ function setupPlugin() {
 }
 // checkPluginExistence checks if the plugin is already installed in Notation
 function checkPluginExistence(notationPluginPath) {
-    const pluginBinaryPath = path.join(notationPluginPath, notationPluginName);
+    const pluginBinaryPath = path.join(notationPluginPath, notationPluginBinary);
     return fs.existsSync(pluginBinaryPath);
 }
 // validateDownloadPluginName validates the downloaded plugin binary name
@@ -161,9 +161,9 @@ function validateDownloadPluginName(pathToTarball) {
     return __awaiter(this, void 0, void 0, function* () {
         const extract = plugin_url.endsWith('.zip') ? tc.extractZip : tc.extractTar;
         const curDir = yield extract(pathToTarball);
-        const expectedPluginBinaryPath = path.join(curDir, notationPluginName);
+        const expectedPluginBinaryPath = path.join(curDir, notationPluginBinary);
         if (!fs.existsSync(expectedPluginBinaryPath)) {
-            throw new Error(`downloaded plugin does not match user input plugin_name, expected "${notationPluginName}" not found`);
+            throw new Error(`downloaded plugin does not match user input plugin_name, expected "${notationPluginBinary}" not found`);
         }
     });
 }
