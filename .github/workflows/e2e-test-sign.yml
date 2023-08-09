@@ -41,7 +41,7 @@ jobs:
       
       # Setting up Notation CLI on the runner
       - name: Setup Notation
-        uses: notaryproject/notation-action/setup@main
+        uses: Two-Hearts/notation-action/setup@fix
       
       # E2E test cases on Notation: Sign
       - name: Sign artifact using notation plugin
