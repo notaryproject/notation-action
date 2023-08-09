@@ -93,8 +93,8 @@ function setupPlugin() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             console.log(`signing plugin url is ${plugin_url}`);
-            const pluginPath = path.join((0, install_1.getConfigHome)(), `notation/plugins/${plugin_name}`);
-            if (yield checkPluginExistence(pluginPath)) {
+            const notationPluginPath = path.join((0, install_1.getConfigHome)(), `notation/plugins/${plugin_name}`);
+            if (checkPluginExistence(notationPluginPath)) {
                 console.log("user specified plugin already installed");
                 return;
             }
@@ -105,14 +105,15 @@ function setupPlugin() {
                 throw new Error(`checksum of downloaded plugin ${sha256} does not match ground truth ${plugin_checksum}`);
             }
             console.log("Successfully checked download checksum against ground truth");
+            const pluginBinaryPath = path.join(pathToTarball, `notation-${plugin_name}`);
+            console.log(fs.existsSync(pluginBinaryPath));
             // extract and install the plugin
             const extract = plugin_url.endsWith('.zip') ? tc.extractZip : tc.extractTar;
-            const currentDir = yield extract(pathToTarball);
-            console.log(`currentDir is ${currentDir}`);
-            fs.mkdirSync(pluginPath, { recursive: true, });
-            yield extract(pathToTarball, pluginPath);
-            console.log(`Successfully moved the plugin binary to ${pluginPath}`);
-            fs.chmod(pluginPath, 0o755, (err) => {
+            yield extract(pathToTarball);
+            fs.mkdirSync(notationPluginPath, { recursive: true, });
+            yield extract(pathToTarball, notationPluginPath);
+            console.log(`Successfully moved the plugin binary to ${notationPluginPath}`);
+            fs.chmod(notationPluginPath, 0o755, (err) => {
                 if (err)
                     throw err;
                 console.log(`Successfully changed permission of plugin binary`);
@@ -128,15 +129,9 @@ function setupPlugin() {
         }
     });
 }
-function checkPluginExistence(pluginPath) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const pluginBinaryPath = path.join(pluginPath, `notation-${plugin_name}`);
-        if (fs.existsSync(pluginBinaryPath)) {
-            const sha256 = yield (0, checksum_1.hash)(pluginBinaryPath);
-            return sha256 === plugin_checksum;
-        }
-        return false;
-    });
+function checkPluginExistence(notationPluginPath) {
+    const pluginBinaryPath = path.join(notationPluginPath, `notation-${plugin_name}`);
+    return fs.existsSync(pluginBinaryPath);
 }
 // function validateDownloadPluginName(pluginPath: string) {
 //     const expectedPluginBinary = path.join(pluginPath, `notation-${plugin_name}`);

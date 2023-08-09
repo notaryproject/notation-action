@@ -61,8 +61,8 @@ async function sign(): Promise<void> {
 async function setupPlugin() {
     try {
         console.log(`signing plugin url is ${plugin_url}`);
-        const pluginPath = path.join(getConfigHome(), `notation/plugins/${plugin_name}`);
-        if (await checkPluginExistence(pluginPath)) {
+        const notationPluginPath = path.join(getConfigHome(), `notation/plugins/${plugin_name}`);
+        if (checkPluginExistence(notationPluginPath)) {
             console.log("user specified plugin already installed");
             return
         }
@@ -74,15 +74,16 @@ async function setupPlugin() {
             throw new Error(`checksum of downloaded plugin ${sha256} does not match ground truth ${plugin_checksum}`);
         }
         console.log("Successfully checked download checksum against ground truth")
+        const pluginBinaryPath = path.join(pathToTarball, `notation-${plugin_name}`);
+        console.log(fs.existsSync(pluginBinaryPath));
 
         // extract and install the plugin
         const extract = plugin_url.endsWith('.zip') ? tc.extractZip : tc.extractTar;
-        const currentDir = await extract(pathToTarball);
-        console.log(`currentDir is ${currentDir}`);
-        fs.mkdirSync(pluginPath, { recursive: true, });
-        await extract(pathToTarball, pluginPath);
-        console.log(`Successfully moved the plugin binary to ${pluginPath}`);
-        fs.chmod(pluginPath, 0o755, (err) => {
+        await extract(pathToTarball);
+        fs.mkdirSync(notationPluginPath, { recursive: true, });
+        await extract(pathToTarball, notationPluginPath);
+        console.log(`Successfully moved the plugin binary to ${notationPluginPath}`);
+        fs.chmod(notationPluginPath, 0o755, (err) => {
             if (err) throw err;
             console.log(`Successfully changed permission of plugin binary`);
         });
@@ -95,13 +96,9 @@ async function setupPlugin() {
     }
 }
 
-async function checkPluginExistence(pluginPath: string): Promise<boolean> {
-    const pluginBinaryPath = path.join(pluginPath, `notation-${plugin_name}`);
-    if (fs.existsSync(pluginBinaryPath)) {
-        const sha256 = await hash(pluginBinaryPath);
-        return sha256 === plugin_checksum;
-    }
-    return false
+function checkPluginExistence(notationPluginPath: string): boolean {
+    const pluginBinaryPath = path.join(notationPluginPath, `notation-${plugin_name}`);
+    return fs.existsSync(pluginBinaryPath)
 }
 
 // function validateDownloadPluginName(pluginPath: string) {
