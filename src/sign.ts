@@ -84,7 +84,7 @@ async function setupPlugin() {
         console.log(`input plugin checksum is ${plugin_checksum}`);
         const notationPluginPath = path.join(getConfigHome(), `notation/plugins/${plugin_name}`);
         if (checkPluginExistence(notationPluginPath)) {
-            console.log("user specified plugin already installed");
+            console.log(`plugin ${plugin_name} is already installed`);
             return
         }
 
