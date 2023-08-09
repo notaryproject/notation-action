@@ -79,9 +79,9 @@ async function setupPlugin() {
         });
     } catch (e: unknown) {
         if (e instanceof Error) {
-            core.setFailed(e);
+            throw e;
         } else {
-            core.setFailed('Unknown error during setting up notation signing plugin');
+            throw new Error("Unknown error during setting up notation signing plugin");
         }
     }
 }
