@@ -11,14 +11,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: e2e-test-sign
+name: e2e-test-verify
 
 on:
   push:
   pull_request:
 
 jobs:
-  e2e-test-sign:
+  e2e-test-verify:
     runs-on: ubuntu-latest
     services:
       registry:
