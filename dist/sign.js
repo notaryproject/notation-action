@@ -113,12 +113,13 @@ function setupPlugin() {
             console.log(`input plugin_name is ${plugin_name}`);
             console.log(`input plugin url is ${plugin_url}`);
             console.log(`input plugin checksum is ${plugin_checksum}`);
+            // check if plugin is already installed
             const notationPluginPath = path.join((0, install_1.getConfigHome)(), `notation/plugins/${plugin_name}`);
             if (checkPluginExistence(notationPluginPath)) {
                 console.log(`plugin ${plugin_name} is already installed`);
                 return;
             }
-            // download signing plugin and validate checksum
+            // download signing plugin, validate checksum and plugin name
             console.log("downloading signing plugin...");
             const pathToTarball = yield tc.downloadTool(plugin_url);
             console.log("downloading signing plugin completed");
@@ -129,7 +130,7 @@ function setupPlugin() {
             console.log("successfully checked download checksum against ground truth");
             yield validateDownloadPluginName(pathToTarball);
             console.log("successfully validated downloaded plugin name");
-            // extract and install the plugin
+            // install the plugin
             const extract = plugin_url.endsWith('.zip') ? tc.extractZip : tc.extractTar;
             fs.mkdirSync(notationPluginPath, { recursive: true, });
             yield extract(pathToTarball, notationPluginPath);
