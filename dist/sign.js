@@ -157,7 +157,7 @@ function checkPluginExistence(notationPluginPath) {
     return fs.existsSync(pluginBinaryPath);
 }
 // validateDownloadPluginName validates the downloaded plugin binary name
-// matches with user input pluing name
+// matches with user input plugin name
 function validateDownloadPluginName(pathToTarball) {
     return __awaiter(this, void 0, void 0, function* () {
         const extract = plugin_url.endsWith('.zip') ? tc.extractZip : tc.extractTar;

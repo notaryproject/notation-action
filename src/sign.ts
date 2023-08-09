@@ -127,7 +127,7 @@ function checkPluginExistence(notationPluginPath: string): boolean {
 }
 
 // validateDownloadPluginName validates the downloaded plugin binary name
-// matches with user input pluing name
+// matches with user input plugin name
 async function validateDownloadPluginName(pathToTarball: string) {
     const extract = plugin_url.endsWith('.zip') ? tc.extractZip : tc.extractTar;
     const curDir = await extract(pathToTarball);
