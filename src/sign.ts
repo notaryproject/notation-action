@@ -18,10 +18,13 @@ import * as exec from '@actions/exec';
 import * as tc from '@actions/tool-cache';
 import * as path from 'path';
 import * as fs from 'fs';
-import {validateCheckSum} from './lib/checksum';
+import {hash} from './lib/checksum';
 import {getConfigHome} from './lib/install';
 
+// plugin inputs from user
 const plugin_name = core.getInput('plugin_name');
+const plugin_url = core.getInput('plugin_url');
+const plugin_checksum = core.getInput('plugin_checksum').toLowerCase();
 
 // sign signs the target artifact with Notation.
 async function sign(): Promise<void> {
@@ -57,18 +60,25 @@ async function sign(): Promise<void> {
 // setupPlugin sets up the Notation signing plugin.
 async function setupPlugin() {
     try {
-        // inputs from user
-        const plugin_url = core.getInput('plugin_url');
-        const plugin_checksum = core.getInput('plugin_checksum').toLowerCase();
         console.log(`signing plugin url is ${plugin_url}`);
+        const pluginPath = path.join(getConfigHome(), `notation/plugins/${plugin_name}`);
+        if (await checkPluginExistence(pluginPath)) {
+            console.log("user specified plugin already installed");
+            return
+        }
 
         // download signing plugin and validate checksum
         const pathToTarball = await tc.downloadTool(plugin_url);
-        await validateCheckSum(pathToTarball, plugin_checksum);
-        
+        const sha256 = await hash(pathToTarball);
+        if (sha256 !== plugin_checksum) {
+            throw new Error(`checksum of downloaded plugin ${sha256} does not match ground truth ${plugin_checksum}`);
+        }
+        console.log("Successfully checked download checksum against ground truth")
+
         // extract and install the plugin
         const extract = plugin_url.endsWith('.zip') ? tc.extractZip : tc.extractTar;
-        const pluginPath = path.join(getConfigHome(), `notation/plugins/${plugin_name}`);
+        const currentDir = await extract(pathToTarball);
+        console.log(`currentDir is ${currentDir}`);
         fs.mkdirSync(pluginPath, { recursive: true, });
         await extract(pathToTarball, pluginPath);
         console.log(`Successfully moved the plugin binary to ${pluginPath}`);
@@ -84,6 +94,22 @@ async function setupPlugin() {
         }
     }
 }
+
+async function checkPluginExistence(pluginPath: string): Promise<boolean> {
+    const pluginBinaryPath = path.join(pluginPath, `notation-${plugin_name}`);
+    if (fs.existsSync(pluginBinaryPath)) {
+        const sha256 = await hash(pluginPath);
+        return sha256 === plugin_checksum;
+    }
+    return false
+}
+
+// function validateDownloadPluginName(pluginPath: string) {
+//     const expectedPluginBinary = path.join(pluginPath, `notation-${plugin_name}`);
+//     if (!fs.existsSync(expectedPluginBinary)) {
+//         throw new Error("Downloaded plugin does not match plugin_name, expected ");
+//     }
+// }
 
 function getPluginConfigList(pluginConfig: string): string[] {
     if (!pluginConfig) {

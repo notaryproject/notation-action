@@ -15,7 +15,7 @@
 
 import * as core from '@actions/core';
 import * as tc from '@actions/tool-cache';
-import {validateCheckSum, getNotationCheckSum} from './lib/checksum';
+import {hash, getNotationCheckSum} from './lib/checksum';
 import { getNotationDownloadURL } from './lib/install';
 
 // setup sets up the Notation CLI.
@@ -35,11 +35,12 @@ async function setup(): Promise<void> {
         const downloadURL = getNotationDownloadURL(version, notation_url);
         console.log(`Downloading Notation CLI from ${downloadURL}`);
         const pathToTarball: string = await tc.downloadTool(downloadURL);
-        if (notation_url) {
-            await validateCheckSum(pathToTarball, notation_checksum);
-        } else {
-            await validateCheckSum(pathToTarball, getNotationCheckSum(version)); 
+        const sha256 = await hash(pathToTarball);
+        const groundTruth = notation_url ? notation_checksum : getNotationCheckSum(version);
+        if (sha256 !== groundTruth) {
+            throw new Error(`checksum of downloaded Notation CLI ${sha256} does not match ground truth ${groundTruth}`);
         }
+        console.log("Successfully checked download checksum against ground truth")
         
         // extract the tarball/zipball onto host runner
         const extract = downloadURL.endsWith('.zip') ? tc.extractZip : tc.extractTar;
