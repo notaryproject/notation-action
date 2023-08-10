@@ -31,19 +31,29 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Start docker local registry
-        run: |
-          docker run -d -p 5000:5000 --restart=always --name registry registry
-      - name: Build and push to local registry
+      - name: docker login
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Build and push to local registry
+      #   id: prepare
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     context: .github/e2e
+      #     push: true
+      #     tags: localhost:5000/e2e:latest
+      - name: Build and push to registry
         id: prepare
         uses: docker/build-push-action@v4
         with:
           context: .github/e2e
           push: true
-          tags: localhost:5000/e2e:latest
+          tags: ghcr.io/${{ github.repository }}:latest
       - name: Retrieve digest
         run: |
-          echo "target_artifact_reference=localhost:5000/e2e@${{ steps.prepare.outputs.digest }}" >> "$GITHUB_ENV"
+          echo "target_artifact_reference=ghcr.io/${{ github.repository }}@${{ steps.prepare.outputs.digest }}" >> "$GITHUB_ENV"
       
       # Setting up Notation CLI on the runner
       - name: Setup Notation
@@ -198,6 +208,6 @@ jobs:
             exit 1
       
       # Clean up
-      - name: Clean up
-        run: |
-          docker container stop registry && docker container rm -v registry
+      # - name: Clean up
+      #   run: |
+      #     docker image rm ${{ env.target_artifact_reference }}
