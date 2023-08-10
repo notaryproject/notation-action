@@ -23,14 +23,17 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
-    services:
-      registry:
-        image: registry:2
-        ports:
-          - 5000:5000
+    # services:
+    #   registry:
+    #     image: registry:2
+    #     ports:
+    #       - 5000:5000
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Start docker local registry
+        run: |
+          docker run -d -p 5000:5000 --restart=always --name registry registry:2
       - name: Build and push to local registry
         id: prepare
         uses: docker/build-push-action@v4
@@ -193,3 +196,8 @@ jobs:
         run: |
             echo "Sign artifact missing target artifact reference should fail, but succeeded."
             exit 1
+      
+      # Clean up
+      - name: Clean up
+        run: |
+          docker container stop registry && docker container rm -v registry
