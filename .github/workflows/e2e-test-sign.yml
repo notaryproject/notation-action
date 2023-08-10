@@ -50,10 +50,10 @@ jobs:
         with:
           context: .github/e2e
           push: true
-          tags: ghcr.io/${{ github.repository }}:latest
+          tags: ghcr.io/e2e:latest
       - name: Retrieve digest
         run: |
-          echo "target_artifact_reference=ghcr.io/${{ github.repository }}@${{ steps.prepare.outputs.digest }}" >> "$GITHUB_ENV"
+          echo "target_artifact_reference=ghcr.io/e2e@${{ steps.prepare.outputs.digest }}" >> "$GITHUB_ENV"
       
       # Setting up Notation CLI on the runner
       - name: Setup Notation
