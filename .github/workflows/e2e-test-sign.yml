@@ -19,7 +19,10 @@ on:
 
 jobs:
   e2e-test-sign:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     services:
       registry:
         image: registry:2
