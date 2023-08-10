@@ -50,7 +50,7 @@ jobs:
         with:
           context: .github/e2e
           push: true
-          tags: ghcri.io/${{ github.repository }}:latest
+          tags: ghcri.io/two-hearts/notation-action:latest
       - name: Retrieve digest
         run: |
           echo "target_artifact_reference=ghcr.io/e2e@${{ steps.prepare.outputs.digest }}" >> "$GITHUB_ENV"
