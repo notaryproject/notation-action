@@ -203,8 +203,5 @@ jobs:
           plugin_name: local-signer
           plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-local-signer_0.1.0_windows_amd64.zip
           plugin_checksum: 246e924c651bcaaead7429d20466431b3107813a796521da974d41d38ed91e31
-          key_id: .github/e2e/truststore/x509/ca/e2e/notation.crt
-          target_artifact_reference: ${{ env.target_artifact_reference }}
-          signature_format: cose
-          plugin_config: |-
-            env=E2E_SIGNING_KEY
+          key_id: test
+          target_artifact_reference: test
