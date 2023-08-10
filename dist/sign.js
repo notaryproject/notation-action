@@ -125,9 +125,9 @@ function setupPlugin() {
             console.log("downloading signing plugin completed");
             const sha256 = yield (0, checksum_1.hash)(pathToTarball);
             if (sha256 !== plugin_checksum) {
-                throw new Error(`checksum of downloaded plugin ${sha256} does not match ground truth ${plugin_checksum}`);
+                throw new Error(`checksum of downloaded plugin ${sha256} does not match expected checksum ${plugin_checksum}`);
             }
-            console.log("successfully checked download checksum against ground truth");
+            console.log("successfully checked download checksum against expected checksum");
             yield validateDownloadPluginName(pathToTarball);
             console.log("successfully validated downloaded plugin name");
             // install the plugin

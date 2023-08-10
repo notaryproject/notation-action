@@ -67,11 +67,11 @@ function setup() {
             const pathToTarball = yield tc.downloadTool(downloadURL);
             console.log("downloading Notation CLI completed");
             const sha256 = yield (0, checksum_1.hash)(pathToTarball);
-            const groundTruth = notation_url ? notation_checksum : (0, checksum_1.getNotationCheckSum)(version);
-            if (sha256 !== groundTruth) {
-                throw new Error(`checksum of downloaded Notation CLI ${sha256} does not match ground truth ${groundTruth}`);
+            const expectedCheckSum = notation_url ? notation_checksum : (0, checksum_1.getNotationCheckSum)(version);
+            if (sha256 !== expectedCheckSum) {
+                throw new Error(`checksum of downloaded Notation CLI ${sha256} does not match expected checksum ${expectedCheckSum}`);
             }
-            console.log("successfully checked download checksum against ground truth");
+            console.log("successfully checked download checksum against expected checksum");
             // extract the tarball/zipball onto host runner
             const extract = downloadURL.endsWith('.zip') ? tc.extractZip : tc.extractTar;
             const pathToCLI = yield extract(pathToTarball);
