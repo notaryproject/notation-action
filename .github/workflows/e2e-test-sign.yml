@@ -191,9 +191,10 @@ jobs:
             echo "Sign artifact missing target artifact reference should fail, but succeeded."
             exit 1
 
-      - name: Uninstall local signer
-        run: rm -rf /home/runner/.config/notation/plugins/local-signer
-      - name: Sign artifact using Windows notation plugin
+  e2e-test-sign-windows:
+    runs-on: windows-latest
+    steps:          
+      - name: Install Windows notation plugin
         continue-on-error: true
         uses: Two-Hearts/notation-action/sign@fix
         env:
