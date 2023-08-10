@@ -215,3 +215,4 @@ jobs:
         with: 
           package-name: 'e2e'
           package-type: 'container'
+          min-versions-to-keep: 0
