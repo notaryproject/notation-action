@@ -44,6 +44,8 @@ jobs:
       #     context: .github/e2e
       #     push: true
       #     tags: localhost:5000/e2e:latest
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
       - name: Build and push to local registry
         id: prepare
         uses: docker/build-push-action@v4
