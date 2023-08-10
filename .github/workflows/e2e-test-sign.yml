@@ -190,23 +190,4 @@ jobs:
         run: |
             echo "Sign artifact missing target artifact reference should fail, but succeeded."
             exit 1
-
-  e2e-test-sign-windows:
-    runs-on: windows-latest
-    steps:          
-      - name: Install Windows notation plugin
-        continue-on-error: true
-        id: install-windows-plugin
-        uses: Two-Hearts/notation-action/sign@fix
-        env:
-          E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
-        with:
-          plugin_name: local-signer
-          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-local-signer_0.1.0_windows_amd64.zip
-          plugin_checksum: 246e924c651bcaaead7429d20466431b3107813a796521da974d41d38ed91e31
-          key_id: test
-          target_artifact_reference: test
-      - name: 'Should Fail: Install Windows notation plugin'
-        # if: steps.install-windows-plugin.outcome != 'failure' 
-        run: |
-            echo ${{ steps.install-windows-plugin.outputs }}
+            
