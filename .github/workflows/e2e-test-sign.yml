@@ -52,10 +52,10 @@ jobs:
         with:
           context: .github/e2e
           push: true
-          tags: ghcr.io/two-hearts/notation-action:e2e
+          tags: ghcr.io/two-hearts/e2e:latest
       - name: Retrieve digest
         run: |
-          echo "target_artifact_reference=ghcr.io/two-hearts/notation-action@${{ steps.prepare.outputs.digest }}" >> "$GITHUB_ENV"
+          echo "target_artifact_reference=ghcr.io/two-hearts/e2e@${{ steps.prepare.outputs.digest }}" >> "$GITHUB_ENV"
       
       # Setting up Notation CLI on the runner
       - name: Setup Notation
@@ -211,5 +211,7 @@ jobs:
       
       # Clean up
       - name: Clean up
-        run: |
-          docker image rm ${{ env.target_artifact_reference }}
+        uses: actions/delete-package-versions@v4
+        with: 
+          package-name: 'e2e'
+          package-type: 'container'
