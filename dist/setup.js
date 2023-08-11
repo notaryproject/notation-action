@@ -71,7 +71,7 @@ function setup() {
             if (sha256 !== expectedCheckSum) {
                 throw new Error(`checksum of downloaded Notation CLI ${sha256} does not match expected checksum ${expectedCheckSum}`);
             }
-            console.log("successfully checked download checksum against expected checksum");
+            console.log("successfully verified download checksum");
             // extract the tarball/zipball onto host runner
             const extract = downloadURL.endsWith('.zip') ? tc.extractZip : tc.extractTar;
             const pathToCLI = yield extract(pathToTarball);

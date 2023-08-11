@@ -127,7 +127,7 @@ function setupPlugin() {
             if (sha256 !== plugin_checksum) {
                 throw new Error(`checksum of downloaded plugin ${sha256} does not match expected checksum ${plugin_checksum}`);
             }
-            console.log("successfully checked download checksum against expected checksum");
+            console.log("successfully verified download checksum");
             yield validateDownloadPluginName(pathToTarball);
             console.log("successfully validated downloaded plugin name");
             // install the plugin
