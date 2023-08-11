@@ -14,30 +14,40 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
+	"errors"
 	"os"
+	"os/signal"
 
 	"github.com/notaryproject/notation-go/plugin/proto"
 	"github.com/spf13/cobra"
 )
 
-func getMetadataCommand() *cobra.Command {
-	return &cobra.Command{
-		Use:  string(proto.CommandGetMetadata),
-		Args: cobra.NoArgs,
-		RunE: func(cmd *cobra.Command, args []string) error {
-			return runGetMetadata()
-		},
-	}
-}
+func main() {
+	ctx := context.Background()
+	ctx, cancel := signal.NotifyContext(ctx, os.Interrupt)
+	defer cancel()
 
-func runGetMetadata() error {
-	return json.NewEncoder(os.Stdout).Encode(proto.GetMetadataResponse{
-		Name:                      "local-signer",
-		Description:               "Sign artifacts with local keys",
-		Version:                   "0.2.0",
-		URL:                       "https://github.com/Two-Hearts/notation-action",
-		SupportedContractVersions: []string{proto.ContractVersion},
-		Capabilities:              []proto.Capability{proto.CapabilitySignatureGenerator},
-	})
+	cmd := &cobra.Command{
+		Use:           "e2e-test-notation-plugin",
+		SilenceUsage:  true,
+		SilenceErrors: true,
+	}
+	cmd.AddCommand(
+		getMetadataCommand(),
+		describeKeyCommand(),
+		signCommand(),
+	)
+	if err := cmd.ExecuteContext(ctx); err != nil {
+		var rerr proto.RequestError
+		if !errors.As(err, &rerr) {
+			err = proto.RequestError{
+				Code: proto.ErrorCodeGeneric,
+				Err:  err,
+			}
+		}
+		json.NewEncoder(os.Stderr).Encode(err)
+		os.Exit(1)
+	}
 }

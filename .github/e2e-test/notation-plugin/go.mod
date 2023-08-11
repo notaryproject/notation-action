@@ -1,4 +1,4 @@
-module notation-local-signer
+module e2e-test-notation-plugin
 
 go 1.20
 

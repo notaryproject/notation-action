@@ -13,10 +13,10 @@
 
 # Check the documentation at https://goreleaser.com for more options
 builds:
-  - id: notation-local-signer
+  - id: e2e-test-notation-plugin
     dir: .
-    main: ./cmd/notation-local-signer
-    binary: notation-local-signer
+    main: ./cmd/e2e-test-notation-plugin
+    binary: e2e-test-notation-plugin
     env:
       - CGO_ENABLED=0
     goos:
@@ -40,7 +40,7 @@ archives:
     files:
       - LICENSE
 checksum:
-  name_template: "notation-local-signer_{{ .Version }}_checksums.txt"
+  name_template: "e2e-test-notation-plugin_{{ .Version }}_checksums.txt"
 release:
   prerelease: auto
   draft: true
