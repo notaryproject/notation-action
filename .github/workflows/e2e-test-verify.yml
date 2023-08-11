@@ -32,7 +32,7 @@ jobs:
         id: prepare
         uses: docker/build-push-action@v4
         with:
-          context: .github/e2e
+          context: .github/e2e-test
           push: true
           tags: localhost:5000/e2e:latest
       - name: Retrieve digest
@@ -49,10 +49,10 @@ jobs:
         env:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
-          plugin_name: local-signer
-          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-local-signer_0.1.0_linux_amd64.tar.gz
-          plugin_checksum: adb7651f68e942b84f8451093ba45175029438baf6497d99106462a3a63c278e
-          key_id: .github/e2e/truststore/x509/ca/e2e/notation.crt
+          plugin_name: e2e-test-notation-plugin
+          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/e2e-test-notation-plugin_0.1.0_linux_amd64.tar.gz
+          plugin_checksum: ac3b720e83c910f35708604accfdfecdf09e44ca4b2ce6d2a1c138cf1eb6a63f
+          key_id: .github/e2e-test/truststore/x509/ca/e2e/notation.crt
           target_artifact_reference: ${{ env.target_artifact_reference }}
           signature_format: cose
           plugin_config: |-
@@ -63,16 +63,16 @@ jobs:
         uses: notaryproject/notation-action/verify@main
         with:
             target_artifact_reference: ${{ env.target_artifact_reference }}
-            trust_policy: .github/e2e/trustpolicy/trustpolicy.json
-            trust_store: .github/e2e/truststore
+            trust_policy: .github/e2e-test/trustpolicy/trustpolicy.json
+            trust_store: .github/e2e-test/truststore
       
       - name: Verify released artifact missing target artifact reference
         continue-on-error: true
         id: missing-artifact-reference
         uses: notaryproject/notation-action/verify@main
         with:
-            trust_policy: .github/e2e/trustpolicy/trustpolicy.json
-            trust_store: .github/e2e/truststore
+            trust_policy: .github/e2e-test/trustpolicy/trustpolicy.json
+            trust_store: .github/e2e-test/truststore
       - name: 'Should Fail: Verify released artifact missing target artifact reference'
         if: steps.missing-artifact-reference.outcome != 'failure'
         run: |
@@ -85,7 +85,7 @@ jobs:
         uses: notaryproject/notation-action/verify@main
         with:
             target_artifact_reference: ${{ env.target_artifact_reference }}
-            trust_store: .github/e2e/truststore
+            trust_store: .github/e2e-test/truststore
       - name: 'Should Fail: Verify released artifact missing trust policy'
         if: steps.missing-trust-policy.outcome != 'failure'
         run: |
@@ -98,8 +98,8 @@ jobs:
         uses: notaryproject/notation-action/verify@main
         with:
             target_artifact_reference: ${{ env.target_artifact_reference }}
-            trust_policy: .github/e2e/trustpolicy/invalid-trustpolicy.json
-            trust_store: .github/e2e/truststore
+            trust_policy: .github/e2e-test/trustpolicy/invalid-trustpolicy.json
+            trust_store: .github/e2e-test/truststore
       - name: 'Should Fail: Verify released artifact with invalid trust policy'
         if: steps.invalid-trust-policy.outcome != 'failure'
         run: |
@@ -112,7 +112,7 @@ jobs:
         uses: notaryproject/notation-action/verify@main
         with:
             target_artifact_reference: ${{ env.target_artifact_reference }}
-            trust_policy: .github/e2e/trustpolicy/trustpolicy.json
+            trust_policy: .github/e2e-test/trustpolicy/trustpolicy.json
       - name: 'Should Fail: Verify released artifact missing trust store'
         if: steps.missing-trust-store.outcome != 'failure'
         run: |
@@ -125,8 +125,8 @@ jobs:
         uses: notaryproject/notation-action/verify@main
         with:
             target_artifact_reference: ${{ env.target_artifact_reference }}
-            trust_policy: .github/e2e/trustpolicy/trustpolicy.json
-            trust_store: .github/e2e/truststore/invalid-trust-store
+            trust_policy: .github/e2e-test/trustpolicy/trustpolicy.json
+            trust_store: .github/e2e-test/truststore/invalid-trust-store
       - name: 'Should Fail: Verify released artifact with invalid trust store structure'
         if: steps.invalid-trust-store.outcome != 'failure'
         run: |
