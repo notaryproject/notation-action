@@ -1,4 +1,4 @@
-name: release-e2e-test-notation-plugin
+name: release-notation-e2e-test-plugin
 
 on:
   push:
@@ -21,7 +21,7 @@ jobs:
       - name: run goreleaser
         uses: goreleaser/goreleaser-action@v4
         with:
-          workdir: .github/e2e-test/notation-plugin
+          workdir: .github/e2e-test/plugin
           version: latest
           args: release --rm-dist
         env:

@@ -33,7 +33,7 @@ func getMetadataCommand() *cobra.Command {
 
 func runGetMetadata() error {
 	return json.NewEncoder(os.Stdout).Encode(proto.GetMetadataResponse{
-		Name:                      "e2e-test-notation-plugin",
+		Name:                      "e2e-test-plugin",
 		Description:               "Sign artifacts with local keys",
 		Version:                   "0.1.0",
 		URL:                       "https://github.com/notaryproject/notation-action",

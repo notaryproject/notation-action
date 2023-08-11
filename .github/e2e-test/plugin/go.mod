@@ -1,4 +1,4 @@
-module e2e-test-notation-plugin
+module notation-e2e-test-plugin
 
 go 1.20
 

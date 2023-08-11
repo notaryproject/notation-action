@@ -30,7 +30,7 @@ func main() {
 	defer cancel()
 
 	cmd := &cobra.Command{
-		Use:           "e2e-test-notation-plugin",
+		Use:           "notation-e2e-test-plugin",
 		SilenceUsage:  true,
 		SilenceErrors: true,
 	}
