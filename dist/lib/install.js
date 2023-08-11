@@ -37,7 +37,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getArch = exports.getPlatform = exports.getConfigHome = exports.getNotationDownloadURL = void 0;
+exports.getBinaryExtension = exports.getArch = exports.getPlatform = exports.getConfigHome = exports.getNotationDownloadURL = void 0;
 const os = __importStar(require("os"));
 const path = __importStar(require("path"));
 // Get the URL to download Notatoin CLI
@@ -67,7 +67,7 @@ function getConfigHome() {
         case 'linux':
             return process.env.XDG_CONFIG_HOME ? process.env.XDG_CONFIG_HOME : path.join(os.homedir(), '.config');
         default:
-            throw new Error(`Unknown platform: ${platform}`);
+            throw new Error(`unknown platform: ${platform}`);
     }
 }
 exports.getConfigHome = getConfigHome;
@@ -82,7 +82,7 @@ function getPlatform() {
         case 'win32':
             return 'windows';
         default:
-            throw new Error(`Unsupported platform: ${platform}`);
+            throw new Error(`unsupported platform: ${platform}`);
     }
 }
 exports.getPlatform = getPlatform;
@@ -95,8 +95,13 @@ function getArch() {
         case 'arm64':
             return 'arm64';
         default:
-            throw new Error(`Unsupported architecture: ${architecture}`);
+            throw new Error(`unsupported architecture: ${architecture}`);
     }
 }
 exports.getArch = getArch;
+function getBinaryExtension() {
+    const platform = getPlatform();
+    return platform === 'windows' ? '.exe' : '';
+}
+exports.getBinaryExtension = getBinaryExtension;
 //# sourceMappingURL=install.js.map

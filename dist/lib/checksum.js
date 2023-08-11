@@ -36,35 +36,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getNotationCheckSum = exports.validateCheckSum = void 0;
+exports.hash = exports.getNotationCheckSum = void 0;
 const crypto = __importStar(require("crypto"));
 const fs = __importStar(require("fs"));
 const install_1 = require("./install");
 const notation_releases_json_1 = __importDefault(require("./data/notation_releases.json"));
-// validateCheckSum validates checksum of file at path against ground truth.
-function validateCheckSum(path, groundTruth) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const sha256 = yield hash(path);
-        if (sha256 !== groundTruth) {
-            throw new Error(`checksum of downloaded plugin ${sha256} does not match ground truth ${groundTruth}`);
-        }
-        console.log("Successfully checked download checksum against ground truth");
-    });
-}
-exports.validateCheckSum = validateCheckSum;
 // getNotationCheckSum returns checksum of user specified official Notation CLI
 // release.
 function getNotationCheckSum(version) {
@@ -78,7 +58,7 @@ function getNotationCheckSum(version) {
             return checksum;
         }
     }
-    throw new Error(`Notation release does not support user input version ${version}`);
+    throw new Error(`Notation CLI release does not support user input version ${version}`);
 }
 exports.getNotationCheckSum = getNotationCheckSum;
 // hash computes SH256 of file at path.
@@ -91,4 +71,5 @@ function hash(path) {
         stream.on('end', () => resolve(hash.digest('hex')));
     });
 }
+exports.hash = hash;
 //# sourceMappingURL=checksum.js.map

@@ -15,7 +15,7 @@
 
 import * as core from '@actions/core';
 import * as tc from '@actions/tool-cache';
-import {validateCheckSum, getNotationCheckSum} from './lib/checksum';
+import {hash, getNotationCheckSum} from './lib/checksum';
 import { getNotationDownloadURL } from './lib/install';
 
 // setup sets up the Notation CLI.
@@ -33,13 +33,15 @@ async function setup(): Promise<void> {
 
         // download Notation CLI and validate checksum
         const downloadURL = getNotationDownloadURL(version, notation_url);
-        console.log(`Downloading Notation CLI from ${downloadURL}`);
+        console.log(`downloading Notation CLI from ${downloadURL}`);
         const pathToTarball: string = await tc.downloadTool(downloadURL);
-        if (notation_url) {
-            await validateCheckSum(pathToTarball, notation_checksum);
-        } else {
-            await validateCheckSum(pathToTarball, getNotationCheckSum(version)); 
+        console.log("downloading Notation CLI completed")
+        const sha256 = await hash(pathToTarball);
+        const expectedCheckSum = notation_url ? notation_checksum : getNotationCheckSum(version);
+        if (sha256 !== expectedCheckSum) {
+            throw new Error(`checksum of downloaded Notation CLI ${sha256} does not match expected checksum ${expectedCheckSum}`);
         }
+        console.log("successfully verified download checksum")
         
         // extract the tarball/zipball onto host runner
         const extract = downloadURL.endsWith('.zip') ? tc.extractZip : tc.extractTar;
@@ -51,7 +53,7 @@ async function setup(): Promise<void> {
         if (e instanceof Error) {
             core.setFailed(e);
         } else {
-            core.setFailed('Unknown error during notation setup');
+            core.setFailed('unknown error during notation setup');
         }
     }
 }

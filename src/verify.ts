@@ -29,8 +29,19 @@ async function verify(): Promise<void> {
         const trust_store = core.getInput('trust_store'); // .github/truststore
         const allow_referrers_api = core.getInput('allow_referrers_api');
 
+        // sanity check
+        if (!target_artifact_ref) {
+            throw new Error("input target_artifact_reference is required");
+        }
+        if (!trust_policy) {
+            throw new Error("input trust_policy is required");
+        }
+        if (!trust_store) {
+            throw new Error("input trust_store is required");
+        }
+
         // configure Notation trust policy
-        await exec.getExecOutput('notation', ['policy', 'import', trust_policy]);
+        await exec.getExecOutput('notation', ['policy', 'import', '--force', trust_policy]);
         await exec.getExecOutput('notation', ['policy', 'show']);
 
         // configure Notation trust store
@@ -49,7 +60,7 @@ async function verify(): Promise<void> {
         if (e instanceof Error) {
             core.setFailed(e);
         } else {
-            core.setFailed('Unknown error during notation verify');
+            core.setFailed('unknown error during notation verify');
         }
     }
 }
