@@ -49,9 +49,9 @@ jobs:
         env:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
-          plugin_name: e2e-test-notation-plugin
-          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/e2e-test-notation-plugin_0.1.0_linux_amd64.tar.gz
-          plugin_checksum: ac3b720e83c910f35708604accfdfecdf09e44ca4b2ce6d2a1c138cf1eb6a63f
+          plugin_name: e2e-test-plugin
+          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
+          plugin_checksum: 40af43c006393314c690db598ee99552de3eb4526488222a157d8d308b21cf4a
           key_id: .github/e2e-test/truststore/x509/ca/e2e/notation.crt
           target_artifact_reference: ${{ env.target_artifact_reference }}
           signature_format: cose
@@ -63,9 +63,9 @@ jobs:
         env:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
-          plugin_name: e2e-test-notation-plugin
-          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/e2e-test-notation-plugin_0.1.0_linux_amd64.tar.gz
-          plugin_checksum: ac3b720e83c910f35708604accfdfecdf09e44ca4b2ce6d2a1c138cf1eb6a63f
+          plugin_name: e2e-test-plugin
+          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
+          plugin_checksum: 40af43c006393314c690db598ee99552de3eb4526488222a157d8d308b21cf4a
           key_id: .github/e2e-test/truststore/x509/ca/e2e/notation.crt
           target_artifact_reference: ${{ env.target_artifact_reference }}
           signature_format: cose
@@ -82,8 +82,8 @@ jobs:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
           plugin_name: invalid-plugin
-          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/e2e-test-notation-plugin_0.1.0_linux_amd64.tar.gz
-          plugin_checksum: ac3b720e83c910f35708604accfdfecdf09e44ca4b2ce6d2a1c138cf1eb6a63f
+          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
+          plugin_checksum: 40af43c006393314c690db598ee99552de3eb4526488222a157d8d308b21cf4a
           key_id: .github/e2e-test/truststore/x509/ca/e2e/notation.crt
           target_artifact_reference: ${{ env.target_artifact_reference }}
           signature_format: cose
@@ -104,7 +104,7 @@ jobs:
         with:
           plugin_name: test
           plugin_url: invalid-url
-          plugin_checksum: ac3b720e83c910f35708604accfdfecdf09e44ca4b2ce6d2a1c138cf1eb6a63f
+          plugin_checksum: 40af43c006393314c690db598ee99552de3eb4526488222a157d8d308b21cf4a
           key_id: .github/e2e-test/truststore/x509/ca/e2e/notation.crt
           target_artifact_reference: ${{ env.target_artifact_reference }}
           signature_format: cose
@@ -124,7 +124,7 @@ jobs:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
           plugin_name: test
-          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/e2e-test-notation-plugin_0.1.0_linux_amd64.tar.gz
+          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
           key_id: .github/e2e-test/truststore/x509/ca/e2e/notation.crt
           target_artifact_reference: ${{ env.target_artifact_reference }}
           signature_format: cose
@@ -144,7 +144,7 @@ jobs:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
           plugin_name: test
-          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/e2e-test-notation-plugin_0.1.0_linux_amd64.tar.gz
+          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
           plugin_checksum: abcdef
           key_id: .github/e2e-test/truststore/x509/ca/e2e/notation.crt
           target_artifact_reference: ${{ env.target_artifact_reference }}
