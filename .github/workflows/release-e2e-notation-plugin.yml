@@ -3,7 +3,7 @@ name: release-e2e-notation-plugin
 on:
   push:
     tags:
-      - v*
+      - e2e-notation-plugin
 
 jobs:
   build:
