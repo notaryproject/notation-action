@@ -50,7 +50,7 @@ jobs:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
           plugin_name: e2e-test-plugin
-          plugin_url: https://github.com/Two-Hearts/notation-action/blob/e2e-notation-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
+          plugin_url: https://github.com/Two-Hearts/notation-action/raw/e2e-notation-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
           plugin_checksum: 40af43c006393314c690db598ee99552de3eb4526488222a157d8d308b21cf4a
           key_id: .github/e2e-test/truststore/x509/ca/e2e/notation.crt
           target_artifact_reference: ${{ env.target_artifact_reference }}
@@ -64,7 +64,7 @@ jobs:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
           plugin_name: e2e-test-plugin
-          plugin_url: https://github.com/Two-Hearts/notation-action/blob/e2e-notation-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
+          plugin_url: https://github.com/Two-Hearts/notation-action/raw/e2e-notation-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
           plugin_checksum: 40af43c006393314c690db598ee99552de3eb4526488222a157d8d308b21cf4a
           key_id: .github/e2e-test/truststore/x509/ca/e2e/notation.crt
           target_artifact_reference: ${{ env.target_artifact_reference }}
@@ -82,7 +82,7 @@ jobs:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
           plugin_name: invalid-plugin
-          plugin_url: https://github.com/Two-Hearts/notation-action/blob/e2e-notation-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
+          plugin_url: https://github.com/Two-Hearts/notation-action/raw/e2e-notation-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
           plugin_checksum: 40af43c006393314c690db598ee99552de3eb4526488222a157d8d308b21cf4a
           key_id: .github/e2e-test/truststore/x509/ca/e2e/notation.crt
           target_artifact_reference: ${{ env.target_artifact_reference }}
@@ -124,7 +124,7 @@ jobs:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
           plugin_name: test
-          plugin_url: https://github.com/Two-Hearts/notation-action/blob/e2e-notation-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
+          plugin_url: https://github.com/Two-Hearts/notation-action/raw/e2e-notation-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
           key_id: .github/e2e-test/truststore/x509/ca/e2e/notation.crt
           target_artifact_reference: ${{ env.target_artifact_reference }}
           signature_format: cose
@@ -144,7 +144,7 @@ jobs:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
           plugin_name: test
-          plugin_url: https://github.com/Two-Hearts/notation-action/blob/e2e-notation-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
+          plugin_url: https://github.com/Two-Hearts/notation-action/raw/e2e-notation-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
           plugin_checksum: abcdef
           key_id: .github/e2e-test/truststore/x509/ca/e2e/notation.crt
           target_artifact_reference: ${{ env.target_artifact_reference }}
