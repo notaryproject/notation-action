@@ -122,6 +122,7 @@ function setupPlugin() {
             // download signing plugin, validate checksum and plugin name
             console.log("downloading signing plugin...");
             const pathToTarball = yield tc.downloadTool(plugin_url);
+            console.log(`pathToTarball is ${pathToTarball}`);
             console.log("downloading signing plugin completed");
             const sha256 = yield (0, checksum_1.hash)(pathToTarball);
             if (sha256 !== plugin_checksum) {
