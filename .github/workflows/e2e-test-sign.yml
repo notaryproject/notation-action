@@ -45,7 +45,7 @@ jobs:
       
       # E2E test cases on Notation: Sign
       - name: Sign artifact using notation plugin
-        uses: Two-Hearts/notation-action/sign@e2e
+        uses: notaryproject/notation-action/sign@main
         env:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
