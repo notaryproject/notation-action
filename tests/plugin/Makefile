@@ -34,7 +34,3 @@ download: ## download dependencies via go mod
 
 .PHONY: build
 build: $(addprefix bin/,$(COMMANDS)) ## builds binaries
-
-.PHONY: test
-test: ## run unit test
-	go test -race -v -coverprofile=coverage.txt -covermode=atomic ./...
