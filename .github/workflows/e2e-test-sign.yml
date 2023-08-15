@@ -46,7 +46,7 @@ jobs:
       # Generate test
       - name: Notation generate-test
         run: |
-          notation generate-test "e2e-test"
+          notation cert generate-test "e2e-test"
           echo "e2e_key=$HOME/.config/notation/localkeys/e2e-test.key" >> "GITHUB_ENV"
           echo "e2e_cert=$HOME/.config/notation/localkeys/e2e-test.crt" >> "GITHUB_ENV"
       
@@ -57,8 +57,8 @@ jobs:
           E2E_SIGNING_KEY: ${{ env.e2e_key }}
         with:
           plugin_name: e2e-test-plugin
-          plugin_url: https://github.com/Two-Hearts/notation-action/raw/e2e-notation-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
-          plugin_checksum: 40af43c006393314c690db598ee99552de3eb4526488222a157d8d308b21cf4a
+          plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
+          plugin_checksum: 08afb824173a0636e8881ebd86b39d6ade958758bb48dd327fced9bd5a7f5f6a
           key_id: ${{ env.e2e_cert }}
           target_artifact_reference: ${{ env.target_artifact_reference }}
           signature_format: cose
