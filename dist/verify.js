@@ -72,7 +72,6 @@ function verify() {
             // configure Notation trust policy
             yield exec.getExecOutput('notation', ['policy', 'import', '--force', trust_policy]);
             yield exec.getExecOutput('notation', ['policy', 'show']);
-            console.log("");
             // configure Notation trust store
             yield configTrustStore(trust_store);
             yield exec.getExecOutput('notation', ['cert', 'ls']);
