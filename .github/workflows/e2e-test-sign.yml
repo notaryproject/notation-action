@@ -43,16 +43,23 @@ jobs:
       - name: Setup Notation
         uses: notaryproject/notation-action/setup@main
       
+      # Generate test
+      - name: Notation generate-test
+        run: |
+          notation generate-test "e2e-test"
+          echo "e2e_key=$HOME/.config/notation/localkeys/e2e-test.key" >> "GITHUB_ENV"
+          echo "e2e_cert=$HOME/.config/notation/localkeys/e2e-test.crt" >> "GITHUB_ENV"
+      
       # E2E test cases on Notation: Sign
       - name: Sign artifact using notation plugin
         uses: notaryproject/notation-action/sign@main
         env:
-          E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
+          E2E_SIGNING_KEY: ${{ env.e2e_key }}
         with:
           plugin_name: e2e-test-plugin
           plugin_url: https://github.com/Two-Hearts/notation-action/raw/e2e-notation-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
           plugin_checksum: 40af43c006393314c690db598ee99552de3eb4526488222a157d8d308b21cf4a
-          key_id: .github/e2e-test/truststore/x509/ca/e2e/notation.crt
+          key_id: ${{ env.e2e_cert }}
           target_artifact_reference: ${{ env.target_artifact_reference }}
           signature_format: cose
           plugin_config: |-
