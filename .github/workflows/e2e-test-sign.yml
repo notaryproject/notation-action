@@ -47,6 +47,7 @@ jobs:
       - name: Notation generate-test
         run: |
           notation cert generate-test "e2e-test"
+          echo $HOME
           echo "e2e_key=$HOME/.config/notation/localkeys/e2e-test.key" >> "GITHUB_ENV"
           echo "e2e_cert=$HOME/.config/notation/localkeys/e2e-test.crt" >> "GITHUB_ENV"
       
