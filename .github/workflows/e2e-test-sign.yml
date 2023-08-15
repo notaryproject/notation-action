@@ -62,7 +62,7 @@ jobs:
           target_artifact_reference: ${{ env.target_artifact_reference }}
           signature_format: cose
           plugin_config: |-
-            env=/home/runner/.config/notation/localkeys/e2e-test.key
+            keyFile=/home/runner/.config/notation/localkeys/e2e-test.key
 
       - name: Sign artifact with multiple plugin_config
         uses: notaryproject/notation-action/sign@main
