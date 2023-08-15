@@ -18,8 +18,8 @@ on:
   pull_request:
 
 env:
-  E2E_KEY: /home/runner/.config/notation/localkeys/e2e-test.key
-  E2E_CERT: /home/runner/.config/notation/localkeys/e2e-test.crt
+  E2E_KEY: $HOME/.config/notation/localkeys/e2e-test.key
+  E2E_CERT: $HOME/.config/notation/localkeys/e2e-test.crt
 
 jobs:
   e2e-test-sign:
@@ -63,7 +63,7 @@ jobs:
           target_artifact_reference: ${{ env.target_artifact_reference }}
           signature_format: cose
           plugin_config: |-
-            keyFile=E2E_KEY
+            keyFile=${{ env.E2E_KEY }}
 
       - name: Sign artifact with multiple plugin_config
         uses: notaryproject/notation-action/sign@main
