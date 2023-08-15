@@ -50,8 +50,8 @@ jobs:
           echo $HOME
           echo "e2e_key=$HOME/.config/notation/localkeys/e2e-test.key" >> "GITHUB_ENV"
           echo "e2e_cert=$HOME/.config/notation/localkeys/e2e-test.crt" >> "GITHUB_ENV"
-          echo e2e_key
-          echo e2e_cert
+          echo $e2e_key
+          echo $e2e_cert
       
       # E2E test cases on Notation: Sign
       - name: Sign artifact using notation plugin
