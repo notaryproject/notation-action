@@ -17,6 +17,10 @@ on:
   push:
   pull_request:
 
+env:
+  E2E_KEY: /home/runner/.config/notation/localkeys/e2e-test.key
+  E2E_CERT: /home/runner/.config/notation/localkeys/e2e-test.crt
+
 jobs:
   e2e-test-sign:
     runs-on: ubuntu-latest
@@ -47,24 +51,19 @@ jobs:
       - name: Notation generate-test
         run: |
           notation cert generate-test "e2e-test"
-      - name: set env
-        run: |
-          echo "e2e_key=/home/runner/.config/notation/localkeys/e2e-test.key" >> "GITHUB_ENV"
-          echo "e2e_cert=/home/runner/.config/notation/localkeys/e2e-test.crt" >> "GITHUB_ENV"
+
       # E2E test cases on Notation: Sign
       - name: Sign artifact using notation plugin
         uses: notaryproject/notation-action/sign@main
-        env:
-          E2E_SIGNING_KEY: ${{ env.e2e_key }}
         with:
           plugin_name: e2e-test-plugin
           plugin_url: https://github.com/Two-Hearts/notation-action/releases/download/v0.1.0/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
           plugin_checksum: 08afb824173a0636e8881ebd86b39d6ade958758bb48dd327fced9bd5a7f5f6a
-          key_id: /home/runner/.config/notation/localkeys/e2e-test.crt
+          key_id: ${{ env.E2E_CERT }}
           target_artifact_reference: ${{ env.target_artifact_reference }}
           signature_format: cose
           plugin_config: |-
-            keyFile=/home/runner/.config/notation/localkeys/e2e-test.key
+            keyFile=E2E_KEY
 
       - name: Sign artifact with multiple plugin_config
         uses: notaryproject/notation-action/sign@main
