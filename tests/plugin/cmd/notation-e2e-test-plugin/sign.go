@@ -16,7 +16,6 @@ package main
 import (
 	"crypto"
 	"crypto/rand"
-	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -75,26 +74,19 @@ func sign(req *proto.GenerateSignatureRequest) (*proto.GenerateSignatureResponse
 		}
 	}
 
-	// read private key from environment variable
-	env := req.PluginConfig["env"]
-	if env == "" {
+	// read private key
+	keyFile := req.PluginConfig["keyFile"]
+	if keyFile == "" {
 		return nil, proto.RequestError{
 			Code: proto.ErrorCodeValidation,
 			Err:  errors.New("no private key specified"),
 		}
 	}
-	data, err := base64.StdEncoding.DecodeString(os.Getenv(env))
+	key, err := x509.ReadPrivateKeyFile(keyFile)
 	if err != nil {
 		return nil, proto.RequestError{
 			Code: proto.ErrorCodeValidation,
-			Err:  fmt.Errorf("failed to decode private key from environment variable %q: %w", env, err),
-		}
-	}
-	key, err := x509.ParsePrivateKeyPEM(data)
-	if err != nil {
-		return nil, proto.RequestError{
-			Code: proto.ErrorCodeValidation,
-			Err:  fmt.Errorf("failed to parse private key from environment variable %q: %w", env, err),
+			Err:  fmt.Errorf("failed to parse private key from key file %q: %w", keyFile, err),
 		}
 	}
 
