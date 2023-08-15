@@ -41,7 +41,6 @@ header:
     - 'dist'
     - 'go.mod'
     - 'go.sum'
-    - '.gitignore'
 
   comment: on-failure
 
