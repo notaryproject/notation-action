@@ -52,8 +52,9 @@ jobs:
         run: |
           notation cert generate-test "e2e-test"
           notation cert delete --type ca --store e2e-test -y --all
-          cp ${{ env.E2E_CERT }} ${GITHUB_WORKSPACE}/.github/e2e-test/truststore/x509/ca/e2e-test/e2e-test.crt
-
+          cd ${GITHUB_WORKSPACE}
+          ls
+          
       # Sign artifact
       - name: Sign artifact using notation plugin
         uses: notaryproject/notation-action/sign@main
