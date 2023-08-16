@@ -1,0 +1,5 @@
+1547753e8e8b47ecd8bc8e629465ea2d579fea28634ec48116d7b5e8991e0208  notation-e2e-test-plugin_0.1.0_linux_arm64.tar.gz
+27249e338d438e892de970652689add67a40524a1bed8af1cb4da5566defc1b4  notation-e2e-test-plugin_0.1.0_darwin_arm64.tar.gz
+8c78f0d43081602054b944d8ade40e7fc361e4e96d3f0dd61830ac30ca287888  notation-e2e-test-plugin_0.1.0_darwin_amd64.tar.gz
+b413e372b1f6a714e4c54e015e2ca0429ba17ed32ef060cb25313a8e0a87b9f8  notation-e2e-test-plugin_0.1.0_windows_amd64.zip
+be8d035024d3a96afb4118af32f2e201f126c7254b02f7bcffb3e3149d744fd2  notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz

@@ -39,6 +39,8 @@ header:
     - 'tsconfig.json'
     - '**/data/**'
     - 'dist'
+    - 'go.mod'
+    - 'go.sum'
 
   comment: on-failure
 
