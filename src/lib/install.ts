@@ -14,6 +14,7 @@
  */
 
 import * as os from 'os';
+import * as fs from 'fs';
 import * as path from 'path';
   
 // Get the URL to download Notatoin CLI
@@ -21,11 +22,18 @@ export function getNotationDownloadURL(version: string, url: string) {
   if (url) {
     return url
   }
+  let rawdata = fs.readFileSync('./data/notation_releases.json', 'utf-8');
+  let notationReleases = JSON.parse(rawdata);
   const platform = getPlatform();
-  const architecture = getArch();
-  const filename = `notation_${version}_${platform}_${architecture}`;
-  const extension = platform === 'windows' ? 'zip' : 'tar.gz';
-  return `https://github.com/notaryproject/notation/releases/download/v${version}/${filename}.${extension}`;
+  const arch = getArch();
+  if (!notationReleases[version]) {
+    throw new Error(`official Notation CLI release does not support version ${version}`);
+  }
+  const downloadURL = notationReleases[version][platform][arch];
+  if (!downloadURL) {
+    throw new Error(`official Notation CLI release for version ${version}, platform ${platform}, arch ${arch} is not supported`);
+  }
+  return downloadURL;
 }
 
 // getConfigHome gets Notation config home dir based on platform
