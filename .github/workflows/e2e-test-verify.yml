@@ -61,7 +61,7 @@ jobs:
         with:
           plugin_name: e2e-test-plugin
           plugin_url: https://github.com/Two-Hearts/notation-action/raw/e2e-notation-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
-          plugin_checksum: 08afb824173a0636e8881ebd86b39d6ade958758bb48dd327fced9bd5a7f5f6a
+          plugin_checksum: be8d035024d3a96afb4118af32f2e201f126c7254b02f7bcffb3e3149d744fd2
           key_id: ${{ env.E2E_CERT }}
           target_artifact_reference: ${{ env.target_artifact_reference }}
           signature_format: cose
