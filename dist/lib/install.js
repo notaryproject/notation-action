@@ -37,21 +37,36 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getBinaryExtension = exports.getArch = exports.getPlatform = exports.getConfigHome = exports.getNotationDownloadURL = void 0;
+exports.getBinaryExtension = exports.getArch = exports.getPlatform = exports.getConfigHome = exports.getNotationDownload = exports.getNotationDownloadURL = void 0;
 const os = __importStar(require("os"));
+const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 // Get the URL to download Notatoin CLI
 function getNotationDownloadURL(version, url) {
     if (url) {
         return url;
     }
-    const platform = getPlatform();
-    const architecture = getArch();
-    const filename = `notation_${version}_${platform}_${architecture}`;
-    const extension = platform === 'windows' ? 'zip' : 'tar.gz';
-    return `https://github.com/notaryproject/notation/releases/download/v${version}/${filename}.${extension}`;
+    let download = getNotationDownload(version);
+    return download["url"];
 }
 exports.getNotationDownloadURL = getNotationDownloadURL;
+// getNotationDownload returns the download object containing url and checksum
+// of official Notation CLI release given version
+function getNotationDownload(version) {
+    let rawdata = fs.readFileSync('./data/notation_releases.json', 'utf-8');
+    let notationReleases = JSON.parse(rawdata);
+    const platform = getPlatform();
+    const arch = getArch();
+    if (!notationReleases[version]) {
+        throw new Error(`official Notation CLI release does not support version ${version}`);
+    }
+    const download = notationReleases[version][platform][arch];
+    if (!download) {
+        throw new Error(`official Notation CLI release for version ${version}, platform ${platform}, arch ${arch} is not supported`);
+    }
+    return download;
+}
+exports.getNotationDownload = getNotationDownload;
 // getConfigHome gets Notation config home dir based on platform
 // reference: https://notaryproject.dev/docs/concepts/directory-structure/#user-level
 function getConfigHome() {

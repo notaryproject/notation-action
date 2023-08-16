@@ -15,23 +15,13 @@
 
 import * as crypto from 'crypto';
 import * as fs from 'fs';
-import {getPlatform, getArch} from './install';
-import notationReleases from './data/notation_releases.json';
+import {getNotationDownload} from './install';
 
 // getNotationCheckSum returns checksum of user specified official Notation CLI
 // release.
 export function getNotationCheckSum(version: string): string {
-    const platform = getPlatform();
-    const architecture = getArch();
-    for (const release of notationReleases as any) {
-        if (release["version"] === version) {
-            console.log(`Notation CLI version is ${version}`);
-            let checksum = release[platform][architecture]["checksum"];
-            console.log(`Notation CLI checksum is ${checksum}`);
-            return checksum;
-        }
-    }
-    throw new Error(`Notation CLI release does not support user input version ${version}`);
+    let download = getNotationDownload(version);
+    return download["checksum"];
 }
 
 // hash computes SH256 of file at path.

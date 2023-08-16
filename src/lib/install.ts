@@ -22,18 +22,25 @@ export function getNotationDownloadURL(version: string, url: string) {
   if (url) {
     return url
   }
-  let rawdata = fs.readFileSync('./data/notation_releases.json', 'utf-8');
-  let notationReleases = JSON.parse(rawdata);
-  const platform = getPlatform();
-  const arch = getArch();
-  if (!notationReleases[version]) {
-    throw new Error(`official Notation CLI release does not support version ${version}`);
-  }
-  const downloadURL = notationReleases[version][platform][arch];
-  if (!downloadURL) {
-    throw new Error(`official Notation CLI release for version ${version}, platform ${platform}, arch ${arch} is not supported`);
-  }
-  return downloadURL;
+  let download = getNotationDownload(version);
+  return download["url"];
+}
+
+// getNotationDownload returns the download object containing url and checksum
+// of official Notation CLI release given version
+export function getNotationDownload(version: string) {
+    let rawdata = fs.readFileSync('./data/notation_releases.json', 'utf-8');
+    let notationReleases = JSON.parse(rawdata);
+    const platform = getPlatform();
+    const arch = getArch();
+    if (!notationReleases[version]) {
+      throw new Error(`official Notation CLI release does not support version ${version}`);
+    }
+    const download = notationReleases[version][platform][arch];
+    if (!download) {
+      throw new Error(`official Notation CLI release for version ${version}, platform ${platform}, arch ${arch} is not supported`);
+    }
+    return download;
 }
 
 // getConfigHome gets Notation config home dir based on platform
