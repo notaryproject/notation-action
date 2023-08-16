@@ -136,9 +136,23 @@ jobs:
         with:
             target_artifact_reference: ${{ env.target_artifact_reference }}
             trust_policy: .github/e2e-test/trustpolicy/trustpolicy.json
-            trust_store: .github/e2e-test/truststore/invalid-trust-store
+            trust_store: .github/e2e-test/invalid-trust-store/x509
       - name: 'Should Fail: Verify released artifact with invalid trust store structure'
         if: steps.invalid-trust-store.outcome != 'failure'
         run: |
             echo "Verify released artifact with invalid trust store structure should fail, but succeeded."
+            exit 1
+
+      - name: Verify released artifact without valid cert in trust store
+        continue-on-error: true
+        id: invalid-cert
+        uses: notaryproject/notation-action/verify@main
+        with:
+            target_artifact_reference: ${{ env.target_artifact_reference }}
+            trust_policy: .github/e2e-test/trustpolicy/trustpolicy.json
+            trust_store: .github/e2e-test/truststore/invalid-trust-store
+      - name: 'Should Fail: Verify released artifact without valid cert in trust store'
+        if: steps.invalid-cert.outcome != 'failure'
+        run: |
+            echo "Verify released artifact without valid cert in trust store should fail, but succeeded."
             exit 1
