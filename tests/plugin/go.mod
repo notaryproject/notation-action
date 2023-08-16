@@ -1,4 +1,4 @@
-module notation-e2e-test-plugin
+module github.com/notaryproject/notation-action/tests/plugin
 
 go 1.20
 
