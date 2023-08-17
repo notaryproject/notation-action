@@ -14,16 +14,17 @@
  */
 
 import * as os from 'os';
-import * as fs from 'fs';
 import * as path from 'path';
 import release from './data/notation_releases.json';
 
+// notation releases file structure
 interface notationReleases {
     [version: string]: { 
         [platform: string]: {
             [arch: string]: {
                 checksum: string, 
-                url: string} 
+                url: string
+            } 
         } 
     }
 }

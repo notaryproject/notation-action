@@ -18,7 +18,7 @@ For example,
 - name: setup Notation CLI
   uses: notaryproject/notation-action/setup@main
   with:
-    version: 1.0.0-rc.7
+    version: "1.0.0"
 ```
 
 ### Notation: Sign
