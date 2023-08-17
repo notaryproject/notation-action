@@ -20,7 +20,7 @@ import {getNotationDownload} from './install';
 // getNotationCheckSum returns checksum of user specified official Notation CLI
 // release.
 export function getNotationCheckSum(version: string): string {
-    let download = getNotationDownload(version);
+    const download = getNotationDownload(version);
     return download["checksum"];
 }
 

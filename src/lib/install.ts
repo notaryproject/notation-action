@@ -16,27 +16,37 @@
 import * as os from 'os';
 import * as fs from 'fs';
 import * as path from 'path';
-  
+import release from './data/notation_releases.json';
+
+interface notationReleases {
+    [version: string]: { 
+        [platform: string]: {
+            [arch: string]: {
+                checksum: string, 
+                url: string} 
+        } 
+    }
+}
+
 // Get the URL to download Notatoin CLI
 export function getNotationDownloadURL(version: string, url: string) {
   if (url) {
     return url
   }
-  let download = getNotationDownload(version);
+  const download = getNotationDownload(version);
   return download["url"];
 }
 
 // getNotationDownload returns the download object containing url and checksum
 // of official Notation CLI release given version
 export function getNotationDownload(version: string) {
-    let rawdata = fs.readFileSync('./data/notation_releases.json', 'utf-8');
-    let notationReleases = JSON.parse(rawdata);
+    const notationRelease = release as notationReleases;
     const platform = getPlatform();
     const arch = getArch();
-    if (!notationReleases[version]) {
+    if (!notationRelease[version]) {
       throw new Error(`official Notation CLI release does not support version ${version}`);
     }
-    const download = notationReleases[version][platform][arch];
+    const download = notationRelease[version][platform][arch];
     if (!download) {
       throw new Error(`official Notation CLI release for version ${version}, platform ${platform}, arch ${arch} is not supported`);
     }
