@@ -44,7 +44,7 @@ const install_1 = require("./install");
 // getNotationCheckSum returns checksum of user specified official Notation CLI
 // release.
 function getNotationCheckSum(version) {
-    let download = (0, install_1.getNotationDownload)(version);
+    const download = (0, install_1.getNotationDownload)(version);
     return download["checksum"];
 }
 exports.getNotationCheckSum = getNotationCheckSum;

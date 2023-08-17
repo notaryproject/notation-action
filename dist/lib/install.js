@@ -36,31 +36,33 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getBinaryExtension = exports.getArch = exports.getPlatform = exports.getConfigHome = exports.getNotationDownload = exports.getNotationDownloadURL = void 0;
 const os = __importStar(require("os"));
-const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
+const notation_releases_json_1 = __importDefault(require("./data/notation_releases.json"));
 // Get the URL to download Notatoin CLI
 function getNotationDownloadURL(version, url) {
     if (url) {
         return url;
     }
-    let download = getNotationDownload(version);
+    const download = getNotationDownload(version);
     return download["url"];
 }
 exports.getNotationDownloadURL = getNotationDownloadURL;
 // getNotationDownload returns the download object containing url and checksum
 // of official Notation CLI release given version
 function getNotationDownload(version) {
-    let rawdata = fs.readFileSync('./data/notation_releases.json', 'utf-8');
-    let notationReleases = JSON.parse(rawdata);
+    const notationRelease = notation_releases_json_1.default;
     const platform = getPlatform();
     const arch = getArch();
-    if (!notationReleases[version]) {
+    if (!notationRelease[version]) {
         throw new Error(`official Notation CLI release does not support version ${version}`);
     }
-    const download = notationReleases[version][platform][arch];
+    const download = notationRelease[version][platform][arch];
     if (!download) {
         throw new Error(`official Notation CLI release for version ${version}, platform ${platform}, arch ${arch} is not supported`);
     }
