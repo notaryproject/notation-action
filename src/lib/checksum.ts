@@ -27,10 +27,10 @@ export function getNotationCheckSum(version: string): string {
 // hash computes SH256 of file at path.
 export function hash(path: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      const hash = crypto.createHash('sha256');
-      const stream = fs.createReadStream(path);
-      stream.on('error', err => reject(err));
-      stream.on('data', chunk => hash.update(chunk));
-      stream.on('end', () => resolve(hash.digest('hex')));
+        const hash = crypto.createHash('sha256');
+        const stream = fs.createReadStream(path);
+        stream.on('error', err => reject(err));
+        stream.on('data', chunk => hash.update(chunk));
+        stream.on('end', () => resolve(hash.digest('hex')));
     });
 }

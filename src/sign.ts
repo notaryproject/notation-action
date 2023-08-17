@@ -87,20 +87,20 @@ async function setupPlugin() {
         const notationPluginPath = path.join(getConfigHome(), `notation/plugins/${plugin_name}`);
         if (checkPluginExistence(notationPluginPath)) {
             console.log(`plugin ${plugin_name} is already installed`);
-            return
+            return;
         }
 
         // download signing plugin, validate checksum and plugin name
-        console.log("downloading signing plugin...")
+        console.log("downloading signing plugin...");
         const pathToTarball = await tc.downloadTool(plugin_url);
-        console.log("downloading signing plugin completed")
+        console.log("downloading signing plugin completed");
         const sha256 = await hash(pathToTarball);
         if (sha256 !== plugin_checksum) {
             throw new Error(`checksum of downloaded plugin ${sha256} does not match expected checksum ${plugin_checksum}`);
         }
-        console.log("successfully verified download checksum")
+        console.log("successfully verified download checksum");
         await validateDownloadPluginName(pathToTarball);
-        console.log("successfully validated downloaded plugin name")
+        console.log("successfully validated downloaded plugin name");
 
         // install the plugin
         const extract = plugin_url.endsWith('.zip') ? tc.extractZip : tc.extractTar;

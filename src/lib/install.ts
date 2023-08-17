@@ -31,11 +31,11 @@ interface notationReleases {
 
 // Get the URL to download Notatoin CLI
 export function getNotationDownloadURL(version: string, url: string) {
-  if (url) {
-    return url
-  }
-  const download = getNotationDownload(version);
-  return download["url"];
+    if (url) {
+        return url;
+    }
+    const download = getNotationDownload(version);
+    return download["url"];
 }
 
 // getNotationDownload returns the download object containing url and checksum
@@ -45,11 +45,11 @@ export function getNotationDownload(version: string) {
     const platform = getPlatform();
     const arch = getArch();
     if (!notationRelease[version]) {
-      throw new Error(`official Notation CLI release does not support version ${version}`);
+        throw new Error(`official Notation CLI release does not support version ${version}`);
     }
     const download = notationRelease[version][platform][arch];
     if (!download) {
-      throw new Error(`official Notation CLI release for version ${version}, platform ${platform}, arch ${arch} is not supported`);
+        throw new Error(`official Notation CLI release for version ${version}, platform ${platform}, arch ${arch} is not supported`);
     }
     return download;
 }
@@ -75,30 +75,30 @@ export function getConfigHome(): string {
 
 // getPlatform returns os.platform(), filtered by Notation requirements.
 export function getPlatform(): string {
-  const platform: string = os.platform();
-  switch (platform) {
-      case 'linux':
-          return 'linux';
-      case 'darwin':
-          return 'darwin';
-      case 'win32':
-          return 'windows';
-      default:
-          throw new Error(`unsupported platform: ${platform}`);
-  }
+    const platform: string = os.platform();
+    switch (platform) {
+        case 'linux':
+            return 'linux';
+        case 'darwin':
+            return 'darwin';
+        case 'win32':
+            return 'windows';
+        default:
+            throw new Error(`unsupported platform: ${platform}`);
+    }
 }
 
 // getArch returns os.arch(), filtered by Notation requirements.
 export function getArch(): string {
-  const architecture: string = os.arch();
-  switch (architecture) {
-      case 'x64':
-          return 'amd64';
-      case 'arm64':
-          return 'arm64';
-      default:
-          throw new Error(`unsupported architecture: ${architecture}`);
-  }
+    const architecture: string = os.arch();
+    switch (architecture) {
+        case 'x64':
+            return 'amd64';
+        case 'arm64':
+            return 'arm64';
+        default:
+            throw new Error(`unsupported architecture: ${architecture}`);
+    }
 }
 
 export function getBinaryExtension(): string {
