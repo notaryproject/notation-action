@@ -36,7 +36,7 @@ jobs:
         id: prepare
         uses: docker/build-push-action@v4
         with:
-          context: .github/e2e-test
+          context: .github/tests/e2e
           push: true
           tags: localhost:5000/e2e:latest
       - name: Retrieve digest
@@ -45,7 +45,7 @@ jobs:
       
       # Setting up Notation CLI on the runner
       - name: Setup Notation
-        uses: notaryproject/notation-action/setup@main
+        uses: ./setup
       
       # Generate test
       - name: Notation generate-test
@@ -54,7 +54,7 @@ jobs:
 
       # E2E test cases on Notation: Sign
       - name: Sign artifact using notation plugin
-        uses: notaryproject/notation-action/sign@main
+        uses: ./sign
         with:
           plugin_name: e2e-test-plugin
           plugin_url: https://github.com/notaryproject/notation-action/raw/e2e-test-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
@@ -66,7 +66,7 @@ jobs:
             keyFile=${{ env.E2E_KEY }}
 
       - name: Sign artifact with multiple plugin_config
-        uses: notaryproject/notation-action/sign@main
+        uses: ./sign
         env:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
@@ -84,7 +84,7 @@ jobs:
       - name: Sign artifact with invalid plugin name
         continue-on-error: true
         id: invalid-plugin-name
-        uses: notaryproject/notation-action/sign@main
+        uses: ./sign
         env:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
@@ -105,7 +105,7 @@ jobs:
       - name: Sign artifact with invalid plugin url
         continue-on-error: true
         id: invalid-plugin-url
-        uses: notaryproject/notation-action/sign@main
+        uses: ./sign
         env:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
@@ -126,7 +126,7 @@ jobs:
       - name: Sign artifact missing plugin checksum
         continue-on-error: true
         id: missing-plugin-checksum
-        uses: notaryproject/notation-action/sign@main
+        uses: ./sign
         with:
           plugin_name: test
           plugin_url: https://github.com/notaryproject/notation-action/raw/e2e-test-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
@@ -144,7 +144,7 @@ jobs:
       - name: Sign artifact with invalid plugin checksum
         continue-on-error: true
         id: invalid-plugin-checksum
-        uses: notaryproject/notation-action/sign@main
+        uses: ./sign
         env:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
@@ -165,7 +165,7 @@ jobs:
       - name: Sign artifact missing key id
         continue-on-error: true
         id: missing-key-id
-        uses: notaryproject/notation-action/sign@main
+        uses: ./sign
         env:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:

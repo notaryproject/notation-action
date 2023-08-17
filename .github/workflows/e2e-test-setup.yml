@@ -26,12 +26,12 @@ jobs:
 
       # E2E test cases on Notation: Setup
       - name: Setup Notation
-        uses: notaryproject/notation-action/setup@main
+        uses: ./setup
     
       - name: Setup Notation using unsupported version
         id: unsupported-version
         continue-on-error: true
-        uses: notaryproject/notation-action/setup@main
+        uses: ./setup
         with:
             version: unsupported
       - name: 'Should Fail: Setup Notation using unsupported version'
@@ -41,7 +41,7 @@ jobs:
             exit 1
 
       - name: Setup Notation using URL
-        uses: notaryproject/notation-action/setup@main
+        uses: ./setup
         with:
             url: https://github.com/notaryproject/notation/releases/download/v1.0.0-rc.6/notation_1.0.0-rc.6_linux_amd64.tar.gz
             checksum: bca21002cfb611f9ffc2930e88ecdb74471806770d0c64d45e39f4971692bcf5
@@ -49,7 +49,7 @@ jobs:
       - name: Setup Notation using URL without checksum
         id: no-checksum
         continue-on-error: true
-        uses: notaryproject/notation-action/setup@main
+        uses: ./setup
         with:
           url: https://github.com/notaryproject/notation/releases/download/v1.0.0-rc.6/notation_1.0.0-rc.6_linux_amd64.tar.gz
       - name: 'Should Fail: Setup Notation using URL without checksum'
@@ -61,7 +61,7 @@ jobs:
       - name: Setup Notation using URL and invalid checksum
         id: invalid-checksum
         continue-on-error: true
-        uses: notaryproject/notation-action/setup@main
+        uses: ./setup
         with:
           url: https://github.com/notaryproject/notation/releases/download/v1.0.0-rc.6/notation_1.0.0-rc.6_linux_amd64.tar.gz
           checksum: abcedf
@@ -74,7 +74,7 @@ jobs:
       - name: Setup Notation using invalid URL
         id: invalid-url
         continue-on-error: true
-        uses: notaryproject/notation-action/setup@main
+        uses: ./setup
         with:
           url: invalid-url
           checksum: test

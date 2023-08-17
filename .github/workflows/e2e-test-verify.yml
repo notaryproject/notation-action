@@ -36,7 +36,7 @@ jobs:
         id: prepare
         uses: docker/build-push-action@v4
         with:
-          context: .github/e2e-test
+          context: .github/tests/e2e
           push: true
           tags: localhost:5000/e2e:latest
       - name: Retrieve digest
@@ -45,7 +45,7 @@ jobs:
       
       # Setting up Notation CLI on the runner
       - name: Setup Notation
-        uses: notaryproject/notation-action/setup@main
+        uses: ./setup
 
       # Generate test
       - name: Notation generate-test
@@ -57,7 +57,7 @@ jobs:
           
       # Sign artifact
       - name: Sign artifact using notation plugin
-        uses: notaryproject/notation-action/sign@main
+        uses: ./sign
         with:
           plugin_name: e2e-test-plugin
           plugin_url: https://github.com/notaryproject/notation-action/raw/e2e-test-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
@@ -70,7 +70,7 @@ jobs:
     
       # E2E test cases on Notation: Verify
       - name: Verify released artifact
-        uses: notaryproject/notation-action/verify@main
+        uses: ./verify
         with:
             target_artifact_reference: ${{ env.target_artifact_reference }}
             trust_policy: .github/e2e-test/trustpolicy/trustpolicy.json
@@ -79,7 +79,7 @@ jobs:
       - name: Verify released artifact missing target artifact reference
         continue-on-error: true
         id: missing-artifact-reference
-        uses: notaryproject/notation-action/verify@main
+        uses: ./verify
         with:
             trust_policy: .github/e2e-test/trustpolicy/trustpolicy.json
             trust_store: .github/e2e-test/truststore
@@ -92,7 +92,7 @@ jobs:
       - name: Verify released artifact missing trust policy
         continue-on-error: true
         id: missing-trust-policy
-        uses: notaryproject/notation-action/verify@main
+        uses: ./verify
         with:
             target_artifact_reference: ${{ env.target_artifact_reference }}
             trust_store: .github/e2e-test/truststore
@@ -105,7 +105,7 @@ jobs:
       - name: Verify released artifact with invalid trust policy
         continue-on-error: true
         id: invalid-trust-policy
-        uses: notaryproject/notation-action/verify@main
+        uses: ./verify
         with:
             target_artifact_reference: ${{ env.target_artifact_reference }}
             trust_policy: .github/e2e-test/trustpolicy/invalid-trustpolicy.json
@@ -119,7 +119,7 @@ jobs:
       - name: Verify released artifact missing trust store
         continue-on-error: true
         id: missing-trust-store
-        uses: notaryproject/notation-action/verify@main
+        uses: ./verify
         with:
             target_artifact_reference: ${{ env.target_artifact_reference }}
             trust_policy: .github/e2e-test/trustpolicy/trustpolicy.json
@@ -132,7 +132,7 @@ jobs:
       - name: Verify released artifact with invalid trust store structure
         continue-on-error: true
         id: invalid-trust-store
-        uses: notaryproject/notation-action/verify@main
+        uses: ./verify
         with:
             target_artifact_reference: ${{ env.target_artifact_reference }}
             trust_policy: .github/e2e-test/trustpolicy/trustpolicy.json
@@ -148,7 +148,7 @@ jobs:
       - name: Verify released artifact without valid cert in trust store
         continue-on-error: true
         id: invalid-cert
-        uses: notaryproject/notation-action/verify@main
+        uses: ./verify
         with:
             target_artifact_reference: ${{ env.target_artifact_reference }}
             trust_policy: .github/e2e-test/trustpolicy/trustpolicy.json
