@@ -52,8 +52,8 @@ jobs:
         run: |
           notation cert generate-test "e2e-test"
           notation cert delete --type ca --store e2e-test -y --all
-          mkdir -p ${GITHUB_WORKSPACE}/.github/e2e-test/truststore/x509/ca/e2e-test
-          cp ${{ env.E2E_CERT }} ${GITHUB_WORKSPACE}/.github/e2e-test/truststore/x509/ca/e2e-test/e2e-test.crt
+          mkdir -p ${GITHUB_WORKSPACE}/.github/tests/e2e/truststore/x509/ca/e2e-test
+          cp ${{ env.E2E_CERT }} ${GITHUB_WORKSPACE}/.github/tests/e2e/truststore/x509/ca/e2e-test/e2e-test.crt
           
       # Sign artifact
       - name: Sign artifact using notation plugin
@@ -73,16 +73,16 @@ jobs:
         uses: ./verify
         with:
             target_artifact_reference: ${{ env.target_artifact_reference }}
-            trust_policy: .github/e2e-test/trustpolicy/trustpolicy.json
-            trust_store: .github/e2e-test/truststore
+            trust_policy: .github/tests/e2e/trustpolicy/trustpolicy.json
+            trust_store: .github/tests/e2e/truststore
       
       - name: Verify released artifact missing target artifact reference
         continue-on-error: true
         id: missing-artifact-reference
         uses: ./verify
         with:
-            trust_policy: .github/e2e-test/trustpolicy/trustpolicy.json
-            trust_store: .github/e2e-test/truststore
+            trust_policy: .github/tests/e2e/trustpolicy/trustpolicy.json
+            trust_store: .github/tests/e2e/truststore
       - name: 'Should Fail: Verify released artifact missing target artifact reference'
         if: steps.missing-artifact-reference.outcome != 'failure'
         run: |
@@ -95,7 +95,7 @@ jobs:
         uses: ./verify
         with:
             target_artifact_reference: ${{ env.target_artifact_reference }}
-            trust_store: .github/e2e-test/truststore
+            trust_store: .github/tests/e2e/truststore
       - name: 'Should Fail: Verify released artifact missing trust policy'
         if: steps.missing-trust-policy.outcome != 'failure'
         run: |
@@ -108,8 +108,8 @@ jobs:
         uses: ./verify
         with:
             target_artifact_reference: ${{ env.target_artifact_reference }}
-            trust_policy: .github/e2e-test/trustpolicy/invalid-trustpolicy.json
-            trust_store: .github/e2e-test/truststore
+            trust_policy: .github/tests/e2e/trustpolicy/invalid-trustpolicy.json
+            trust_store: .github/tests/e2e/truststore
       - name: 'Should Fail: Verify released artifact with invalid trust policy'
         if: steps.invalid-trust-policy.outcome != 'failure'
         run: |
@@ -122,7 +122,7 @@ jobs:
         uses: ./verify
         with:
             target_artifact_reference: ${{ env.target_artifact_reference }}
-            trust_policy: .github/e2e-test/trustpolicy/trustpolicy.json
+            trust_policy: .github/tests/e2e/trustpolicy/trustpolicy.json
       - name: 'Should Fail: Verify released artifact missing trust store'
         if: steps.missing-trust-store.outcome != 'failure'
         run: |
@@ -135,8 +135,8 @@ jobs:
         uses: ./verify
         with:
             target_artifact_reference: ${{ env.target_artifact_reference }}
-            trust_policy: .github/e2e-test/trustpolicy/trustpolicy.json
-            trust_store: .github/e2e-test/invalid-trust-store/x509
+            trust_policy: .github/tests/e2e/trustpolicy/trustpolicy.json
+            trust_store: .github/tests/e2e/invalid-trust-store/x509
       - name: 'Should Fail: Verify released artifact with invalid trust store structure'
         if: steps.invalid-trust-store.outcome != 'failure'
         run: |
@@ -151,8 +151,8 @@ jobs:
         uses: ./verify
         with:
             target_artifact_reference: ${{ env.target_artifact_reference }}
-            trust_policy: .github/e2e-test/trustpolicy/trustpolicy.json
-            trust_store: .github/e2e-test/truststore/invalid-trust-store
+            trust_policy: .github/tests/e2e/trustpolicy/trustpolicy.json
+            trust_store: .github/tests/e2e/truststore/invalid-trust-store
       - name: 'Should Fail: Verify released artifact without valid cert in trust store'
         if: steps.invalid-cert.outcome != 'failure'
         run: |
