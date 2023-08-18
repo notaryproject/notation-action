@@ -112,8 +112,16 @@ function configTrustStore(dir) {
                 let trustStoreName = path.basename(trustStore); // <my_store>
                 let certFile = getFileFromDir(trustStore); // [.github/truststore/x509/ca/<my_store>/<my_cert1>, .github/truststore/x509/ca/<my_store>/<my_cert2>, ...]
                 for (const cert of certFile) {
-                    const res = yield exec.getExecOutput('notation', ['cert', 'add', '-t', trustStoreType, '-s', trustStoreName, cert]);
-                    console.log(`res.stderr is ${res.stderr}`);
+                    let res;
+                    try {
+                        res = yield exec.getExecOutput('notation', ['cert', 'add', '-t', trustStoreType, '-s', trustStoreName, cert]);
+                    }
+                    catch (e) {
+                        if (!res) {
+                            throw new Error("res is undefined!");
+                        }
+                        console.log(`res.stderr is ${res.stderr}`);
+                    }
                 }
             }
         }
