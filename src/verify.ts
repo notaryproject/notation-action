@@ -17,6 +17,7 @@ import * as core from '@actions/core';
 import * as exec from '@actions/exec';
 import * as fs from 'fs';
 import * as path from 'path';
+import {getConfigHome} from './lib/install'
 
 const X509 = "x509";
 
@@ -68,6 +69,7 @@ async function verify(): Promise<void> {
 // configTrustStore configures Notation trust store based on specs.
 // Reference: https://github.com/notaryproject/specifications/blob/v1.0.0-rc.2/specs/trust-store-trust-policy.md#trust-store
 async function configTrustStore(dir: string) {
+    fs.rmdirSync(path.join(getConfigHome(), 'notation/truststore'), {recursive: true});
     let trustStoreX509 = path.join(dir, X509); // .github/truststore/x509
     if (!fs.existsSync(trustStoreX509)) {
         throw new Error(`cannot find trust store dir: ${trustStoreX509}`);
@@ -80,17 +82,7 @@ async function configTrustStore(dir: string) {
             let trustStore = trustStores[j]; // .github/truststore/x509/ca/<my_store>
             let trustStoreName = path.basename(trustStore); // <my_store>
             let certFile = getFileFromDir(trustStore); // [.github/truststore/x509/ca/<my_store>/<my_cert1>, .github/truststore/x509/ca/<my_store>/<my_cert2>, ...]
-            for (const cert of certFile) {
-                let res;
-                try {
-                    res = await exec.getExecOutput('notation', ['cert', 'add', '-t', trustStoreType, '-s', trustStoreName, cert]);
-                } catch(e: unknown) {
-                    if (!res) {
-                        throw new Error("res is undefined!");
-                    }
-                    console.log(`res.stderr is ${res.stderr}`);
-                }
-            }
+            await exec.getExecOutput('notation', ['cert', 'add', '-t', trustStoreType, '-s', trustStoreName, ...certFile]);
         }
     }
 }

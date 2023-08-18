@@ -49,6 +49,7 @@ const core = __importStar(require("@actions/core"));
 const exec = __importStar(require("@actions/exec"));
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
+const install_1 = require("./lib/install");
 const X509 = "x509";
 // verify verifies the target artifact with Notation
 function verify() {
@@ -99,6 +100,7 @@ function verify() {
 // Reference: https://github.com/notaryproject/specifications/blob/v1.0.0-rc.2/specs/trust-store-trust-policy.md#trust-store
 function configTrustStore(dir) {
     return __awaiter(this, void 0, void 0, function* () {
+        fs.rmdirSync(path.join((0, install_1.getConfigHome)(), 'notation/truststore'), { recursive: true });
         let trustStoreX509 = path.join(dir, X509); // .github/truststore/x509
         if (!fs.existsSync(trustStoreX509)) {
             throw new Error(`cannot find trust store dir: ${trustStoreX509}`);
@@ -111,18 +113,7 @@ function configTrustStore(dir) {
                 let trustStore = trustStores[j]; // .github/truststore/x509/ca/<my_store>
                 let trustStoreName = path.basename(trustStore); // <my_store>
                 let certFile = getFileFromDir(trustStore); // [.github/truststore/x509/ca/<my_store>/<my_cert1>, .github/truststore/x509/ca/<my_store>/<my_cert2>, ...]
-                for (const cert of certFile) {
-                    let res;
-                    try {
-                        res = yield exec.getExecOutput('notation', ['cert', 'add', '-t', trustStoreType, '-s', trustStoreName, cert]);
-                    }
-                    catch (e) {
-                        if (!res) {
-                            throw new Error("res is undefined!");
-                        }
-                        console.log(`res.stderr is ${res.stderr}`);
-                    }
-                }
+                yield exec.getExecOutput('notation', ['cert', 'add', '-t', trustStoreType, '-s', trustStoreName, ...certFile]);
             }
         }
     });
