@@ -150,8 +150,6 @@ jobs:
             echo "Verify released artifact with invalid trust store structure should fail, but succeeded."
             exit 1
       
-      - name: Clean up notation trust store
-        run: notation cert delete --type ca --store e2e-test -y --all
       - name: Verify released artifact without valid cert in trust store
         continue-on-error: true
         id: invalid-cert
