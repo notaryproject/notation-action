@@ -39,7 +39,7 @@ header:
     - 'tsconfig.json'
     - '**/data/**'
     - 'dist'
-    - '**/tests/**'
+    - 'tests'
 
   comment: on-failure
 

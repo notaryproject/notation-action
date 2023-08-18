@@ -36,7 +36,7 @@ jobs:
         id: prepare
         uses: docker/build-push-action@v4
         with:
-          context: .github/tests/e2e
+          context: ./tests/e2e
           push: true
           tags: localhost:5000/e2e:latest
       - name: Retrieve digest
