@@ -82,7 +82,7 @@ async function configTrustStore(dir: string) {
             let certFile = getFileFromDir(trustStore); // [.github/truststore/x509/ca/<my_store>/<my_cert1>, .github/truststore/x509/ca/<my_store>/<my_cert2>, ...]
             for (const cert of certFile) {
                 const res = await exec.getExecOutput('notation', ['cert', 'add', '-t', trustStoreType, '-s', trustStoreName, cert]);
-                console.log(res.stderr);
+                console.log(`res.stderr is ${res.stderr}`);
             }
         }
     }
