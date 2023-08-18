@@ -100,7 +100,7 @@ function verify() {
 // Reference: https://github.com/notaryproject/specifications/blob/v1.0.0-rc.2/specs/trust-store-trust-policy.md#trust-store
 function configTrustStore(dir) {
     return __awaiter(this, void 0, void 0, function* () {
-        fs.rmdirSync(path.join((0, install_1.getConfigHome)(), 'notation/truststore'), { recursive: true });
+        fs.rmdirSync(path.join((0, install_1.getConfigHome)(), 'notation', 'truststore'), { recursive: true });
         let trustStoreX509 = path.join(dir, X509); // .github/truststore/x509
         if (!fs.existsSync(trustStoreX509)) {
             throw new Error(`cannot find trust store dir: ${trustStoreX509}`);
