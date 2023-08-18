@@ -91,7 +91,7 @@ async function setupPlugin() {
         }
 
         // download signing plugin, validate checksum and plugin name
-        console.log("downloading signing plugin...");
+        console.log("downloading signing plugin...")
         const pathToTarball = await tc.downloadTool(plugin_url);
         console.log("downloading signing plugin completed")
         const sha256 = await hash(pathToTarball);
