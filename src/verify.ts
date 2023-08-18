@@ -80,7 +80,22 @@ async function configTrustStore(dir: string) {
             let trustStore = trustStores[j]; // .github/truststore/x509/ca/<my_store>
             let trustStoreName = path.basename(trustStore); // <my_store>
             let certFile = getFileFromDir(trustStore); // [.github/truststore/x509/ca/<my_store>/<my_cert1>, .github/truststore/x509/ca/<my_store>/<my_cert2>, ...]
-            exec.getExecOutput('notation', ['cert', 'add', '-t', trustStoreType, '-s', trustStoreName, ...certFile]);
+            for (const cert of certFile) {
+                try {
+                    exec.getExecOutput('notation', ['cert', 'add', '-t', trustStoreType, '-s', trustStoreName, cert]);
+                } catch (e: unknown) {
+                    if (e instanceof Error) {
+                        console.log(e.message);
+                        const alreadyExistError = `Error: Failed to add following certificates to named store ${trustStoreName} of type ${trustStoreType}:
+                        ${cert}, with error "certificate already exists in the Trust Store"`;
+                        if (e.message !== alreadyExistError) {
+                            throw e;
+                        }
+                    } else {
+                        core.setFailed('unknown error during notation verify');
+                    }
+                }
+            }
         }
     }
 }
