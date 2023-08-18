@@ -75,6 +75,13 @@ jobs:
             target_artifact_reference: ${{ env.target_artifact_reference }}
             trust_policy: ./tests/e2e/trustpolicy/trustpolicy.json
             trust_store: ./tests/e2e/truststore
+
+      - name: Verify released artifact again
+        uses: ./verify
+        with:
+            target_artifact_reference: ${{ env.target_artifact_reference }}
+            trust_policy: ./tests/e2e/trustpolicy/trustpolicy.json
+            trust_store: ./tests/e2e/truststore
       
       - name: Verify released artifact missing target artifact reference
         continue-on-error: true
