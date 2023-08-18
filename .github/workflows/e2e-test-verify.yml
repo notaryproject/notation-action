@@ -76,7 +76,7 @@ jobs:
             trust_policy: ./tests/e2e/trustpolicy/trustpolicy.json
             trust_store: ./tests/e2e/truststore
 
-      - name: Verify released artifact again
+      - name: Verify released artifact again with the same notation configuration
         uses: ./verify
         with:
             target_artifact_reference: ${{ env.target_artifact_reference }}
