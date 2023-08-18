@@ -58,8 +58,8 @@ async function setup(): Promise<void> {
     }
 }
   
- export = setup;
+  export = setup;
   
- if (require.main === module) {
+  if (require.main === module) {
     setup();
- }
+  }
