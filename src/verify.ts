@@ -73,7 +73,10 @@ async function configTrustStore(dir: string) {
     if (!fs.existsSync(trustStoreX509)) {
         throw new Error(`cannot find trust store dir: ${trustStoreX509}`);
     }
-    fs.rmSync(path.join(getConfigHome(), 'notation', 'truststore'), {recursive: true});
+    const trustStorePath = path.join(getConfigHome(), 'notation', 'truststore');
+    if (fs.existsSync(trustStorePath)) {
+        fs.rmSync(path.join(getConfigHome(), 'notation', 'truststore'), {recursive: true});
+    }
     let trustStoreTypes = getSubdir(trustStoreX509); // [.github/truststore/x509/ca, .github/truststore/x509/signingAuthority, ...]
     for (let i = 0; i < trustStoreTypes.length; ++i) {
         let trustStoreType = path.basename(trustStoreTypes[i]);
