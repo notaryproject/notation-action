@@ -69,11 +69,11 @@ async function verify(): Promise<void> {
 // configTrustStore configures Notation trust store based on specs.
 // Reference: https://github.com/notaryproject/specifications/blob/v1.0.0-rc.2/specs/trust-store-trust-policy.md#trust-store
 async function configTrustStore(dir: string) {
-    fs.rmSync(path.join(getConfigHome(), 'notation', 'truststore'), {recursive: true});
     let trustStoreX509 = path.join(dir, X509); // .github/truststore/x509
     if (!fs.existsSync(trustStoreX509)) {
         throw new Error(`cannot find trust store dir: ${trustStoreX509}`);
     }
+    fs.rmSync(path.join(getConfigHome(), 'notation', 'truststore'), {recursive: true});
     let trustStoreTypes = getSubdir(trustStoreX509); // [.github/truststore/x509/ca, .github/truststore/x509/signingAuthority, ...]
     for (let i = 0; i < trustStoreTypes.length; ++i) {
         let trustStoreType = path.basename(trustStoreTypes[i]);
