@@ -106,7 +106,7 @@ function configTrustStore(dir) {
         }
         const trustStorePath = path.join((0, install_1.getConfigHome)(), 'notation', 'truststore');
         if (fs.existsSync(trustStorePath)) {
-            fs.rmSync(path.join((0, install_1.getConfigHome)(), 'notation', 'truststore'), { recursive: true });
+            fs.rmSync(trustStorePath, { recursive: true });
         }
         let trustStoreTypes = getSubdir(trustStoreX509); // [.github/truststore/x509/ca, .github/truststore/x509/signingAuthority, ...]
         for (let i = 0; i < trustStoreTypes.length; ++i) {
