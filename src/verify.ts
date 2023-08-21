@@ -17,6 +17,7 @@ import * as core from '@actions/core';
 import * as exec from '@actions/exec';
 import * as fs from 'fs';
 import * as path from 'path';
+import {getConfigHome} from './lib/install'
 
 const X509 = "x509";
 
@@ -72,6 +73,10 @@ async function configTrustStore(dir: string) {
     if (!fs.existsSync(trustStoreX509)) {
         throw new Error(`cannot find trust store dir: ${trustStoreX509}`);
     }
+    const trustStorePath = path.join(getConfigHome(), 'notation', 'truststore');
+    if (fs.existsSync(trustStorePath)) {
+        fs.rmSync(trustStorePath, {recursive: true});
+    }
     let trustStoreTypes = getSubdir(trustStoreX509); // [.github/truststore/x509/ca, .github/truststore/x509/signingAuthority, ...]
     for (let i = 0; i < trustStoreTypes.length; ++i) {
         let trustStoreType = path.basename(trustStoreTypes[i]);
@@ -80,7 +85,7 @@ async function configTrustStore(dir: string) {
             let trustStore = trustStores[j]; // .github/truststore/x509/ca/<my_store>
             let trustStoreName = path.basename(trustStore); // <my_store>
             let certFile = getFileFromDir(trustStore); // [.github/truststore/x509/ca/<my_store>/<my_cert1>, .github/truststore/x509/ca/<my_store>/<my_cert2>, ...]
-            exec.getExecOutput('notation', ['cert', 'add', '-t', trustStoreType, '-s', trustStoreName, ...certFile]);
+            await exec.getExecOutput('notation', ['cert', 'add', '-t', trustStoreType, '-s', trustStoreName, ...certFile]);
         }
     }
 }
