@@ -36,22 +36,39 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getBinaryExtension = exports.getArch = exports.getPlatform = exports.getConfigHome = exports.getNotationDownloadURL = void 0;
+exports.getBinaryExtension = exports.getArch = exports.getPlatform = exports.getConfigHome = exports.getNotationDownload = exports.getNotationDownloadURL = void 0;
 const os = __importStar(require("os"));
 const path = __importStar(require("path"));
+const notation_releases_json_1 = __importDefault(require("./data/notation_releases.json"));
 // Get the URL to download Notatoin CLI
 function getNotationDownloadURL(version, url) {
     if (url) {
         return url;
     }
-    const platform = getPlatform();
-    const architecture = getArch();
-    const filename = `notation_${version}_${platform}_${architecture}`;
-    const extension = platform === 'windows' ? 'zip' : 'tar.gz';
-    return `https://github.com/notaryproject/notation/releases/download/v${version}/${filename}.${extension}`;
+    const download = getNotationDownload(version);
+    return download["url"];
 }
 exports.getNotationDownloadURL = getNotationDownloadURL;
+// getNotationDownload returns the download object containing url and checksum
+// of official Notation CLI release given version
+function getNotationDownload(version) {
+    const notationRelease = notation_releases_json_1.default;
+    const platform = getPlatform();
+    const arch = getArch();
+    if (!notationRelease[version]) {
+        throw new Error(`official Notation CLI release does not support version ${version}`);
+    }
+    const download = notationRelease[version][platform][arch];
+    if (!download) {
+        throw new Error(`official Notation CLI release for version ${version}, platform ${platform}, arch ${arch} is not supported`);
+    }
+    return download;
+}
+exports.getNotationDownload = getNotationDownload;
 // getConfigHome gets Notation config home dir based on platform
 // reference: https://notaryproject.dev/docs/concepts/directory-structure/#user-level
 function getConfigHome() {

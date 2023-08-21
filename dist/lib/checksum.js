@@ -36,29 +36,16 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.hash = exports.getNotationCheckSum = void 0;
 const crypto = __importStar(require("crypto"));
 const fs = __importStar(require("fs"));
 const install_1 = require("./install");
-const notation_releases_json_1 = __importDefault(require("./data/notation_releases.json"));
 // getNotationCheckSum returns checksum of user specified official Notation CLI
 // release.
 function getNotationCheckSum(version) {
-    const platform = (0, install_1.getPlatform)();
-    const architecture = (0, install_1.getArch)();
-    for (const release of notation_releases_json_1.default) {
-        if (release["version"] === version) {
-            console.log(`Notation CLI version is ${version}`);
-            let checksum = release[platform][architecture]["checksum"];
-            console.log(`Notation CLI checksum is ${checksum}`);
-            return checksum;
-        }
-    }
-    throw new Error(`Notation CLI release does not support user input version ${version}`);
+    const download = (0, install_1.getNotationDownload)(version);
+    return download["checksum"];
 }
 exports.getNotationCheckSum = getNotationCheckSum;
 // hash computes SH256 of file at path.
