@@ -28,20 +28,20 @@ async function setup(): Promise<void> {
 
         // sanity check
         if (notation_url && !notation_checksum) {
-            throw new Error("user provided url of customized Notation CLI release but without SHA256 checksum")
+            throw new Error("user provided url of customized Notation CLI release but without SHA256 checksum");
         }
 
         // download Notation CLI and validate checksum
         const downloadURL = getNotationDownloadURL(version, notation_url);
         console.log(`downloading Notation CLI from ${downloadURL}`);
         const pathToTarball: string = await tc.downloadTool(downloadURL);
-        console.log("downloading Notation CLI completed")
+        console.log("downloading Notation CLI completed");
         const sha256 = await hash(pathToTarball);
         const expectedCheckSum = notation_url ? notation_checksum : getNotationCheckSum(version);
         if (sha256 !== expectedCheckSum) {
             throw new Error(`checksum of downloaded Notation CLI ${sha256} does not match expected checksum ${expectedCheckSum}`);
         }
-        console.log("successfully verified download checksum")
+        console.log("successfully verified download checksum");
         
         // extract the tarball/zipball onto host runner
         const extract = downloadURL.endsWith('.zip') ? tc.extractZip : tc.extractTar;
@@ -58,8 +58,8 @@ async function setup(): Promise<void> {
     }
 }
   
-  export = setup;
-  
-  if (require.main === module) {
+export = setup;
+
+if (require.main === module) {
     setup();
-  }
+}

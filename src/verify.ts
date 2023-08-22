@@ -17,7 +17,7 @@ import * as core from '@actions/core';
 import * as exec from '@actions/exec';
 import * as fs from 'fs';
 import * as path from 'path';
-import {getConfigHome} from './lib/install'
+import {getConfigHome} from './lib/install';
 
 const X509 = "x509";
 
@@ -93,15 +93,15 @@ async function configTrustStore(dir: string) {
 // getSubdir gets all sub dirs under dir without recursive
 function getSubdir(dir: string): string[] {
     return fs.readdirSync(dir, {withFileTypes: true, recursive: false})
-            .filter(item => item.isDirectory())
-            .map(item => path.join(dir, item.name));
+        .filter(item => item.isDirectory())
+        .map(item => path.join(dir, item.name));
 }
 
 // getFileFromDir gets all files under dir without recursive
 function getFileFromDir(dir: string): string[] {
     return fs.readdirSync(dir, {withFileTypes: true, recursive: false})
-            .filter(item => !item.isDirectory())
-            .map(item => path.join(dir, item.name));
+        .filter(item => !item.isDirectory())
+        .map(item => path.join(dir, item.name));
 }
 
 export = verify;
