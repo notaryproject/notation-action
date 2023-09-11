@@ -1,0 +1,165 @@
+# Copyright The Notary Project Authors.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: e2e-test-verify
+
+on:
+  push:
+  pull_request:
+
+env:
+  E2E_KEY: /home/runner/.config/notation/localkeys/e2e-test.key
+  E2E_CERT: /home/runner/.config/notation/localkeys/e2e-test.crt
+
+jobs:
+  e2e-test-verify:
+    runs-on: ubuntu-latest
+    services:
+      registry:
+        image: registry:2
+        ports:
+          - 5000:5000
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build and push to local registry
+        id: prepare
+        uses: docker/build-push-action@v4
+        with:
+          context: ./tests/e2e
+          push: true
+          tags: localhost:5000/e2e:latest
+      - name: Retrieve digest
+        run: |
+          echo "target_artifact_reference=localhost:5000/e2e@${{ steps.prepare.outputs.digest }}" >> "$GITHUB_ENV"
+      
+      # Setting up Notation CLI on the runner
+      - name: Setup Notation
+        uses: ./setup
+
+      # Generate test
+      - name: Notation generate-test
+        run: |
+          notation cert generate-test "e2e-test"
+          notation cert delete --type ca --store e2e-test -y --all
+          mkdir -p ${GITHUB_WORKSPACE}/tests/e2e/truststore/x509/ca/e2e-test
+          cp ${{ env.E2E_CERT }} ${GITHUB_WORKSPACE}/tests/e2e/truststore/x509/ca/e2e-test/e2e-test.crt
+          
+      # Sign artifact
+      - name: Sign artifact using notation plugin
+        uses: ./sign
+        with:
+          plugin_name: e2e-test-plugin
+          plugin_url: https://github.com/notaryproject/notation-action/raw/e2e-test-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
+          plugin_checksum: be8d035024d3a96afb4118af32f2e201f126c7254b02f7bcffb3e3149d744fd2
+          key_id: ${{ env.E2E_CERT }}
+          target_artifact_reference: ${{ env.target_artifact_reference }}
+          signature_format: cose
+          plugin_config: |-
+            keyFile=${{ env.E2E_KEY }}
+    
+      # E2E test cases on Notation: Verify
+      - name: Verify released artifact
+        uses: ./verify
+        with:
+            target_artifact_reference: ${{ env.target_artifact_reference }}
+            trust_policy: ./tests/e2e/trustpolicy/trustpolicy.json
+            trust_store: ./tests/e2e/truststore
+
+      - name: Verify released artifact again with the same notation configuration
+        uses: ./verify
+        with:
+            target_artifact_reference: ${{ env.target_artifact_reference }}
+            trust_policy: ./tests/e2e/trustpolicy/trustpolicy.json
+            trust_store: ./tests/e2e/truststore
+      
+      - name: Verify released artifact missing target artifact reference
+        continue-on-error: true
+        id: missing-artifact-reference
+        uses: ./verify
+        with:
+            trust_policy: ./tests/e2e/trustpolicy/trustpolicy.json
+            trust_store: ./tests/e2e/truststore
+      - name: 'Should Fail: Verify released artifact missing target artifact reference'
+        if: steps.missing-artifact-reference.outcome != 'failure'
+        run: |
+            echo "Verify released artifact missing target artifact reference should fail, but succeeded."
+            exit 1
+        
+      - name: Verify released artifact missing trust policy
+        continue-on-error: true
+        id: missing-trust-policy
+        uses: ./verify
+        with:
+            target_artifact_reference: ${{ env.target_artifact_reference }}
+            trust_store: ./tests/e2e/truststore
+      - name: 'Should Fail: Verify released artifact missing trust policy'
+        if: steps.missing-trust-policy.outcome != 'failure'
+        run: |
+            echo "Verify released artifact missing trust policy should fail, but succeeded."
+            exit 1
+        
+      - name: Verify released artifact with invalid trust policy
+        continue-on-error: true
+        id: invalid-trust-policy
+        uses: ./verify
+        with:
+            target_artifact_reference: ${{ env.target_artifact_reference }}
+            trust_policy: ./tests/e2e/trustpolicy/invalid-trustpolicy.json
+            trust_store: ./tests/e2e/truststore
+      - name: 'Should Fail: Verify released artifact with invalid trust policy'
+        if: steps.invalid-trust-policy.outcome != 'failure'
+        run: |
+            echo "Verify released artifact with invalid trust policy should fail, but succeeded."
+            exit 1
+
+      - name: Verify released artifact missing trust store
+        continue-on-error: true
+        id: missing-trust-store
+        uses: ./verify
+        with:
+            target_artifact_reference: ${{ env.target_artifact_reference }}
+            trust_policy: ./tests/e2e/trustpolicy/trustpolicy.json
+      - name: 'Should Fail: Verify released artifact missing trust store'
+        if: steps.missing-trust-store.outcome != 'failure'
+        run: |
+            echo "Verify released artifact missing trust store should fail, but succeeded."
+            exit 1
+    
+      - name: Verify released artifact with invalid trust store structure
+        continue-on-error: true
+        id: invalid-trust-store
+        uses: ./verify
+        with:
+            target_artifact_reference: ${{ env.target_artifact_reference }}
+            trust_policy: ./tests/e2e/trustpolicy/trustpolicy.json
+            trust_store: ./tests/e2e/invalid-trust-store/x509
+      - name: 'Should Fail: Verify released artifact with invalid trust store structure'
+        if: steps.invalid-trust-store.outcome != 'failure'
+        run: |
+            echo "Verify released artifact with invalid trust store structure should fail, but succeeded."
+            exit 1
+      
+      - name: Verify released artifact without valid cert in trust store
+        continue-on-error: true
+        id: invalid-cert
+        uses: ./verify
+        with:
+            target_artifact_reference: ${{ env.target_artifact_reference }}
+            trust_policy: ./tests/e2e/trustpolicy/trustpolicy.json
+            trust_store: ./tests/e2e/truststore/invalid-trust-store
+      - name: 'Should Fail: Verify released artifact without valid cert in trust store'
+        if: steps.invalid-cert.outcome != 'failure'
+        run: |
+            echo "Verify released artifact without valid cert in trust store should fail, but succeeded."
+            exit 1

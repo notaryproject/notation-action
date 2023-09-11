@@ -1,4 +1,18 @@
 "use strict";
+/*
+ * Copyright The Notary Project Authors.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -22,22 +36,39 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getArch = exports.getPlatform = exports.getConfigHome = exports.getNotationDownloadURL = void 0;
+exports.getBinaryExtension = exports.getArch = exports.getPlatform = exports.getConfigHome = exports.getNotationDownload = exports.getNotationDownloadURL = void 0;
 const os = __importStar(require("os"));
 const path = __importStar(require("path"));
+const notation_releases_json_1 = __importDefault(require("./data/notation_releases.json"));
 // Get the URL to download Notatoin CLI
 function getNotationDownloadURL(version, url) {
     if (url) {
         return url;
     }
-    const platform = getPlatform();
-    const architecture = getArch();
-    const filename = `notation_${version}_${platform}_${architecture}`;
-    const extension = platform === 'windows' ? 'zip' : 'tar.gz';
-    return `https://github.com/notaryproject/notation/releases/download/v${version}/${filename}.${extension}`;
+    const download = getNotationDownload(version);
+    return download["url"];
 }
 exports.getNotationDownloadURL = getNotationDownloadURL;
+// getNotationDownload returns the download object containing url and checksum
+// of official Notation CLI release given version
+function getNotationDownload(version) {
+    const notationRelease = notation_releases_json_1.default;
+    const platform = getPlatform();
+    const arch = getArch();
+    if (!notationRelease[version]) {
+        throw new Error(`official Notation CLI release does not support version ${version}`);
+    }
+    const download = notationRelease[version][platform][arch];
+    if (!download) {
+        throw new Error(`official Notation CLI release for version ${version}, platform ${platform}, arch ${arch} is not supported`);
+    }
+    return download;
+}
+exports.getNotationDownload = getNotationDownload;
 // getConfigHome gets Notation config home dir based on platform
 // reference: https://notaryproject.dev/docs/concepts/directory-structure/#user-level
 function getConfigHome() {
@@ -53,7 +84,7 @@ function getConfigHome() {
         case 'linux':
             return process.env.XDG_CONFIG_HOME ? process.env.XDG_CONFIG_HOME : path.join(os.homedir(), '.config');
         default:
-            throw new Error(`Unknown platform: ${platform}`);
+            throw new Error(`unknown platform: ${platform}`);
     }
 }
 exports.getConfigHome = getConfigHome;
@@ -68,7 +99,7 @@ function getPlatform() {
         case 'win32':
             return 'windows';
         default:
-            throw new Error(`Unsupported platform: ${platform}`);
+            throw new Error(`unsupported platform: ${platform}`);
     }
 }
 exports.getPlatform = getPlatform;
@@ -81,8 +112,13 @@ function getArch() {
         case 'arm64':
             return 'arm64';
         default:
-            throw new Error(`Unsupported architecture: ${architecture}`);
+            throw new Error(`unsupported architecture: ${architecture}`);
     }
 }
 exports.getArch = getArch;
+function getBinaryExtension() {
+    const platform = getPlatform();
+    return platform === 'windows' ? '.exe' : '';
+}
+exports.getBinaryExtension = getBinaryExtension;
 //# sourceMappingURL=install.js.map

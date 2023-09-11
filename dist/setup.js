@@ -1,4 +1,18 @@
 "use strict";
+/*
+ * Copyright The Notary Project Authors.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -49,14 +63,15 @@ function setup() {
             }
             // download Notation CLI and validate checksum
             const downloadURL = (0, install_1.getNotationDownloadURL)(version, notation_url);
-            console.log(`Downloading Notation CLI from ${downloadURL}`);
+            console.log(`downloading Notation CLI from ${downloadURL}`);
             const pathToTarball = yield tc.downloadTool(downloadURL);
-            if (notation_url) {
-                yield (0, checksum_1.validateCheckSum)(pathToTarball, notation_checksum);
+            console.log("downloading Notation CLI completed");
+            const sha256 = yield (0, checksum_1.hash)(pathToTarball);
+            const expectedCheckSum = notation_url ? notation_checksum : (0, checksum_1.getNotationCheckSum)(version);
+            if (sha256 !== expectedCheckSum) {
+                throw new Error(`checksum of downloaded Notation CLI ${sha256} does not match expected checksum ${expectedCheckSum}`);
             }
-            else {
-                yield (0, checksum_1.validateCheckSum)(pathToTarball, (0, checksum_1.getNotationCheckSum)(version));
-            }
+            console.log("successfully verified download checksum");
             // extract the tarball/zipball onto host runner
             const extract = downloadURL.endsWith('.zip') ? tc.extractZip : tc.extractTar;
             const pathToCLI = yield extract(pathToTarball);
@@ -68,7 +83,7 @@ function setup() {
                 core.setFailed(e);
             }
             else {
-                core.setFailed('Unknown error during notation setup');
+                core.setFailed('unknown error during notation setup');
             }
         }
     });

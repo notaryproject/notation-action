@@ -1,6 +1,21 @@
+/*
+ * Copyright The Notary Project Authors.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import * as core from '@actions/core';
 import * as tc from '@actions/tool-cache';
-import {validateCheckSum, getNotationCheckSum} from './lib/checksum';
+import {hash, getNotationCheckSum} from './lib/checksum';
 import { getNotationDownloadURL } from './lib/install';
 
 // setup sets up the Notation CLI.
@@ -13,18 +28,20 @@ async function setup(): Promise<void> {
 
         // sanity check
         if (notation_url && !notation_checksum) {
-            throw new Error("user provided url of customized Notation CLI release but without SHA256 checksum")
+            throw new Error("user provided url of customized Notation CLI release but without SHA256 checksum");
         }
 
         // download Notation CLI and validate checksum
         const downloadURL = getNotationDownloadURL(version, notation_url);
-        console.log(`Downloading Notation CLI from ${downloadURL}`);
+        console.log(`downloading Notation CLI from ${downloadURL}`);
         const pathToTarball: string = await tc.downloadTool(downloadURL);
-        if (notation_url) {
-            await validateCheckSum(pathToTarball, notation_checksum);
-        } else {
-            await validateCheckSum(pathToTarball, getNotationCheckSum(version)); 
+        console.log("downloading Notation CLI completed");
+        const sha256 = await hash(pathToTarball);
+        const expectedCheckSum = notation_url ? notation_checksum : getNotationCheckSum(version);
+        if (sha256 !== expectedCheckSum) {
+            throw new Error(`checksum of downloaded Notation CLI ${sha256} does not match expected checksum ${expectedCheckSum}`);
         }
+        console.log("successfully verified download checksum");
         
         // extract the tarball/zipball onto host runner
         const extract = downloadURL.endsWith('.zip') ? tc.extractZip : tc.extractTar;
@@ -36,13 +53,13 @@ async function setup(): Promise<void> {
         if (e instanceof Error) {
             core.setFailed(e);
         } else {
-            core.setFailed('Unknown error during notation setup');
+            core.setFailed('unknown error during notation setup');
         }
     }
 }
   
-  export = setup;
-  
-  if (require.main === module) {
+export = setup;
+
+if (require.main === module) {
     setup();
-  }
+}
