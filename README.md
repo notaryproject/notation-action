@@ -97,12 +97,7 @@ For example,
     trust_policy: .github/trustpolicy/trustpolicy.json
     trust_store: .github/truststore
 ```
-<<<<<<< HEAD
-
-where `.github/truststore` MUST follow the Notation [trust store specs](https://github.com/notaryproject/notaryproject/blob/main/specs/trust-store-trust-policy.md#trust-store).
-=======
 `.github/trustpolicy/trustpolicy.json` MUST follow the Notation [trust policy specs](https://github.com/notaryproject/specifications/blob/v1.0.0-rc.2/specs/trust-store-trust-policy.md#trust-policy).
->>>>>>> 0ff5453e0b9e6665539aa949df4dab419540cc0a
 
 `.github/truststore` MUST follow the Notation [trust store specs](https://github.com/notaryproject/specifications/blob/v1.0.0-rc.2/specs/trust-store-trust-policy.md#trust-store). For example,
 ```
@@ -116,8 +111,6 @@ where `.github/truststore` MUST follow the Notation [trust store specs](https://
         └── <my_trust_store2>
             ├── <my_certificate3>
             └── <my_certificate4>
-<<<<<<< HEAD
-=======
 ```
 Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0-rc.3/spec.md#listing-referrers),
 ```yaml
@@ -130,5 +123,4 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
     target_artifact_reference: myRegistry.azurecr.io/myRepo@sha256:aaabbb
     trust_policy: .github/trustpolicy/trustpolicy.json
     trust_store: .github/truststore
->>>>>>> 0ff5453e0b9e6665539aa949df4dab419540cc0a
 ```
