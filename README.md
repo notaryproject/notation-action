@@ -1,6 +1,6 @@
 # GitHub Actions for Notation
 
-This repository contains the implementation of [GitHub Actions](https://docs.github.com/en/actions) for [Notation](https://notaryproject.dev/). It provides multiple actions for signing and verifying OCI artifacts with Notation in CI/CD. This project is still in early development status.
+This repository contains the implementation of [GitHub Actions](https://docs.github.com/en/actions) for [Notation](https://github.com/notaryproject/notation). It provides actions for signing and verifying OCI artifacts with Notation in CI/CD.
 
 The following three actions are available:
 
