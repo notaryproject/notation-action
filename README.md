@@ -1,9 +1,17 @@
-# Notation Github Actions
-Github Actions for [Notation](https://notaryproject.dev/).
+# GitHub Actions for Notation
 
-Supported actions: `Notation: Setup`, `Notation: Sign` and `Notation: Verify`.
+This repository contains the implementation of [GitHub Actions](https://docs.github.com/en/actions) for [Notation](https://github.com/notaryproject/notation). It provides actions for signing and verifying OCI artifacts with Notation in CI/CD.
+
+The following three actions are available:
+
+- `setup`: Install Notation
+- `sign`: Sign an OCI artifact with a specified plugin
+- `verify`: Verify a signature
+
+> **Note** The Notary Project documentation is available [here](https://notaryproject.dev/docs/). You can also find the Notary Project [README](https://github.com/notaryproject/.github/blob/main/README.md) to learn about the overall Notary Project.
 
 ## Usage
+
 ### Notation: Setup
 ```yaml
 - name: setup Notation CLI
