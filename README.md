@@ -87,7 +87,6 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
     trust_store: <dir_to_user_trust_store>
     allow_referrers_api: <boolean_flag_for_referrers_api>
 ```
-
 For example,
 ```yaml
 - name: verify released artifact
