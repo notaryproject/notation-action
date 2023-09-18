@@ -12,6 +12,8 @@ The following three actions are available:
 
 ## Usage
 
+Signing an image relies on a Notation plugin, such as [AWS Signer plugin for Notation](https://docs.aws.amazon.com/signer/latest/developerguide/Welcome.html), [Azure Key Vault for Notation](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-tutorial-sign-build-push), [HashiCorp Vault plugin](https://github.com/notaryproject/notation-hashicorp-vault/pulls). Currently, [Azure Key Vault for Notation](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-tutorial-sign-build-push) has been well tested in the Notation Github Actions by the sub-project maintainers. You can submit test cases and examples for other plugins.
+
 ### Notation: Setup
 ```yaml
 - name: setup Notation CLI
@@ -21,13 +23,19 @@ The following three actions are available:
     url: <url_of_customized_Notation_CLI>
     checksum: <SHA256_of_the_customized_Notation_CLI>
 ```
-For example,
+
+<details>
+
+<summary>See an example (Click here).</summary>
+
 ```yaml
 - name: setup Notation CLI
   uses: notaryproject/notation-action/setup@main
   with:
     version: "1.0.0"
 ```
+
+</details>
 
 ### Notation: Sign
 ```yaml
@@ -43,7 +51,11 @@ For example,
     plugin_config: <list_of_plugin_defined_configs>
     allow_referrers_api: <boolean_flag_for_referrers_api>
 ```
-For example,
+
+<details>
+
+<summary>See an example (Click here).</summary>
+
 ```yaml
 - name: sign releasd artifact with notation-azure-kv plugin
   uses: notaryproject/notation-action/sign@main
@@ -58,7 +70,9 @@ For example,
       ca_certs=.github/cert-bundle/cert-bundle.crt
       self_signed=false
 ```
-Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0-rc.3/spec.md#listing-referrers),
+
+Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0-rc.3/spec.md#listing-referrers) in signing:
+
 ```yaml
 - name: sign releasd artifact with notation-azure-kv plugin
   uses: notaryproject/notation-action/sign@main
@@ -77,6 +91,8 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
       self_signed=false
 ```
 
+</details>
+
 ### Notation: Verify
 ```yaml
 - name: verify released artifact
@@ -87,7 +103,13 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
     trust_store: <dir_to_user_trust_store>
     allow_referrers_api: <boolean_flag_for_referrers_api>
 ```
-For example,
+
+<details>
+
+<summary>See an example (Click here).</summary>
+
+`.github/trustpolicy/trustpolicy.json` MUST follow the Notation [trust policy specs](https://github.com/notaryproject/specifications/blob/v1.0.0-rc.2/specs/trust-store-trust-policy.md#trust-policy).
+
 ```yaml
 - name: verify released artifact
   uses: notaryproject/notation-action/verify@main
@@ -96,7 +118,6 @@ For example,
     trust_policy: .github/trustpolicy/trustpolicy.json
     trust_store: .github/truststore
 ```
-`.github/trustpolicy/trustpolicy.json` MUST follow the Notation [trust policy specs](https://github.com/notaryproject/specifications/blob/v1.0.0-rc.2/specs/trust-store-trust-policy.md#trust-policy).
 
 `.github/truststore` MUST follow the Notation [trust store specs](https://github.com/notaryproject/specifications/blob/v1.0.0-rc.2/specs/trust-store-trust-policy.md#trust-store). For example,
 ```
@@ -111,7 +132,9 @@ For example,
             ├── <my_certificate3>
             └── <my_certificate4>
 ```
-Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0-rc.3/spec.md#listing-referrers),
+
+Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0-rc.3/spec.md#listing-referrers) in verification:
+
 ```yaml
 - name: verify released artifact
   uses: notaryproject/notation-action/verify@main
@@ -123,3 +146,5 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
     trust_policy: .github/trustpolicy/trustpolicy.json
     trust_store: .github/truststore
 ```
+
+</details>
