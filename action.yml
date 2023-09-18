@@ -11,8 +11,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: 'Notation: Setup'
-description: Setup Notation CLI on GitHub Action runners
+name: 'Notation Setup'
+description: Set up Notation CLI on GitHub Action runners for signing and verifying OCI artifacts
 branding:
   icon: shield
   color: blue
