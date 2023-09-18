@@ -14,7 +14,7 @@
 name: 'Notation: Setup'
 description: Setup Notation CLI on GitHub Action runners
 branding:
-  icon: check-circle
+  icon: shield
   color: blue
 inputs:
   version:

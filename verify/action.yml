@@ -14,7 +14,7 @@
 name: 'Notation: Verify'
 description: notation verify target artifact
 branding:
-  icon: check-circle
+  icon: shield
   color: blue
 inputs:
   target_artifact_reference:
