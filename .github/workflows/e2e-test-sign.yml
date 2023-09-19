@@ -52,7 +52,7 @@ jobs:
         run: |
           notation cert generate-test "e2e-test"
 
-      # E2E test cases on Notation: Sign
+      # E2E test cases on Notation Sign
       - name: Sign artifact using notation plugin
         uses: ./sign
         with:

@@ -29,4 +29,4 @@ inputs:
     required: false
 runs:
   using: node16
-  main: ../dist/setup.js
+  main: ./dist/setup.js

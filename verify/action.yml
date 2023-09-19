@@ -11,10 +11,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: 'Notation: Verify'
+name: 'Notation Verify'
 description: notation verify target artifact
 branding:
-  icon: check-circle
+  icon: shield
   color: blue
 inputs:
   target_artifact_reference:

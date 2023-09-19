@@ -68,7 +68,7 @@ jobs:
           plugin_config: |-
             keyFile=${{ env.E2E_KEY }}
     
-      # E2E test cases on Notation: Verify
+      # E2E test cases on Notation Verify
       - name: Verify released artifact
         uses: ./verify
         with:

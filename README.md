@@ -12,7 +12,7 @@ The following three actions are available:
 
 ## Usage
 
-### Notation: Setup
+### Notation Setup
 ```yaml
 - name: setup Notation CLI
   uses: notaryproject/notation-action/setup@main
@@ -29,7 +29,7 @@ For example,
     version: "1.0.0"
 ```
 
-### Notation: Sign
+### Notation Sign
 ```yaml
 - name: sign releasd artifact with signing plugin
   uses: notaryproject/notation-action/sign@main
@@ -77,7 +77,7 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
       self_signed=false
 ```
 
-### Notation: Verify
+### Notation Verify
 ```yaml
 - name: verify released artifact
   uses: notaryproject/notation-action/verify@main
