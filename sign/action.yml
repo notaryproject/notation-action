@@ -11,10 +11,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: 'Notation: Sign'
+name: 'Notation Sign'
 description: notation sign target artifact with plugin
 branding:
-  icon: check-circle
+  icon: shield
   color: blue
 inputs:
   plugin_name:
