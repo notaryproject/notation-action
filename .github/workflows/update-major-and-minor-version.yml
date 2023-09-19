@@ -1,39 +1,25 @@
-# Trigger the workflow after publishing releases
 name: Update major and minor versions
 run-name: Move ${{ github.event.inputs.major_version }} to ${{ github.event.inputs.target }}
 
 on:
-  workflow_dispatch:
-    inputs:
-      target:
-        description: The tag or reference to use
-        required: true
-      major_version:
-        type: choice
-        description: The major version to update
-        required: true
-        options:
-          - v1
-      minor_version:
-        description: The minor version to update
-        required: true
+  release:
+    types: [published]
 
 jobs:
   tag:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-    - name: Git config
-      run: |
-        git config user.name github-actions
-        git config user.email github-actions@github.com
-    - name: Tag new target
-      run: | 
-        git tag -f ${{ github.event.inputs.major_version }} ${{ github.event.inputs.target }}
-        git tag -f ${{ github.event.inputs.minor_version }} ${{ github.event.inputs.target }}
-    - name: Push new tag
-      run: | 
-        git push origin ${{ github.event.inputs.major_version }} --force
-        git push origin ${{ github.event.inputs.minor_version }} --force
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.release.tag_name }}
+      - name: Git config
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+      - name: Tag new target
+        run: | 
+          VERSION=${GITHUB_REF#refs/tags/}
+          MAJOR=${VERSION%%.*}  
+          git tag -f ${MAJOR} ${VERSION}
+          git push origin ${MAJOR} --force
