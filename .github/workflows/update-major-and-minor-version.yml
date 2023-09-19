@@ -29,11 +29,15 @@ jobs:
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
-      - name: Tag new target
+      - name: Tag and push new major and minor versions
         run: | 
-          VERSION=${GITHUB_REF#refs/tags/}
-          MAJOR=${VERSION%%.*}
+          VERSION=${{ github.event.release.tag_name }}
+          export MAJOR=$(echo ${VERSION} | cut -d '.' -f 1)
+          export MINOR=${MAJOR}.$(echo ${VERSION} | cut -d '.' -f 2)
           echo ${VERSION}
           echo ${MAJOR}
+          echo ${MINOR}
           git tag -f ${MAJOR} ${VERSION}
+          git tag -f ${MINOR} ${VERSION}
           git push origin ${MAJOR} --force
+          git push origin ${MINOR} --force
