@@ -11,18 +11,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Update major and minor versions
+name: Update major and minor tags
 
 on:
   release:
     types: [published]
 
 jobs:
-  tag:
+  update-major-minor-tags:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.release.tag_name }}
       - name: Git config
