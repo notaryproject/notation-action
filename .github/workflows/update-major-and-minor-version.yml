@@ -32,11 +32,29 @@ jobs:
       - name: Tag and push new major and minor versions
         run: | 
           VERSION=${{ github.event.release.tag_name }}
-          export MAJOR=$(echo ${VERSION} | cut -d '.' -f 1)
-          export MINOR=${MAJOR}.$(echo ${VERSION} | cut -d '.' -f 2)
-          echo ${VERSION}
-          echo ${MAJOR}
-          echo ${MINOR}
+          MAJOR=$(echo ${VERSION} | cut -d '.' -f 1)
+          MINOR=${MAJOR}.$(echo ${VERSION} | cut -d '.' -f 2)
+          if [ -z ${VERSION} ]
+          then
+            echo "released tag cannot be empty"
+            exit 1
+          else
+            echo "released tag is ${VERSION}"
+          fi
+          if [ -z ${MAJOR} ]
+          then
+            echo "major tag cannot be empty"
+            exit 1
+          else
+            echo "major tag is ${MAJOR}"
+          fi
+          if [ -z ${MINOR} ]
+          then
+            echo "minor tag cannot be empty"
+            exit 1
+          else
+            echo "minor tag is ${MINOR}"
+          fi
           git tag -f ${MAJOR} ${VERSION}
           git tag -f ${MINOR} ${VERSION}
           git push origin ${MAJOR} --force
