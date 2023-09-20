@@ -166,5 +166,5 @@ To sign and verify an image stored in the private registry with Notation GitHub 
 
 ### KMS authentication
 
-If you use a signing key and certificate stored in a KMS, make sure to authenticate with the KMS before signing this image in your GitHub Actions workflow.
+If your signing key and certificate are stored in a KMS, make sure to authenticate with the KMS before signing the image in your GitHub Actions workflow.
 
