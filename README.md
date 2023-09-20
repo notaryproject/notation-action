@@ -85,8 +85,8 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
   with:
     allow_referrers_api: 'true'
     plugin_name: azure-kv
-    plugin_url: https://github.com/Azure/notation-azure-kv/releases/download/v1.0.0/notation-azure-kv_1.0.0_linux_amd64.tar.gz
-    plugin_checksum: 82d4fee34dfe5e9303e4340d8d7f651da0a89fa8ae03195558f83bb6fa8dd263
+    plugin_url: https://github.com/Azure/notation-azure-kv/releases/download/v1.0.1/notation-azure-kv_1.0.1_linux_amd64.tar.gz
+    plugin_checksum: f8a75d9234db90069d9eb5660e5374820edf36d710bd063f4ef81e7063d3810b
     key_id: https://testnotationakv.vault.azure.net/keys/notationLeafCert/c585b8ad8fc542b28e41e555d9b3a1fd
     target_artifact_reference: myRegistry.azurecr.io/myRepo@sha256:aaabbb
     signature_format: cose
