@@ -5,8 +5,8 @@ This repository contains the implementation of [GitHub Actions](https://docs.git
 The following three actions are available:
 
 - `setup`: Install Notation
-- `sign`: Sign an OCI artifact with a specified plugin
-- `verify`: Verify a signature
+- `sign`: Sign an OCI artifact with a specified Notation plugin
+- `verify`: Verify a signature with Notation trust store and trust policy
 
 > **Note** The Notary Project documentation is available [here](https://notaryproject.dev/docs/). You can also find the Notary Project [README](https://github.com/notaryproject/.github/blob/main/README.md) to learn about the overall Notary Project.
 
@@ -123,7 +123,8 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
 ```
 
 > [!NOTE]
-> `.github/trustpolicy/trustpolicy.json` MUST follow the Notation [trust policy specs](https://github.com/notaryproject/specifications/blob/v1.0.0/specs/trust-store-trust-policy.md#trust-policy).
+> - `.github/trustpolicy/trustpolicy.json` MUST follow the Notation [trust policy specs](https://github.com/notaryproject/specifications/blob/v1.0.0/specs/trust-store-trust-policy.md#trust-policy).
+> - `.github/truststore` MUST follow the Notation [trust store specs](https://github.com/notaryproject/specifications/blob/v1.0.0/specs/trust-store-trust-policy.md#trust-store). See an example of trust store below.
  
 ```
 .github/truststore
@@ -137,9 +138,6 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
             ├── <my_certificate3>
             └── <my_certificate4>
 ```
-
-> [!NOTE]
-> `.github/truststore` MUST follow the Notation [trust store specs](https://github.com/notaryproject/specifications/blob/v1.0.0/specs/trust-store-trust-policy.md#trust-store).
 
 Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0-rc.3/spec.md#listing-referrers) in verification:
 
