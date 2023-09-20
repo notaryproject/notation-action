@@ -11,8 +11,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: 'Notation Setup'
-description: Set up Notation CLI on GitHub Action runners for signing and verifying OCI artifacts
+name: Notation
+description: Setup Notary Project tooling Notation for signing and verifying container images and other artifacts, such as SBOM, vulnerability reports, provenance data and image lifecycle metadata
 branding:
   icon: shield
   color: blue
