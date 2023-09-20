@@ -8,7 +8,8 @@ The following three actions are available:
 - `sign`: Sign an OCI artifact with a specified Notation plugin
 - `verify`: Verify a signature with Notation trust store and trust policy
 
-> **Note** The Notary Project documentation is available [here](https://notaryproject.dev/docs/). You can also find the Notary Project [README](https://github.com/notaryproject/.github/blob/main/README.md) to learn about the overall Notary Project.
+> [!NOTE]
+> The Notary Project documentation is available [here](https://notaryproject.dev/docs/). You can also find the Notary Project [README](https://github.com/notaryproject/.github/blob/main/README.md) to learn about the overall Notary Project.
 
 ## Usage
 
