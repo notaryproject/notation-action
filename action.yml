@@ -11,8 +11,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Notation
-description: Setup Notary Project tooling Notation for signing and verifying container images and other artifacts, such as SBOM, vulnerability reports, provenance data and image lifecycle metadata
+name: 'Notation Actions'
+description: Setup Notary Project tooling Notation for signing and verifying container images and other artifacts such as SBOM
 branding:
   icon: shield
   color: blue
