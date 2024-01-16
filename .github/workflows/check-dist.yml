@@ -34,11 +34,13 @@ jobs:
           cache: npm
       - name: Install npm 9.5.1
         run: npm install -g npm@9.5.1
+      - name: npm version
+        run: npm --version
       - name: Rebuild the dist/ directory
         run: npm run build
       - name: Compare the expected and actual dist/ directories
         run: |
-          if [ "$(git diff --ignore-cr-at-eol --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
+          if [ "$(git diff --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
             echo "DIFFERENCES DETECTED: 'npm run build' is needed after code changes. See status below:"
             git diff
             exit 1
