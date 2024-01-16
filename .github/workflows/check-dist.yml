@@ -34,12 +34,12 @@ jobs:
       - name: Setup Node 16.x
         uses: actions/setup-node@v4
         with:
-          node-version: 18.16.1
-      - name: Install npm
+          node-version: 16.x
+      - name: Versions
         run: |
-          npm install -g npm@9.5.1
-          npm --version
-          tsc --version
+          echo node version: $(node -v)
+          echo npm version: $(npm --version)
+          echo tsc version: $(tsc --version)
       - name: Rebuild the dist/ directory
         run: npm run build
       - name: Compare the expected and actual dist/ directories
