@@ -36,7 +36,7 @@ jobs:
         with:
           node-version: 16.x
       - name: Rebuild the dist/ directory
-        run: npm run bundle
+        run: npm run build
       - name: Compare the expected and actual dist/ directories
         run: |
           if [ "$(git diff --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
