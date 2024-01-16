@@ -38,7 +38,7 @@ jobs:
         run: npm run build
       - name: Compare the expected and actual dist/ directories
         run: |
-          if [ "$(git diff --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
+          if [ "$(git diff --ignore-cr-at-eol --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
             echo "DIFFERENCES DETECTED: 'npm run build' is needed after code changes. See status below:"
             git diff
             exit 1
