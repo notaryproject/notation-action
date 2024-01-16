@@ -121,4 +121,3 @@ function getBinaryExtension() {
     return platform === 'windows' ? '.exe' : '';
 }
 exports.getBinaryExtension = getBinaryExtension;
-//# sourceMappingURL=install.js.map

@@ -186,4 +186,3 @@ if (require.main === module) {
     sign();
 }
 module.exports = sign;
-//# sourceMappingURL=sign.js.map
