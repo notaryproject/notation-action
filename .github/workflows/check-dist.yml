@@ -46,7 +46,7 @@ jobs:
       - name: Compare the expected and actual dist/ directories
         run: |
           if [ "$(git diff --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
-            echo "DIFFERENCES DETECTED: 'npm run build' is needed after code changes. See status below:"
+            echo "DIFFERENCES DETECTED: 'npm update -g typescript' and 'npm run build' are needed after code changes. See status below:"
             git diff --ignore-space-at-eol dist/
             exit 1
           fi
