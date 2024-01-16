@@ -34,8 +34,11 @@ jobs:
       - name: Setup Node 16.x
         uses: actions/setup-node@v4
         with:
-          node-version: 16.x
-          cache: npm
+          node-version: 18.16.1
+      - name: Install npm
+        run: |
+          npm install -g npm@9.5.1
+          npm --version
       - name: Rebuild the dist/ directory
         run: npm run build
       - name: Compare the expected and actual dist/ directories
