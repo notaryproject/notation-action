@@ -32,9 +32,9 @@ jobs:
       - name: Setup Node 16.x
         uses: actions/setup-node@v3
         with:
-          node-version: 18.16.1
+          node-version: 16.x
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       - name: npm version
         run: npm --version
       - name: Rebuild the dist/ directory
