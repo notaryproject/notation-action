@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "Notation Github Actions",
     "scripts": {
-        "build": "tsc --build"
+        "build": "tsc --build && tsc --newline lf"
     },
     "repository": {
         "type": "git",
