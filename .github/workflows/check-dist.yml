@@ -27,13 +27,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Node 16.x
+      - name: Setup Node 16
         uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 16
           cache: npm
-      - name: npm version
-        run: npm --version
       - name: Rebuild the dist/ directory
         run: npm run build
       - name: Compare the expected and actual dist/ directories
