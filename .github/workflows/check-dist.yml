@@ -28,15 +28,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: remove js files in dist/
-        run: find dist/ -type f \( -name "*.json" -o -name "*.js" -o -name "*.js.map" \) -delete
+        run: |
+          find dist/ -type f \( -name "*.json" -o -name "*.js" -o -name "*.js.map" \) -delete
+          ls dist/
       - name: Setup Node 16.x
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
-      - name: Install dependencies
-        run: npm ci
-      - name: npm version
-        run: npm --version
       - name: Rebuild the dist/ directory
         run: npm run build
       - name: Compare the expected and actual dist/ directories
