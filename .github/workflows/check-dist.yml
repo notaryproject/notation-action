@@ -17,27 +17,36 @@ on:
   push:
     paths-ignore:
       - '**.md'
+      - 'CODEOWNERS'
+      - 'MAINTAINERS'
   pull_request:
     paths-ignore:
       - '**.md'
+      - 'CODEOWNERS'
+      - 'MAINTAINERS'
   workflow_dispatch:
 
 jobs:
   check-dist:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup Node 16.x
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 16.x
           cache: npm
+      - name: Show versions
+        run: |
+          echo node js version: $(node -v)
+          echo npm version: $(npm --version)
+          echo latest tsc version: $(tsc --version)
       - name: Rebuild the dist/ directory
         run: npm run build
       - name: Compare the expected and actual dist/ directories
         run: |
           if [ "$(git diff --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
-            echo "DIFFERENCES DETECTED: 'npm run build' is needed after code changes. See status below:"
-            git diff
+            echo "DIFFERENCES DETECTED: 'npm update -g typescript' and 'npm run build' are needed after code changes. See status below:"
+            git diff --ignore-space-at-eol dist/
             exit 1
           fi
