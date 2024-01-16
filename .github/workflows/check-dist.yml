@@ -17,6 +17,7 @@ on:
   push:
     paths-ignore:
       - '**.md'
+      - 'CODEOWNERS'
   pull_request:
     paths-ignore:
       - '**.md'
