@@ -32,6 +32,8 @@ jobs:
         with:
           node-version: 16.x
           cache: npm
+      - name: npm version
+        run: npm --version
       - name: Rebuild the dist/ directory
         run: npm run build
       - name: Compare the expected and actual dist/ directories

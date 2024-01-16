@@ -59,3 +59,4 @@ function hash(path) {
     });
 }
 exports.hash = hash;
+//# sourceMappingURL=checksum.js.map

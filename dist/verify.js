@@ -137,3 +137,4 @@ if (require.main === module) {
     verify();
 }
 module.exports = verify;
+//# sourceMappingURL=verify.js.map
