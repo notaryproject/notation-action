@@ -35,6 +35,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 16.x
+          cache: npm
       - name: Show versions
         run: |
           echo node js version: $(node -v)
