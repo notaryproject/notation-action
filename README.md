@@ -21,7 +21,7 @@ Currently, [Azure Key Vault plugin for Notation](https://github.com/Azure/notati
 
 ```yaml
 - name: setup Notation CLI
-  uses: notaryproject/notation-action/setup@v1
+  uses: notaryproject/notation-action/setup@v1.0.1
   with:
     version: <version_of_official_Notation_CLI_release>
     url: <url_of_customized_Notation_CLI>
@@ -34,7 +34,7 @@ Currently, [Azure Key Vault plugin for Notation](https://github.com/Azure/notati
 
 ```yaml
 - name: setup Notation CLI
-  uses: notaryproject/notation-action/setup@v1
+  uses: notaryproject/notation-action/setup@v1.0.1
   with:
     version: "1.1.0"
 ```
@@ -45,7 +45,7 @@ Currently, [Azure Key Vault plugin for Notation](https://github.com/Azure/notati
 
 ```yaml
 - name: sign releasd artifact with signing plugin
-  uses: notaryproject/notation-action/sign@v1
+  uses: notaryproject/notation-action/sign@v1.0.1
   with:
     plugin_name: <notation_signing_plugin_name>
     plugin_url: <plugin_download_url>
@@ -63,7 +63,7 @@ Currently, [Azure Key Vault plugin for Notation](https://github.com/Azure/notati
 
 ```yaml
 - name: sign releasd artifact with notation-azure-kv plugin
-  uses: notaryproject/notation-action/sign@v1
+  uses: notaryproject/notation-action/sign@v1.0.1
   with:
     plugin_name: azure-kv
     plugin_url: https://github.com/Azure/notation-azure-kv/releases/download/v1.0.1/notation-azure-kv_1.0.1_linux_amd64.tar.gz
@@ -80,7 +80,7 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
 
 ```yaml
 - name: sign releasd artifact with notation-azure-kv plugin
-  uses: notaryproject/notation-action/sign@v1
+  uses: notaryproject/notation-action/sign@v1.0.1
   env:
     NOTATION_EXPERIMENTAL: 1  # this is required by Notation to use Referrers API
   with:
@@ -102,7 +102,7 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
 
 ```yaml
 - name: verify released artifact
-  uses: notaryproject/notation-action/verify@v1
+  uses: notaryproject/notation-action/verify@v1.0.1
   with:
     target_artifact_reference: <target_artifact_reference_in_remote_registry>
     trust_policy: <file_path_to_user_defined_trustpolicy.json>
@@ -116,7 +116,7 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
 
 ```yaml
 - name: verify released artifact
-  uses: notaryproject/notation-action/verify@v1
+  uses: notaryproject/notation-action/verify@v1.0.1
   with:
     target_artifact_reference: myRegistry.azurecr.io/myRepo@sha256:aaabbb
     trust_policy: .github/trustpolicy/trustpolicy.json
@@ -144,7 +144,7 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
 
 ```yaml
 - name: verify released artifact
-  uses: notaryproject/notation-action/verify@v1
+  uses: notaryproject/notation-action/verify@v1.0.1
   env:
     NOTATION_EXPERIMENTAL: 1  # this is required by Notation to use Referrers API
   with:
