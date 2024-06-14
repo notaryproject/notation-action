@@ -43,15 +43,15 @@ jobs:
       - name: Setup Notation using URL
         uses: ./setup
         with:
-            url: https://github.com/notaryproject/notation/releases/download/v1.1.0/notation_1.1.0_linux_amd64.tar.gz
-            checksum: 0e31e156edff6cc324405cda391d7144b0b99c265a7bdfa6644f457e530fe6d4
+            url: https://github.com/notaryproject/notation/releases/download/v1.1.1/notation_1.1.1_linux_amd64.tar.gz
+            checksum: de5f9845505b38fd30c2b1f4c2172ae517e3eba3e9836647f14525daa0f930c1
 
       - name: Setup Notation using URL without checksum
         id: no-checksum
         continue-on-error: true
         uses: ./setup
         with:
-          url: https://github.com/notaryproject/notation/releases/download/v1.1.0/notation_1.1.0_linux_amd64.tar.gz
+          url: https://github.com/notaryproject/notation/releases/download/v1.1.1/notation_1.1.1_linux_amd64.tar.gz
       - name: 'Should Fail: Setup Notation using URL without checksum'
         if: steps.no-checksum.outcome != 'failure'
         run: |
@@ -63,7 +63,7 @@ jobs:
         continue-on-error: true
         uses: ./setup
         with:
-          url: https://github.com/notaryproject/notation/releases/download/v1.1.0/notation_1.1.0_linux_amd64.tar.gz
+          url: https://github.com/notaryproject/notation/releases/download/v1.1.1/notation_1.1.1_linux_amd64.tar.gz
           checksum: abcedf
       - name: 'Should Fail: Setup Notation using URL and invalid checksum'
         if: steps.invalid-checksum.outcome != 'failure'
