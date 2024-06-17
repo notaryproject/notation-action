@@ -36,7 +36,7 @@ Currently, [Azure Key Vault plugin for Notation](https://github.com/Azure/notati
 - name: setup Notation CLI
   uses: notaryproject/notation-action/setup@v1
   with:
-    version: "1.1.0"
+    version: "1.1.1"
 ```
 
 </details>
