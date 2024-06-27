@@ -36,7 +36,7 @@ jobs:
         with:
           node-version: 16.x
       - name: Install TypeScript
-        run: npm update -g typescript
+        run: npm install -g typescript@5.5.2
       - name: Show versions
         run: |
           echo node js version: $(node -v)
