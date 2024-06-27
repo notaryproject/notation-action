@@ -48,7 +48,7 @@ jobs:
           tags: localhost:5000/image2:latest
       - name: Retrieve digest
         run: |
-          echo "target_artifact_reference1=localhost:5000/image1@${{ steps.image1.outputs.digest }}" >> "$GITHUB_ENV"
+          echo "target_artifact_reference=localhost:5000/image1@${{ steps.image1.outputs.digest }}" >> "$GITHUB_ENV"
           echo "target_artifact_reference2=localhost:5000/image2@${{ steps.image2.outputs.digest }}" >> "$GITHUB_ENV"
       
       # Setting up Notation CLI on the runner
@@ -81,7 +81,7 @@ jobs:
           plugin_checksum: be8d035024d3a96afb4118af32f2e201f126c7254b02f7bcffb3e3149d744fd2
           key_id: ${{ env.E2E_CERT }}
           target_artifact_reference: |-
-            ${{ env.target_artifact_reference1 }}
+            ${{ env.target_artifact_reference }}
             ${{ env.target_artifact_reference2 }}
           signature_format: cose
           plugin_config: |-
