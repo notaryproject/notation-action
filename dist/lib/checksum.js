@@ -37,7 +37,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.hash = exports.getNotationCheckSum = void 0;
+exports.getNotationCheckSum = getNotationCheckSum;
+exports.hash = hash;
 const crypto = __importStar(require("crypto"));
 const fs = __importStar(require("fs"));
 const install_1 = require("./install");
@@ -47,7 +48,6 @@ function getNotationCheckSum(version) {
     const download = (0, install_1.getNotationDownload)(version);
     return download["checksum"];
 }
-exports.getNotationCheckSum = getNotationCheckSum;
 // hash computes SH256 of file at path.
 function hash(path) {
     return new Promise((resolve, reject) => {
@@ -58,5 +58,4 @@ function hash(path) {
         stream.on('end', () => resolve(hash.digest('hex')));
     });
 }
-exports.hash = hash;
 //# sourceMappingURL=checksum.js.map
