@@ -62,12 +62,14 @@ async function verify(): Promise<void> {
         await exec.getExecOutput('notation', ['cert', 'ls']);
 
         // verify core process
+        let notationCommand: string[] = ['verify', '-v'];
         if (allow_referrers_api.toLowerCase() === 'true') {
             // if process.env.NOTATION_EXPERIMENTAL is not set, notation would
             // fail the command as expected.
-            await exec.getExecOutput('notation', ['verify', '--allow-referrers-api', target_artifact_ref, '-v']);
-        } else {
-            await exec.getExecOutput('notation', ['verify', target_artifact_ref, '-v']);
+            notationCommand.push('--allow-referrers-api');
+        }
+        for (const ref of targetArtifactReferenceList) {
+            await exec.getExecOutput('notation', [...notationCommand, ref]);
         }
     } catch (e: unknown) {
         if (e instanceof Error) {

@@ -88,13 +88,14 @@ function verify() {
             yield configTrustStore(trust_store);
             yield exec.getExecOutput('notation', ['cert', 'ls']);
             // verify core process
+            let notationCommand = ['verify', '-v'];
             if (allow_referrers_api.toLowerCase() === 'true') {
                 // if process.env.NOTATION_EXPERIMENTAL is not set, notation would
                 // fail the command as expected.
-                yield exec.getExecOutput('notation', ['verify', '--allow-referrers-api', target_artifact_ref, '-v']);
+                notationCommand.push('--allow-referrers-api');
             }
-            else {
-                yield exec.getExecOutput('notation', ['verify', target_artifact_ref, '-v']);
+            for (const ref of targetArtifactReferenceList) {
+                yield exec.getExecOutput('notation', [...notationCommand, ref]);
             }
         }
         catch (e) {
