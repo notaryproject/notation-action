@@ -85,7 +85,7 @@ jobs:
             ${{ env.target_artifact_reference2 }}
           signature_format: cose
           plugin_config: |-
-            keyFile=${{ env.E2E_KEY }}            
+            keyFile=${{ env.E2E_KEY }}
 
       - name: Sign artifact with multiple plugin_config
         uses: ./sign

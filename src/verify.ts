@@ -41,6 +41,18 @@ async function verify(): Promise<void> {
             throw new Error("input trust_store is required");
         }
 
+        // get list of target artifact references
+        const targetArtifactReferenceList: string[] = [];
+        for (let ref of target_artifact_ref.split(/\r?\n/)) {
+            ref = ref.trim();
+            if (ref) {
+                targetArtifactReferenceList.push(ref); 
+            }
+        }
+        if (targetArtifactReferenceList.length === 0) {
+            throw new Error("input target_artifact_reference does not contain any valid reference")
+        }
+
         // configure Notation trust policy
         await exec.getExecOutput('notation', ['policy', 'import', '--force', trust_policy]);
         await exec.getExecOutput('notation', ['policy', 'show']);
