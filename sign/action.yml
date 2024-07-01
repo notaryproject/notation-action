@@ -40,8 +40,8 @@ inputs:
 
         ```yaml
         target_artifact_reference: |-
-          <registry1>/<repo>@<digest>
-          <registry2>/<repo>@<tag>
+          <registry_1>/<repo_1>@<digest>
+          <registry_2>/<repo_2>@<tag>
         ```
     required: true
   signature_format:

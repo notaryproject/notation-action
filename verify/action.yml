@@ -19,17 +19,17 @@ branding:
 inputs:
   target_artifact_reference:
     description: |-
-        The list of references of the target artifacts to be signed. 
+        The list of references of the target artifacts to be verified. 
         Due to limitations with GitHub Actions inputs, this is
         specified as a string.
 
-        You can sign multiple target artifacts by putting each reference on its 
-        own line:
+        You can verify multiple target artifacts by putting each reference on 
+        its own line:
 
         ```yaml
         target_artifact_reference: |-
-          <registry1>/<repo>@<digest>
-          <registry2>/<repo>@<tag>
+          <registry_1>/<repo_1>@<digest>
+          <registry_2>/<repo_2>@<tag>
         ```
     required: true
   trust_policy:
