@@ -83,6 +83,17 @@ function sign() {
             if (!target_artifact_ref) {
                 throw new Error("input target_artifact_reference is required");
             }
+            // get list of target artifact references
+            const targetArtifactReferenceList = [];
+            for (let ref of target_artifact_ref.split(/\r?\n/)) {
+                ref = ref.trim();
+                if (ref) {
+                    targetArtifactReferenceList.push(ref);
+                }
+            }
+            if (targetArtifactReferenceList.length === 0) {
+                throw new Error("input target_artifact_reference does not contain any valid reference");
+            }
             // setting up notation signing plugin
             yield setupPlugin();
             yield exec.getExecOutput('notation', ['plugin', 'ls']);
@@ -94,7 +105,9 @@ function sign() {
                 // fail the command as expected.
                 notationCommand.push('--allow-referrers-api');
             }
-            yield exec.getExecOutput('notation', [...notationCommand, target_artifact_ref]);
+            for (const ref of targetArtifactReferenceList) {
+                yield exec.getExecOutput('notation', [...notationCommand, ref]);
+            }
         }
         catch (e) {
             if (e instanceof Error) {
@@ -174,7 +187,7 @@ function getPluginConfigList(pluginConfig) {
         return [];
     }
     let pluginConfigList = [];
-    for (let config of pluginConfig.split(/\r|\n/)) {
+    for (let config of pluginConfig.split(/\r?\n/)) {
         config = config.trim();
         if (config) {
             pluginConfigList.push("--plugin-config=" + config);

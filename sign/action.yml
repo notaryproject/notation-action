@@ -30,14 +30,37 @@ inputs:
     description: key identifier for the signing key pair from the plugin
     required: true
   target_artifact_reference:
-    description: 'reference of the target artifact to be signed. <registry>/<repo>@<digest> or <registry>/<repo>:<tag>'
+    description: |-
+        The list of references of the target artifacts to be signed. 
+        Due to limitations with GitHub Actions inputs, this is
+        specified as a string.
+
+        You can sign multiple target artifacts by putting each reference on its 
+        own line:
+
+        ```yaml
+        target_artifact_reference: |-
+          <registry_1>/<repo_1>@<digest>
+          <registry_2>/<repo_2>:<tag>
+        ```
     required: true
   signature_format:
     description: 'signature envelope format, options: jws, cose'
     required: false
     default: jws
   plugin_config:
-    description: list of {key}={value} pairs that are passed as it is to the signing plugin
+    description: |- 
+      list of {key}={value} pairs that are passed as it is to the signing plugin.
+      Reference: https://github.com/notaryproject/specifications/blob/v1.0.0/specs/plugin-extensibility.md#plugin-configuration
+      Due to limitations with GitHub Actions inputs, this is specified as a string.
+      
+      You can specify multiple pairs by putting each pair on its own line:
+
+      ```yaml
+      plugin_config: |-
+        <key1>=<value1>
+        <key2>=<value2>
+      ```
     required: false
   allow_referrers_api:
     description: |

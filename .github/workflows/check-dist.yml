@@ -35,7 +35,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 16.x
-          cache: npm
+      - name: Install TypeScript
+        run: npm install -g typescript
       - name: Show versions
         run: |
           echo node js version: $(node -v)

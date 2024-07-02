@@ -18,7 +18,19 @@ branding:
   color: blue
 inputs:
   target_artifact_reference:
-    description: 'reference of the target artifact to be verified. <registry>/<repo>@<digest> or <registry>/<repo>:<tag>'
+    description: |-
+        The list of references of the target artifacts to be verified. 
+        Due to limitations with GitHub Actions inputs, this is
+        specified as a string.
+
+        You can verify multiple target artifacts by putting each reference on 
+        its own line:
+
+        ```yaml
+        target_artifact_reference: |-
+          <registry_1>/<repo_1>@<digest>
+          <registry_2>/<repo_2>:<tag>
+        ```
     required: true
   trust_policy:
     description: file path of valid Notation [trustpolicy.json](https://github.com/notaryproject/specifications/blob/v1.0.0-rc.2/specs/trust-store-trust-policy.md#trust-policy).

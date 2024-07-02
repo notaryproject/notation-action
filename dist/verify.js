@@ -70,6 +70,17 @@ function verify() {
             if (!trust_store) {
                 throw new Error("input trust_store is required");
             }
+            // get list of target artifact references
+            const targetArtifactReferenceList = [];
+            for (let ref of target_artifact_ref.split(/\r?\n/)) {
+                ref = ref.trim();
+                if (ref) {
+                    targetArtifactReferenceList.push(ref);
+                }
+            }
+            if (targetArtifactReferenceList.length === 0) {
+                throw new Error("input target_artifact_reference does not contain any valid reference");
+            }
             // configure Notation trust policy
             yield exec.getExecOutput('notation', ['policy', 'import', '--force', trust_policy]);
             yield exec.getExecOutput('notation', ['policy', 'show']);
@@ -77,13 +88,14 @@ function verify() {
             yield configTrustStore(trust_store);
             yield exec.getExecOutput('notation', ['cert', 'ls']);
             // verify core process
+            let notationCommand = ['verify', '-v'];
             if (allow_referrers_api.toLowerCase() === 'true') {
                 // if process.env.NOTATION_EXPERIMENTAL is not set, notation would
                 // fail the command as expected.
-                yield exec.getExecOutput('notation', ['verify', '--allow-referrers-api', target_artifact_ref, '-v']);
+                notationCommand.push('--allow-referrers-api');
             }
-            else {
-                yield exec.getExecOutput('notation', ['verify', target_artifact_ref, '-v']);
+            for (const ref of targetArtifactReferenceList) {
+                yield exec.getExecOutput('notation', [...notationCommand, ref]);
             }
         }
         catch (e) {
