@@ -51,14 +51,14 @@ jobs:
           echo "target_artifact_reference=localhost:5000/image1@${{ steps.image1.outputs.digest }}" >> "$GITHUB_ENV"
           echo "target_artifact_reference2=localhost:5000/image2@${{ steps.image2.outputs.digest }}" >> "$GITHUB_ENV"
       
-      # # Setting up Notation CLI on the runner
-      # - name: Setup Notation
-      #   uses: ./setup
+      # Setting up Notation CLI on the runner
+      - name: Setup Notation
+        uses: ./setup
       
-      # # Generate test
-      # - name: Notation generate-test
-      #   run: |
-      #     notation cert generate-test "e2e-test"
+      # Generate test
+      - name: Notation generate-test
+        run: |
+          notation cert generate-test "e2e-test"
 
       # E2E test cases on Notation Sign
       - name: Sign artifact using notation plugin

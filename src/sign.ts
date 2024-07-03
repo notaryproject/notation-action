@@ -64,7 +64,7 @@ async function sign(): Promise<void> {
             }
         }
         if (targetArtifactReferenceList.length === 0) {
-            throw new Error("input target_artifact_reference does not contain any valid reference")
+            throw new Error("input target_artifact_reference does not contain any valid reference");
         }
 
         // setting up notation signing plugin
@@ -113,7 +113,7 @@ async function setupPlugin() {
             console.log("installing signing plugin via Notation...");
             await exec.getExecOutput('notation', ['plugin', 'install', '--url', plugin_url, '--sha256sum', plugin_checksum]);
             return;
-        } 
+        }
 
         // download signing plugin, validate checksum and plugin name
         console.log("downloading signing plugin...");
