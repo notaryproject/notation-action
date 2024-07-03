@@ -106,13 +106,12 @@ async function setupPlugin() {
         }
 
         // downoad signign plugin via Notation
-        console.log("installing signing plugin via Notation...");
         const {stdout: stdout} = await exec.getExecOutput('notation', ['version']);
         let versionOutput = stdout.split("\n");
         let notationVersion = semver.clean(versionOutput[2].split(":")[1].trim());
-        console.log("notation version is "+notationVersion);
         if (semver.gte(String(notationVersion), '1.1.0')) {
-            await exec.getExecOutput('notation', ['install', '--url', plugin_url, '--sha256sum', plugin_checksum]);
+            console.log("installing signing plugin via Notation...");
+            await exec.getExecOutput('notation', ['plugin', 'install', '--url', plugin_url, '--sha256sum', plugin_checksum]);
             return;
         } 
 

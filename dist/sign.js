@@ -134,13 +134,12 @@ function setupPlugin() {
                 return;
             }
             // downoad signign plugin via Notation
-            console.log("installing signing plugin via Notation...");
             const { stdout: stdout } = yield exec.getExecOutput('notation', ['version']);
             let versionOutput = stdout.split("\n");
             let notationVersion = semver.clean(versionOutput[2].split(":")[1].trim());
-            console.log("notation version is " + notationVersion);
             if (semver.gte(String(notationVersion), '1.1.0')) {
-                yield exec.getExecOutput('notation', ['install', '--url', plugin_url, '--sha256sum', plugin_checksum]);
+                console.log("installing signing plugin via Notation...");
+                yield exec.getExecOutput('notation', ['plugin', 'install', '--url', plugin_url, '--sha256sum', plugin_checksum]);
                 return;
             }
             // download signing plugin, validate checksum and plugin name
