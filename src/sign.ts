@@ -18,6 +18,7 @@ import * as exec from '@actions/exec';
 import * as tc from '@actions/tool-cache';
 import * as path from 'path';
 import * as fs from 'fs';
+import * as semver from 'semver';
 import {hash} from './lib/checksum';
 import {getConfigHome, getBinaryExtension} from './lib/install';
 
@@ -103,6 +104,17 @@ async function setupPlugin() {
             console.log(`plugin ${plugin_name} is already installed`);
             return;
         }
+
+        // downoad signign plugin via Notation
+        console.log("installing signing plugin via Notation...");
+        const {stdout: stdout} = await exec.getExecOutput('notation', ['version']);
+        let versionOutput = stdout.split("\n");
+        let notationVersion = semver.clean(versionOutput[2].split(":")[1].trim());
+        console.log("notation version is "+notationVersion);
+        if (semver.gte(String(notationVersion), '1.1.0')) {
+            await exec.getExecOutput('notation', ['install', '--url', plugin_url, '--sha256sum', plugin_checksum]);
+            return;
+        } 
 
         // download signing plugin, validate checksum and plugin name
         console.log("downloading signing plugin...");
