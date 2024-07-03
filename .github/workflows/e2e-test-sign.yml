@@ -218,6 +218,9 @@ jobs:
             echo "Sign artifact missing target artifact reference should fail, but succeeded."
             exit 1
       
+      - name: clean up plugin
+        run: |
+          notation plugin uninstall e2e-test-plugin --yes
       - name: Setup older Notation
         uses: ./setup
         with:
