@@ -31,7 +31,7 @@ jobs:
           - 5000:5000
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Build and push to local registry
         id: image1
         uses: docker/build-push-action@v4
