@@ -18,6 +18,7 @@ import * as exec from '@actions/exec';
 import * as tc from '@actions/tool-cache';
 import * as path from 'path';
 import * as fs from 'fs';
+import * as semver from 'semver';
 import {hash} from './lib/checksum';
 import {getConfigHome, getBinaryExtension} from './lib/install';
 
@@ -63,7 +64,7 @@ async function sign(): Promise<void> {
             }
         }
         if (targetArtifactReferenceList.length === 0) {
-            throw new Error("input target_artifact_reference does not contain any valid reference")
+            throw new Error("input target_artifact_reference does not contain any valid reference");
         }
 
         // setting up notation signing plugin
@@ -101,6 +102,16 @@ async function setupPlugin() {
         const notationPluginPath = path.join(getConfigHome(), `notation/plugins/${plugin_name}`);
         if (checkPluginExistence(notationPluginPath)) {
             console.log(`plugin ${plugin_name} is already installed`);
+            return;
+        }
+
+        // downoad signign plugin via Notation
+        const {stdout: stdout} = await exec.getExecOutput('notation', ['version']);
+        let versionOutput = stdout.split("\n");
+        let notationVersion = semver.clean(versionOutput[2].split(":")[1].trim());
+        if (semver.gte(String(notationVersion), '1.1.0')) {
+            console.log("installing signing plugin via Notation...");
+            await exec.getExecOutput('notation', ['plugin', 'install', '--url', plugin_url, '--sha256sum', plugin_checksum]);
             return;
         }
 

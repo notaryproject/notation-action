@@ -50,6 +50,7 @@ const exec = __importStar(require("@actions/exec"));
 const tc = __importStar(require("@actions/tool-cache"));
 const path = __importStar(require("path"));
 const fs = __importStar(require("fs"));
+const semver = __importStar(require("semver"));
 const checksum_1 = require("./lib/checksum");
 const install_1 = require("./lib/install");
 // plugin inputs from user
@@ -130,6 +131,15 @@ function setupPlugin() {
             const notationPluginPath = path.join((0, install_1.getConfigHome)(), `notation/plugins/${plugin_name}`);
             if (checkPluginExistence(notationPluginPath)) {
                 console.log(`plugin ${plugin_name} is already installed`);
+                return;
+            }
+            // downoad signign plugin via Notation
+            const { stdout: stdout } = yield exec.getExecOutput('notation', ['version']);
+            let versionOutput = stdout.split("\n");
+            let notationVersion = semver.clean(versionOutput[2].split(":")[1].trim());
+            if (semver.gte(String(notationVersion), '1.1.0')) {
+                console.log("installing signing plugin via Notation...");
+                yield exec.getExecOutput('notation', ['plugin', 'install', '--url', plugin_url, '--sha256sum', plugin_checksum]);
                 return;
             }
             // download signing plugin, validate checksum and plugin name
