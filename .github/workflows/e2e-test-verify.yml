@@ -34,14 +34,14 @@ jobs:
         uses: actions/checkout@v4
       - name: Build and push to local registry
         id: image1
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v6
         with:
           context: ./tests/e2e
           push: true
           tags: localhost:5000/image1:latest
       - name: Build and push to local registry
         id: image2
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v6
         with:
           context: ./tests/e2e
           push: true
