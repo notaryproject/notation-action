@@ -5,8 +5,8 @@ This repository contains the implementation of [GitHub Actions](https://docs.git
 The following three actions are available:
 
 - `setup`: Install Notation
-- `sign`: Sign an OCI artifact with a specified Notation plugin
-- `verify`: Verify a signature with Notation trust store and trust policy
+- `sign`: Sign OCI artifacts with a specified Notation plugin
+- `verify`: Verify signatures with Notation trust store and trust policy
 
 > [!NOTE]
 > The Notary Project documentation is available [here](https://notaryproject.dev/docs/). You can also find the Notary Project [README](https://github.com/notaryproject/.github/blob/main/README.md) to learn about the overall Notary Project.
@@ -51,7 +51,7 @@ Currently, [Azure Key Vault plugin for Notation](https://github.com/Azure/notati
     plugin_url: <plugin_download_url>
     plugin_checksum: <SHA256_of_the_signing_plugin>
     key_id: <key_identifier_to_sign>
-    target_artifact_reference: <target_artifact_reference_in_remote_registry>
+    target_artifact_reference: <list_of_target_artifact_references_in_remote_registry>
     signature_format: <signature_envelope_format>
     plugin_config: <list_of_plugin_defined_configs>
     allow_referrers_api: <boolean_flag_for_referrers_api>
@@ -66,10 +66,12 @@ Currently, [Azure Key Vault plugin for Notation](https://github.com/Azure/notati
   uses: notaryproject/notation-action/sign@v1
   with:
     plugin_name: azure-kv
-    plugin_url: https://github.com/Azure/notation-azure-kv/releases/download/v1.0.1/notation-azure-kv_1.0.1_linux_amd64.tar.gz
-    plugin_checksum: f8a75d9234db90069d9eb5660e5374820edf36d710bd063f4ef81e7063d3810b
+    plugin_url: https://github.com/Azure/notation-azure-kv/releases/download/v1.2.0/notation-azure-kv_1.2.0_linux_amd64.tar.gz
+    plugin_checksum: 06bb5198af31ce11b08c4557ae4c2cbfb09878dfa6b637b7407ebc2d57b87b34
     key_id: https://testnotationakv.vault.azure.net/keys/notationLeafCert/c585b8ad8fc542b28e41e555d9b3a1fd
-    target_artifact_reference: myRegistry.azurecr.io/myRepo@sha256:aaabbb
+    target_artifact_reference: |-
+      myRegistry.azurecr.io/myRepo@sha256:aaabbb
+      myOtherRegistry.azurecr.io/myOtherRepo@sha256:cccddd
     signature_format: cose
     plugin_config: |-
       ca_certs=.github/cert-bundle/cert-bundle.crt
@@ -86,10 +88,12 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
   with:
     allow_referrers_api: 'true'
     plugin_name: azure-kv
-    plugin_url: https://github.com/Azure/notation-azure-kv/releases/download/v1.0.1/notation-azure-kv_1.0.1_linux_amd64.tar.gz
-    plugin_checksum: f8a75d9234db90069d9eb5660e5374820edf36d710bd063f4ef81e7063d3810b
+    plugin_url: https://github.com/Azure/notation-azure-kv/releases/download/v1.2.0/notation-azure-kv_1.2.0_linux_amd64.tar.gz
+    plugin_checksum: 06bb5198af31ce11b08c4557ae4c2cbfb09878dfa6b637b7407ebc2d57b87b34
     key_id: https://testnotationakv.vault.azure.net/keys/notationLeafCert/c585b8ad8fc542b28e41e555d9b3a1fd
-    target_artifact_reference: myRegistry.azurecr.io/myRepo@sha256:aaabbb
+    target_artifact_reference: |-
+      myRegistry.azurecr.io/myRepo@sha256:aaabbb
+      myOtherRegistry.azurecr.io/myOtherRepo@sha256:cccddd
     signature_format: cose
     plugin_config: |-
       ca_certs=.github/cert-bundle/cert-bundle.crt
@@ -104,7 +108,7 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
 - name: verify released artifact
   uses: notaryproject/notation-action/verify@v1
   with:
-    target_artifact_reference: <target_artifact_reference_in_remote_registry>
+    target_artifact_reference: <list_of_target_artifact_references_in_remote_registry>
     trust_policy: <file_path_to_user_defined_trustpolicy.json>
     trust_store: <dir_to_user_trust_store>
     allow_referrers_api: <boolean_flag_for_referrers_api>
@@ -118,7 +122,9 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
 - name: verify released artifact
   uses: notaryproject/notation-action/verify@v1
   with:
-    target_artifact_reference: myRegistry.azurecr.io/myRepo@sha256:aaabbb
+    target_artifact_reference: |-
+      myRegistry.azurecr.io/myRepo@sha256:aaabbb
+      myOtherRegistry.azurecr.io/myOtherRepo@sha256:cccddd
     trust_policy: .github/trustpolicy/trustpolicy.json
     trust_store: .github/truststore
 ```
@@ -149,7 +155,9 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
     NOTATION_EXPERIMENTAL: 1  # this is required by Notation to use Referrers API
   with:
     allow_referrers_api: 'true'
-    target_artifact_reference: myRegistry.azurecr.io/myRepo@sha256:aaabbb
+    target_artifact_reference: |-
+      myRegistry.azurecr.io/myRepo@sha256:aaabbb
+      myOtherRegistry.azurecr.io/myOtherRepo@sha256:cccddd
     trust_policy: .github/trustpolicy/trustpolicy.json
     trust_store: .github/truststore
 ```
@@ -168,4 +176,3 @@ To sign and verify an image stored in the private registry with Notation GitHub 
 ### KMS authentication
 
 If your signing key and certificate are stored in a KMS, make sure to authenticate with the KMS before signing the image in your GitHub Actions workflow.
-
