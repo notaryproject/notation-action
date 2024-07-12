@@ -66,8 +66,8 @@ Currently, [Azure Key Vault plugin for Notation](https://github.com/Azure/notati
   uses: notaryproject/notation-action/sign@v1
   with:
     plugin_name: azure-kv
-    plugin_url: https://github.com/Azure/notation-azure-kv/releases/download/v1.0.1/notation-azure-kv_1.0.1_linux_amd64.tar.gz
-    plugin_checksum: f8a75d9234db90069d9eb5660e5374820edf36d710bd063f4ef81e7063d3810b
+    plugin_url: https://github.com/Azure/notation-azure-kv/releases/download/v1.2.0/notation-azure-kv_1.2.0_linux_amd64.tar.gz
+    plugin_checksum: 06bb5198af31ce11b08c4557ae4c2cbfb09878dfa6b637b7407ebc2d57b87b34
     key_id: https://testnotationakv.vault.azure.net/keys/notationLeafCert/c585b8ad8fc542b28e41e555d9b3a1fd
     target_artifact_reference: |-
       myRegistry.azurecr.io/myRepo@sha256:aaabbb
@@ -88,8 +88,8 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
   with:
     allow_referrers_api: 'true'
     plugin_name: azure-kv
-    plugin_url: https://github.com/Azure/notation-azure-kv/releases/download/v1.0.1/notation-azure-kv_1.0.1_linux_amd64.tar.gz
-    plugin_checksum: f8a75d9234db90069d9eb5660e5374820edf36d710bd063f4ef81e7063d3810b
+    plugin_url: https://github.com/Azure/notation-azure-kv/releases/download/v1.2.0/notation-azure-kv_1.2.0_linux_amd64.tar.gz
+    plugin_checksum: 06bb5198af31ce11b08c4557ae4c2cbfb09878dfa6b637b7407ebc2d57b87b34
     key_id: https://testnotationakv.vault.azure.net/keys/notationLeafCert/c585b8ad8fc542b28e41e555d9b3a1fd
     target_artifact_reference: |-
       myRegistry.azurecr.io/myRepo@sha256:aaabbb
