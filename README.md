@@ -36,7 +36,7 @@ Currently, [Azure Key Vault plugin for Notation](https://github.com/Azure/notati
 - name: setup Notation CLI
   uses: notaryproject/notation-action/setup@v1
   with:
-    version: "1.1.1"
+    version: "1.2.0"
 ```
 
 </details>
@@ -78,7 +78,7 @@ Currently, [Azure Key Vault plugin for Notation](https://github.com/Azure/notati
       self_signed=false
 ```
 
-Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0-rc.3/spec.md#listing-referrers) in signing:
+Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0/spec.md#listing-referrers) in signing:
 
 ```yaml
 - name: sign releasd artifact with notation-azure-kv plugin
@@ -130,8 +130,8 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
 ```
 
 > [!NOTE]
-> - `.github/trustpolicy/trustpolicy.json` MUST follow the Notation [trust policy specs](https://github.com/notaryproject/specifications/blob/v1.0.0/specs/trust-store-trust-policy.md#trust-policy).
-> - `.github/truststore` MUST follow the Notation [trust store specs](https://github.com/notaryproject/specifications/blob/v1.0.0/specs/trust-store-trust-policy.md#trust-store). See an example of trust store below.
+> - `.github/trustpolicy/trustpolicy.json` MUST follow the Notation [trust policy specs](https://github.com/notaryproject/specifications/blob/v1.1.0/specs/trust-store-trust-policy.md#trust-policy).
+> - `.github/truststore` MUST follow the Notation [trust store specs](https://github.com/notaryproject/specifications/blob/v1.1.0/specs/trust-store-trust-policy.md#trust-store). See an example of trust store below.
  
 ```
 .github/truststore

@@ -224,7 +224,7 @@ jobs:
       - name: Setup older Notation
         uses: ./setup
         with:
-          version: "1.0.0"
+          version: "1.1.1"
       - name: Sign with older Notation
         uses: ./sign
         with:
