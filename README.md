@@ -130,8 +130,8 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
 ```
 
 > [!NOTE]
-> - `.github/trustpolicy/trustpolicy.json` MUST follow the Notation [trust policy specs](https://github.com/notaryproject/specifications/blob/v1.1.0/specs/trust-store-trust-policy.md#trust-policy).
-> - `.github/truststore` MUST follow the Notation [trust store specs](https://github.com/notaryproject/specifications/blob/v1.1.0/specs/trust-store-trust-policy.md#trust-store). See an example of trust store below.
+> - `.github/trustpolicy/trustpolicy.json` MUST follow the Notation [trust policy specs](https://github.com/notaryproject/specifications/blob/v1.0.0/specs/trust-store-trust-policy.md#trust-policy).
+> - `.github/truststore` MUST follow the Notation [trust store specs](https://github.com/notaryproject/specifications/blob/v1.0.0/specs/trust-store-trust-policy.md#trust-store). See an example of trust store below.
  
 ```
 .github/truststore
@@ -146,7 +146,7 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
             └── <my_certificate4>
 ```
 
-Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0-rc.3/spec.md#listing-referrers) in verification:
+Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0/spec.md#listing-referrers) in verification:
 
 ```yaml
 - name: verify released artifact
