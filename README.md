@@ -36,7 +36,7 @@ Currently, [Azure Key Vault plugin for Notation](https://github.com/Azure/notati
 - name: setup Notation CLI
   uses: notaryproject/notation-action/setup@v1
   with:
-    version: "1.1.1"
+    version: "1.2.0"
 ```
 
 </details>
@@ -78,7 +78,7 @@ Currently, [Azure Key Vault plugin for Notation](https://github.com/Azure/notati
       self_signed=false
 ```
 
-Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0-rc.3/spec.md#listing-referrers) in signing:
+Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0/spec.md#listing-referrers) in signing:
 
 ```yaml
 - name: sign releasd artifact with notation-azure-kv plugin
@@ -146,7 +146,7 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
             └── <my_certificate4>
 ```
 
-Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0-rc.3/spec.md#listing-referrers) in verification:
+Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0/spec.md#listing-referrers) in verification:
 
 ```yaml
 - name: verify released artifact

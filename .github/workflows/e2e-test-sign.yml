@@ -204,7 +204,7 @@ jobs:
       - name: Sign artifact missing target artifact reference
         continue-on-error: true
         id: missing-artifact-reference
-        uses: notaryproject/notation-action/sign@main
+        uses: ./sign
         env:
           E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
         with:
@@ -224,7 +224,7 @@ jobs:
       - name: Setup older Notation
         uses: ./setup
         with:
-          version: "1.0.0"
+          version: "1.1.1"
       - name: Sign with older Notation
         uses: ./sign
         with:
