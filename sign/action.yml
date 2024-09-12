@@ -63,7 +63,7 @@ inputs:
       ```
     required: false
   allow_referrers_api:
-    description: |
+    description: |-
       if 'true', use the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0-rc.3/spec.md#listing-referrers) to store signatures in the registry, 
       if Referrers API is not supported, automatically fallback to the [Referrers tag schema](https://github.com/opencontainers/distribution-spec/blob/v1.1.0-rc.3/spec.md#referrers-tag-schema);
       if 'false', use the Referrers tag schema by default.
@@ -71,6 +71,18 @@ inputs:
       options: 'true', 'false'
     required: false
     default: 'false'
+  timestamp_url:
+    description: |-
+      RFC 3161 Timestamp Authority (TSA) server URL.
+      This field is only valid for Notation v1.2.0 or later.
+      When set, MUST be set along with the `timestamp_root_cert` field.
+    required: false
+  timestamp_root_cert:
+    description: |-
+      filepath of RFC 3161 Timestamp Authority (TSA) root certificate.
+      This field is only valid for Notation v1.2.0 or later.
+      When set, MUST be set along with the `timestamp_url` field.
+    required: false
 runs:
   using: node16
   main: ../dist/sign.js

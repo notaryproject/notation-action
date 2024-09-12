@@ -46,6 +46,8 @@ async function sign(): Promise<void> {
         const target_artifact_ref = core.getInput('target_artifact_reference');
         const signature_format = core.getInput('signature_format');
         const allow_referrers_api = core.getInput('allow_referrers_api');
+        const timestamp_url = core.getInput('timestamp_url');
+        const timestamp_root_cert = core.getInput('timestamp_root_cert');
 
         // sanity check
         if (!key_id) {
@@ -53,6 +55,12 @@ async function sign(): Promise<void> {
         }
         if (!target_artifact_ref) {
             throw new Error("input target_artifact_reference is required");
+        }
+        if (timestamp_url && !timestamp_root_cert) {
+            throw new Error("timestamp_url is set, missing input timestamp_root_cert");
+        }
+        if (timestamp_root_cert && !timestamp_url) {
+            throw new Error("timestamp_root_cert is set, missing input timestamp_url");
         }
 
         // get list of target artifact references
@@ -78,6 +86,13 @@ async function sign(): Promise<void> {
             // if process.env.NOTATION_EXPERIMENTAL is not set, notation would
             // fail the command as expected.
             notationCommand.push('--allow-referrers-api');
+        }
+        if (timestamp_url) {
+            // sign with timestamping
+            console.log(`timestamping url is ${timestamp_url}`);
+            console.log(`timestamping root cert is ${timestamp_root_cert}`);
+            const timestampingArr: string[] = ['--timestamp-url', timestamp_url, '--timestamp-root-cert', timestamp_root_cert];
+            notationCommand.push(...timestampingArr);
         }
         for (const ref of targetArtifactReferenceList) {
             await exec.getExecOutput('notation', [...notationCommand, ref]);

@@ -45,10 +45,14 @@ inputs:
           │   └── <my_trust_store1>
           │       ├── <my_certificate1>
           │       └── <my_certificate2>
-          └── signingAuthority
-              └── <my_trust_store2>
-                  ├── <my_certificate3>
-                  └── <my_certificate4>
+          ├── signingAuthority
+          |   └── <my_trust_store2>
+          |       ├── <my_certificate3>
+          |       └── <my_certificate4>
+          └── tsa
+              └── <tsa_trust_store>
+                  ├── <tsa_certificate1>
+                  └── <tsa_certificate2>
     required: true
   allow_referrers_api:
     description: |
