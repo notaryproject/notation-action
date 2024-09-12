@@ -64,8 +64,8 @@ inputs:
     required: false
   allow_referrers_api:
     description: |-
-      if 'true', use the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0-rc.3/spec.md#listing-referrers) to store signatures in the registry, 
-      if Referrers API is not supported, automatically fallback to the [Referrers tag schema](https://github.com/opencontainers/distribution-spec/blob/v1.1.0-rc.3/spec.md#referrers-tag-schema);
+      if 'true', use the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0/spec.md#listing-referrers) to store signatures in the registry, 
+      if Referrers API is not supported, automatically fallback to the [Referrers tag schema](https://github.com/opencontainers/distribution-spec/blob/v1.1.0/spec.md#referrers-tag-schema);
       if 'false', use the Referrers tag schema by default.
       When set to 'true', it requires the 'NOTATION_EXPERIMENTAL=1' environment variable.
       options: 'true', 'false'

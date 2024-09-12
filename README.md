@@ -82,7 +82,7 @@ Currently, [Azure Key Vault plugin for Notation](https://github.com/Azure/notati
     timestamp_root_cert: .github/DigiCertTSARootSHA384.cer
 ```
 
-Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0-rc.3/spec.md#listing-referrers) in signing:
+Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0/spec.md#listing-referrers) in signing:
 
 ```yaml
 - name: sign releasd artifact with notation-azure-kv plugin
@@ -156,7 +156,7 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
             └── <tsa_certificate2>
 ```
 
-Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0-rc.3/spec.md#listing-referrers) in verification:
+Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0/spec.md#listing-referrers) in verification:
 
 ```yaml
 - name: verify released artifact
