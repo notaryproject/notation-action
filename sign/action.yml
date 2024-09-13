@@ -51,7 +51,7 @@ inputs:
   plugin_config:
     description: |- 
       list of {key}={value} pairs that are passed as it is to the signing plugin.
-      Reference: https://github.com/notaryproject/specifications/blob/v1.0.0/specs/plugin-extensibility.md#plugin-configuration
+      Reference: https://github.com/notaryproject/specifications/blob/v1.1.0/specs/plugin-extensibility.md#plugin-configuration
       Due to limitations with GitHub Actions inputs, this is specified as a string.
       
       You can specify multiple pairs by putting each pair on its own line:

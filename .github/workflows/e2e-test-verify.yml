@@ -77,6 +77,8 @@ jobs:
           signature_format: cose
           plugin_config: |-
             keyFile=${{ env.E2E_KEY }}
+          timestamping_url: http://timestamp.digicert.com
+          timestamping_root_cert: ./tests/e2e/tsaRootCert/DigiCertTSARootSHA384.cer
     
       # E2E test cases on Notation Verify
       - name: Verify released artifact
@@ -93,6 +95,13 @@ jobs:
             trust_policy: ./tests/e2e/trustpolicy/trustpolicy.json
             trust_store: ./tests/e2e/truststore
       
+      - name: Verify released artifact with timestamp verification enabled
+        uses: ./verify
+        with:
+            target_artifact_reference: ${{ env.target_artifact_reference }}
+            trust_policy: ./tests/e2e/trustpolicy/timestampVerificationEnabled.json
+            trust_store: ./tests/e2e/truststore
+      
       - name: Verify multiple released artifacts
         uses: ./verify
         with:
@@ -101,6 +110,15 @@ jobs:
               ${{ env.target_artifact_reference2 }}
             trust_policy: ./tests/e2e/trustpolicy/trustpolicy.json
             trust_store: ./tests/e2e/truststore
+      
+      - name: Verify multiple released artifacts with timestamp verification enabled
+        uses: ./verify
+        with:
+            target_artifact_reference: |-
+              ${{ env.target_artifact_reference }}
+              ${{ env.target_artifact_reference2 }}
+            trust_policy: ./tests/e2e/trustpolicy/timestampVerificationEnabled.json
+            trust_store: ./tests/e2e/truststore      
       
       - name: Verify released artifact missing target artifact reference
         continue-on-error: true

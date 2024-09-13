@@ -33,11 +33,11 @@ inputs:
         ```
     required: true
   trust_policy:
-    description: file path of valid Notation [trustpolicy.json](https://github.com/notaryproject/specifications/blob/v1.0.0-rc.2/specs/trust-store-trust-policy.md#trust-policy).
+    description: file path of valid Notation [trustpolicy.json](https://github.com/notaryproject/specifications/blob/v1.1.0/specs/trust-store-trust-policy.md#trust-policy).
     required: true
   trust_store:
     description: |
-      dir of trust store following Notation trust store [spec](https://github.com/notaryproject/specifications/blob/v1.0.0-rc.2/specs/trust-store-trust-policy.md#trust-store).
+      dir of trust store following Notation trust store [spec](https://github.com/notaryproject/specifications/blob/v1.1.0/specs/trust-store-trust-policy.md#trust-store).
       An example:
       .github/truststore
       └── x509

@@ -55,8 +55,6 @@ Currently, [Azure Key Vault plugin for Notation](https://github.com/Azure/notati
     signature_format: <signature_envelope_format>
     plugin_config: <list_of_plugin_defined_configs>
     allow_referrers_api: <boolean_flag_for_referrers_api>
-    timestamp_url: <timestamp_authority_url>
-    timestamp_root_cert: <timestamp_authority_root_cert_filepath>
 ```
 
 <details>
@@ -78,8 +76,6 @@ Currently, [Azure Key Vault plugin for Notation](https://github.com/Azure/notati
     plugin_config: |-
       ca_certs=.github/cert-bundle/cert-bundle.crt
       self_signed=false
-    timestamp_url: http://timestamp.digicert.com
-    timestamp_root_cert: .github/DigiCertTSARootSHA384.cer
 ```
 
 Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0/spec.md#listing-referrers) in signing:
@@ -102,8 +98,6 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
     plugin_config: |-
       ca_certs=.github/cert-bundle/cert-bundle.crt
       self_signed=false
-    timestamp_url: http://timestamp.digicert.com
-    timestamp_root_cert: .github/DigiCertTSARootSHA384.cer
 ```
 
 </details>
@@ -146,14 +140,10 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
     │   └── <my_trust_store1>
     │       ├── <my_certificate1>
     │       └── <my_certificate2>
-    ├── signingAuthority
-    |   └── <my_trust_store2>
-    |       ├── <my_certificate3>
-    |       └── <my_certificate4>
-    └── tsa
-        └── <tsa_trust_store>
-            ├── <tsa_certificate1>
-            └── <tsa_certificate2>
+    └── signingAuthority
+        └── <my_trust_store2>
+            ├── <my_certificate3>
+            └── <my_certificate4>
 ```
 
 Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0/spec.md#listing-referrers) in verification:
