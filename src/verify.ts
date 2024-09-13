@@ -91,7 +91,7 @@ async function configTrustStore(dir: string) {
     if (fs.existsSync(trustStorePath)) {
         fs.rmSync(trustStorePath, {recursive: true});
     }
-    let trustStoreTypes = getSubdir(trustStoreX509); // [.github/truststore/x509/ca, .github/truststore/x509/signingAuthority, ...]
+    let trustStoreTypes = getSubdir(trustStoreX509); // [.github/truststore/x509/ca, .github/truststore/x509/signingAuthority, .github/truststore/x509/tsa]
     for (let i = 0; i < trustStoreTypes.length; ++i) {
         let trustStoreType = path.basename(trustStoreTypes[i]);
         let trustStores = getSubdir(trustStoreTypes[i]); // [.github/truststore/x509/ca/<my_store1>, .github/truststore/x509/ca/<my_store2>, ...]

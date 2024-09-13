@@ -33,11 +33,11 @@ inputs:
         ```
     required: true
   trust_policy:
-    description: file path of valid Notation [trustpolicy.json](https://github.com/notaryproject/specifications/blob/v1.0.0-rc.2/specs/trust-store-trust-policy.md#trust-policy).
+    description: file path of valid Notation [trustpolicy.json](https://github.com/notaryproject/specifications/blob/v1.1.0/specs/trust-store-trust-policy.md#trust-policy).
     required: true
   trust_store:
     description: |
-      dir of trust store following Notation trust store [spec](https://github.com/notaryproject/specifications/blob/v1.0.0-rc.2/specs/trust-store-trust-policy.md#trust-store).
+      dir of trust store following Notation trust store [spec](https://github.com/notaryproject/specifications/blob/v1.1.0/specs/trust-store-trust-policy.md#trust-store).
       An example:
       .github/truststore
       └── x509
@@ -45,10 +45,14 @@ inputs:
           │   └── <my_trust_store1>
           │       ├── <my_certificate1>
           │       └── <my_certificate2>
-          └── signingAuthority
-              └── <my_trust_store2>
-                  ├── <my_certificate3>
-                  └── <my_certificate4>
+          ├── signingAuthority
+          |   └── <my_trust_store2>
+          |       ├── <my_certificate3>
+          |       └── <my_certificate4>
+          └── tsa
+              └── <tsa_trust_store>
+                  ├── <tsa_certificate1>
+                  └── <tsa_certificate2>
     required: true
   allow_referrers_api:
     description: |
