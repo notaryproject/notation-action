@@ -60,8 +60,8 @@ jobs:
         run: |
           notation cert generate-test "e2e-test"
           notation cert delete --type ca --store e2e-test -y --all
-          mkdir -p ${GITHUB_WORKSPACE}/tests/e2e/truststore/x509/ca/e2e-test
-          cp ${{ env.E2E_CERT }} ${GITHUB_WORKSPACE}/tests/e2e/truststore/x509/ca/e2e-test/e2e-test.crt
+          mkdir -p ${GITHUB_WORKSPACE}/tests/e2e/verify/truststore/x509/ca/e2e-test
+          cp ${{ env.E2E_CERT }} ${GITHUB_WORKSPACE}/tests/e2e/verify/truststore/x509/ca/e2e-test/e2e-test.crt
           
       # Sign artifact
       - name: Sign multiple artifacts using notation plugin
