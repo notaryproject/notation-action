@@ -114,8 +114,8 @@ jobs:
           signature_format: cose
           plugin_config: |-
             keyFile=${{ env.E2E_KEY }}
-          timestamping_url: http://timestamp.digicert.com
-          timestamping_root_cert: ./tests/e2e/tsaRootCert/DigiCertTSARootSHA384.cer
+          timestamp_url: http://timestamp.digicert.com
+          timestamp_root_cert: ./tests/e2e/tsaRootCert/DigiCertTSARootSHA384.cer
       
       - name: Sign artifact with invalid plugin name
         continue-on-error: true
@@ -245,7 +245,7 @@ jobs:
           signature_format: cose
           plugin_config: |-
             keyFile=${{ env.E2E_KEY }}
-          timestamping_url: http://timestamp.digicert.com
+          timestamp_url: http://timestamp.digicert.com
       - name: 'Should Fail: Sign artifact with timestamp url but no timestamp root cert'
         if: steps.missing-timestamp-root-cert.outcome != 'failure'
         run: |
@@ -265,7 +265,7 @@ jobs:
           signature_format: cose
           plugin_config: |-
             keyFile=${{ env.E2E_KEY }}
-          timestamping_root_cert: ./tests/e2e/tsaRootCert/DigiCertTSARootSHA384.cer
+          timestamp_root_cert: ./tests/e2e/tsaRootCert/DigiCertTSARootSHA384.cer
       - name: 'Should Fail: Sign artifact with timestamp root cert but no timestamp url'
         if: steps.missing-timestamp-url.outcome != 'failure'
         run: |
@@ -304,8 +304,8 @@ jobs:
           signature_format: cose
           plugin_config: |-
             keyFile=${{ env.E2E_KEY }}
-          timestamping_url: http://timestamp.digicert.com
-          timestamping_root_cert: ./tests/e2e/tsaRootCert/DigiCertTSARootSHA384.cer
+          timestamp_url: http://timestamp.digicert.com
+          timestamp_root_cert: ./tests/e2e/tsaRootCert/DigiCertTSARootSHA384.cer
       - name: 'Should Fail: Sign artifact with timestamping using older Notation'
         if: steps.timestamping-with-older-notation.outcome != 'failure'
         run: |

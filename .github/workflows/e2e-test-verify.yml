@@ -77,8 +77,8 @@ jobs:
           signature_format: cose
           plugin_config: |-
             keyFile=${{ env.E2E_KEY }}
-          timestamping_url: http://timestamp.digicert.com
-          timestamping_root_cert: ./tests/e2e/tsaRootCert/DigiCertTSARootSHA384.cer
+          timestamp_url: http://timestamp.digicert.com
+          timestamp_root_cert: ./tests/e2e/tsaRootCert/DigiCertTSARootSHA384.cer
     
       # E2E test cases on Notation Verify
       - name: Verify released artifact
