@@ -53,6 +53,7 @@ const fs = __importStar(require("fs"));
 const semver = __importStar(require("semver"));
 const checksum_1 = require("./lib/checksum");
 const install_1 = require("./lib/install");
+const setup_1 = require("./setup");
 // plugin inputs from user
 const plugin_name = core.getInput('plugin_name');
 if (!plugin_name) {
@@ -71,6 +72,9 @@ const notationPluginBinary = `notation-${plugin_name}` + (0, install_1.getBinary
 function sign() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            // notation CLI version
+            const notationVersion = yield (0, setup_1.notationCLIVersion)();
+            console.log("Notation CLI version is ", notationVersion);
             // inputs from user
             const key_id = core.getInput('key_id');
             const plugin_config = core.getInput('plugin_config');
@@ -79,6 +83,7 @@ function sign() {
             const allow_referrers_api = core.getInput('allow_referrers_api');
             const timestamp_url = core.getInput('timestamp_url');
             const timestamp_root_cert = core.getInput('timestamp_root_cert');
+            const force_referrers_tag = core.getInput('force_referrers_tag');
             // sanity check
             if (!key_id) {
                 throw new Error("input key_id is required");
@@ -92,6 +97,12 @@ function sign() {
             if (timestamp_root_cert && !timestamp_url) {
                 throw new Error("timestamp_root_cert is set, missing input timestamp_url");
             }
+            if (force_referrers_tag && semver.lt(notationVersion, '1.2.0')) {
+                throw new Error("force_referrers_tag is only valid for Notation v1.2.0 or later");
+            }
+            if (force_referrers_tag && force_referrers_tag.toLowerCase() !== 'true' && force_referrers_tag.toLowerCase() !== 'false') {
+                throw new Error(`force_referrers_tag must be set to 'true' or 'false'. Got '${force_referrers_tag}'`);
+            }
             // get list of target artifact references
             const targetArtifactReferenceList = [];
             for (let ref of target_artifact_ref.split(/\r?\n/)) {
@@ -104,15 +115,33 @@ function sign() {
                 throw new Error("input target_artifact_reference does not contain any valid reference");
             }
             // setting up notation signing plugin
-            yield setupPlugin();
+            yield setupPlugin(notationVersion);
             yield exec.getExecOutput('notation', ['plugin', 'ls']);
             // sign core process
             const pluginConfigList = getPluginConfigList(plugin_config);
             let notationCommand = ['sign', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, ...pluginConfigList];
-            if (allow_referrers_api.toLowerCase() === 'true') {
+            if (force_referrers_tag.toLowerCase() === 'true') {
+                console.log("'force_referrers_tag' set to true, use referrers tag schema only");
+                // use referrers tag schema only
+                notationCommand.push('--force-referrers-tag=true');
+            }
+            else if (force_referrers_tag.toLowerCase() === 'false') {
+                console.log("'force_referrers_tag' set to false, try referrers api first");
+                // try referrers api first
+                notationCommand.push('--force-referrers-tag=false');
+            }
+            else if (allow_referrers_api.toLowerCase() === 'true') {
                 // if process.env.NOTATION_EXPERIMENTAL is not set, notation would
                 // fail the command as expected.
-                notationCommand.push('--allow-referrers-api');
+                if (semver.lt(notationVersion, '1.2.0')) {
+                    console.log("'allow_referrers_api' set to true, try referrers api first");
+                    notationCommand.push('--allow-referrers-api');
+                }
+                else {
+                    // Deprecated for Notation v1.2.0 or later.
+                    console.log("'allow_referrers_api' is deprecated. Use 'force_referrers_tag' instead, try referrers api first");
+                    notationCommand.push('--force-referrers-tag=false');
+                }
             }
             if (timestamp_url) {
                 // sign with timestamping
@@ -136,7 +165,7 @@ function sign() {
     });
 }
 // setupPlugin sets up the Notation signing plugin.
-function setupPlugin() {
+function setupPlugin(notationVersion) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             console.log(`input plugin_name is ${plugin_name}`);
@@ -148,11 +177,8 @@ function setupPlugin() {
                 console.log(`plugin ${plugin_name} is already installed`);
                 return;
             }
-            // downoad signign plugin via Notation
-            const { stdout: stdout } = yield exec.getExecOutput('notation', ['version']);
-            let versionOutput = stdout.split("\n");
-            let notationVersion = semver.clean(versionOutput[2].split(":")[1].trim());
-            if (semver.gte(String(notationVersion), '1.1.0')) {
+            // downoad signing plugin via Notation
+            if (semver.gte(notationVersion, '1.1.0')) {
                 console.log("installing signing plugin via Notation...");
                 yield exec.getExecOutput('notation', ['plugin', 'install', '--url', plugin_url, '--sha256sum', plugin_checksum]);
                 return;

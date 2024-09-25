@@ -21,6 +21,7 @@ import * as fs from 'fs';
 import * as semver from 'semver';
 import {hash} from './lib/checksum';
 import {getConfigHome, getBinaryExtension} from './lib/install';
+import { notationCLIVersion } from './setup';
 
 // plugin inputs from user
 const plugin_name = core.getInput('plugin_name');
@@ -40,6 +41,10 @@ const notationPluginBinary = `notation-${plugin_name}` + getBinaryExtension();
 // sign signs the target artifact with Notation.
 async function sign(): Promise<void> {
     try {
+        // notation CLI version
+        const notationVersion = await notationCLIVersion();
+        console.log("Notation CLI version is ", notationVersion);
+
         // inputs from user
         const key_id = core.getInput('key_id');
         const plugin_config = core.getInput('plugin_config');
@@ -48,6 +53,7 @@ async function sign(): Promise<void> {
         const allow_referrers_api = core.getInput('allow_referrers_api');
         const timestamp_url = core.getInput('timestamp_url');
         const timestamp_root_cert = core.getInput('timestamp_root_cert');
+        const force_referrers_tag = core.getInput('force_referrers_tag');
 
         // sanity check
         if (!key_id) {
@@ -61,6 +67,12 @@ async function sign(): Promise<void> {
         }
         if (timestamp_root_cert && !timestamp_url) {
             throw new Error("timestamp_root_cert is set, missing input timestamp_url");
+        }
+        if (force_referrers_tag && semver.lt(notationVersion, '1.2.0')) {
+            throw new Error("force_referrers_tag is only valid for Notation v1.2.0 or later");
+        }
+        if (force_referrers_tag && force_referrers_tag.toLowerCase() !== 'true' && force_referrers_tag.toLowerCase() !== 'false') {
+            throw new Error(`force_referrers_tag must be set to 'true' or 'false'. Got '${force_referrers_tag}'`);
         }
 
         // get list of target artifact references
@@ -76,16 +88,31 @@ async function sign(): Promise<void> {
         }
 
         // setting up notation signing plugin
-        await setupPlugin();
+        await setupPlugin(notationVersion);
         await exec.getExecOutput('notation', ['plugin', 'ls']);
 
         // sign core process
         const pluginConfigList = getPluginConfigList(plugin_config);
         let notationCommand: string[] = ['sign', '--signature-format', signature_format, '--id', key_id, '--plugin', plugin_name, ...pluginConfigList];
-        if (allow_referrers_api.toLowerCase() === 'true') {
+        if (force_referrers_tag.toLowerCase() === 'true') {
+            console.log("'force_referrers_tag' set to true, use referrers tag schema only");
+            // use referrers tag schema only
+            notationCommand.push('--force-referrers-tag=true');
+        } else if (force_referrers_tag.toLowerCase() === 'false') {
+            console.log("'force_referrers_tag' set to false, try referrers api first");
+            // try referrers api first
+            notationCommand.push('--force-referrers-tag=false');
+        } else if (allow_referrers_api.toLowerCase() === 'true') {
             // if process.env.NOTATION_EXPERIMENTAL is not set, notation would
             // fail the command as expected.
-            notationCommand.push('--allow-referrers-api');
+            if (semver.lt(notationVersion, '1.2.0')) {
+                console.log("'allow_referrers_api' set to true, try referrers api first");
+                notationCommand.push('--allow-referrers-api');
+            } else {
+                // Deprecated for Notation v1.2.0 or later.
+                console.log("'allow_referrers_api' is deprecated. Use 'force_referrers_tag' instead, try referrers api first");
+                notationCommand.push('--force-referrers-tag=false');
+            }
         }
         if (timestamp_url) {
             // sign with timestamping
@@ -107,7 +134,7 @@ async function sign(): Promise<void> {
 }
 
 // setupPlugin sets up the Notation signing plugin.
-async function setupPlugin() {
+async function setupPlugin(notationVersion: string) {
     try {
         console.log(`input plugin_name is ${plugin_name}`);
         console.log(`input plugin url is ${plugin_url}`);
@@ -120,11 +147,8 @@ async function setupPlugin() {
             return;
         }
 
-        // downoad signign plugin via Notation
-        const {stdout: stdout} = await exec.getExecOutput('notation', ['version']);
-        let versionOutput = stdout.split("\n");
-        let notationVersion = semver.clean(versionOutput[2].split(":")[1].trim());
-        if (semver.gte(String(notationVersion), '1.1.0')) {
+        // downoad signing plugin via Notation
+        if (semver.gte(notationVersion, '1.1.0')) {
             console.log("installing signing plugin via Notation...");
             await exec.getExecOutput('notation', ['plugin', 'install', '--url', plugin_url, '--sha256sum', plugin_checksum]);
             return;

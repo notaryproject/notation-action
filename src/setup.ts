@@ -14,12 +14,14 @@
  */
 
 import * as core from '@actions/core';
+import * as exec from '@actions/exec';
 import * as tc from '@actions/tool-cache';
+import * as semver from 'semver';
 import {hash, getNotationCheckSum} from './lib/checksum';
 import { getNotationDownloadURL } from './lib/install';
 
 // setup sets up the Notation CLI.
-async function setup(): Promise<void> {
+export async function setup(): Promise<void> {
     try {
         // inputs from user
         const version: string = core.getInput('version');
@@ -57,8 +59,14 @@ async function setup(): Promise<void> {
         }
     }
 }
-  
-export = setup;
+
+// notationCLIVersion returns the semantic version of notation CLI
+export const notationCLIVersion = async (): Promise<string> => {
+    const {stdout: stdout} = await exec.getExecOutput('notation', ['version']);
+    let versionOutput = stdout.split("\n");
+    return String(semver.clean(versionOutput[2].split(":")[1].trim()));
+}
+
 
 if (require.main === module) {
     setup();

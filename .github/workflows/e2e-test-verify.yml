@@ -20,6 +20,7 @@ on:
 env:
   E2E_KEY: /home/runner/.config/notation/localkeys/e2e-test.key
   E2E_CERT: /home/runner/.config/notation/localkeys/e2e-test.crt
+  NOTATION_EXPERIMENTAL: 1
 
 jobs:
   e2e-test-verify:
@@ -79,6 +80,7 @@ jobs:
             keyFile=${{ env.E2E_KEY }}
           timestamp_url: http://timestamp.digicert.com
           timestamp_root_cert: ./tests/e2e/sign/tsaRootCert/DigiCertTSARootSHA384.cer
+          force_referrers_tag: 'false'
     
       # E2E test cases on Notation Verify
       - name: Verify released artifact
@@ -87,7 +89,7 @@ jobs:
             target_artifact_reference: ${{ env.target_artifact_reference }}
             trust_policy: ./tests/e2e/verify/trustpolicy/trustpolicy.json
             trust_store: ./tests/e2e/verify/truststore
-
+        
       - name: Verify released artifact again with the same notation configuration
         uses: ./verify
         with:
@@ -110,6 +112,16 @@ jobs:
               ${{ env.target_artifact_reference2 }}
             trust_policy: ./tests/e2e/verify/trustpolicy/trustpolicy.json
             trust_store: ./tests/e2e/verify/truststore
+
+      - name: Verify with allow_referrers_api set to true
+        uses: ./verify
+        with:
+            target_artifact_reference: |-
+              ${{ env.target_artifact_reference }}
+              ${{ env.target_artifact_reference2 }}
+            trust_policy: ./tests/e2e/verify/trustpolicy/trustpolicy.json
+            trust_store: ./tests/e2e/verify/truststore
+            allow_referrers_api: 'true'
       
       - name: Verify multiple released artifacts with timestamp verification enabled
         uses: ./verify
@@ -118,7 +130,7 @@ jobs:
               ${{ env.target_artifact_reference }}
               ${{ env.target_artifact_reference2 }}
             trust_policy: ./tests/e2e/verify/trustpolicy/timestampVerificationEnabled.json
-            trust_store: ./tests/e2e/verify/truststore      
+            trust_store: ./tests/e2e/verify/truststore
       
       - name: Verify released artifact missing target artifact reference
         continue-on-error: true
