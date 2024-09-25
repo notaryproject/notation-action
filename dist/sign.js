@@ -97,10 +97,10 @@ function sign() {
             if (timestamp_root_cert && !timestamp_url) {
                 throw new Error("timestamp_root_cert is set, missing input timestamp_url");
             }
-            if (force_referrers_tag && semver.lt(notationVersion, '1.2.0')) {
+            if (force_referrers_tag !== '' && semver.lt(notationVersion, '1.2.0')) {
                 throw new Error("force_referrers_tag is only valid for Notation v1.2.0 or later");
             }
-            if (force_referrers_tag && force_referrers_tag.toLowerCase() !== 'true' && force_referrers_tag.toLowerCase() !== 'false') {
+            if (force_referrers_tag !== '' && force_referrers_tag.toLowerCase() !== 'true' && force_referrers_tag.toLowerCase() !== 'false') {
                 throw new Error(`force_referrers_tag must be set to 'true' or 'false'. Got '${force_referrers_tag}'`);
             }
             // get list of target artifact references
