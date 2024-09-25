@@ -402,7 +402,7 @@ jobs:
             keyFile=${{ env.E2E_KEY }}
           force_referrers_tag: 'false'
       - name: 'Should Fail: Sign artifact with force_referrers_tag set using older Notation'
-        if: steps.force_referrers_tag-set-with-older-notation != 'failure'
+        if: steps.force_referrers_tag-set-with-older-notation.outcome != 'failure'
         run: |
               echo "Sign artifact with force_referrers_tag set using older Notation should fail, but succeeded."
               exit 1
