@@ -20,7 +20,6 @@ on:
 env:
   E2E_KEY: /home/runner/.config/notation/localkeys/e2e-test.key
   E2E_CERT: /home/runner/.config/notation/localkeys/e2e-test.crt
-  NOTATION_EXPERIMENTAL: 1
 
 jobs:
   e2e-test-sign:
@@ -146,6 +145,8 @@ jobs:
 
       - name: Sign artifact with allow_referrers_api set to true
         uses: ./sign
+        env:
+          NOTATION_EXPERIMENTAL: 1
         with:
           plugin_name: e2e-test-plugin
           plugin_url: https://github.com/notaryproject/notation-action/raw/e2e-test-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
@@ -355,6 +356,8 @@ jobs:
       
       - name: Sign with older Notation and allow_referrers_api set to true
         uses: ./sign
+        env:
+          NOTATION_EXPERIMENTAL: 1
         with:
           plugin_name: e2e-test-plugin
           plugin_url: https://github.com/notaryproject/notation-action/raw/e2e-test-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz

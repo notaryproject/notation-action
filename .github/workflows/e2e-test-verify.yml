@@ -20,7 +20,6 @@ on:
 env:
   E2E_KEY: /home/runner/.config/notation/localkeys/e2e-test.key
   E2E_CERT: /home/runner/.config/notation/localkeys/e2e-test.crt
-  NOTATION_EXPERIMENTAL: 1
 
 jobs:
   e2e-test-verify:
@@ -89,7 +88,7 @@ jobs:
             target_artifact_reference: ${{ env.target_artifact_reference }}
             trust_policy: ./tests/e2e/verify/trustpolicy/trustpolicy.json
             trust_store: ./tests/e2e/verify/truststore
-        
+
       - name: Verify released artifact again with the same notation configuration
         uses: ./verify
         with:
@@ -115,6 +114,8 @@ jobs:
 
       - name: Verify with allow_referrers_api set to true
         uses: ./verify
+        env:
+          NOTATION_EXPERIMENTAL: 1
         with:
             target_artifact_reference: |-
               ${{ env.target_artifact_reference }}
