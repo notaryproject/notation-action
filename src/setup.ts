@@ -60,11 +60,26 @@ export async function setup(): Promise<void> {
     }
 }
 
-// notationCLIVersion returns the semantic version of notation CLI
+// notationCLIVersion returns the semantic version of Notation CLI
 export const notationCLIVersion = async (): Promise<string> => {
     const {stdout: stdout} = await exec.getExecOutput('notation', ['version']);
     let versionOutput = stdout.split("\n");
-    return String(semver.clean(versionOutput[2].split(":")[1].trim()));
+    let version:string = "";
+    for (let line of versionOutput) {
+        let arr = line.split(":")
+        if (arr[0].toLowerCase() === "version") {
+            // found the version line
+            if (arr.length < 2) {
+                throw new Error("Notation CLI version is empty")
+            }
+            version = arr[1].trim();
+            break;
+        }
+    }
+    if (version === "") {
+        throw new Error("Notation CLI version is empty")
+    }
+    return String(semver.clean(version));
 }
 
 

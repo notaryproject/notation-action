@@ -93,11 +93,26 @@ function setup() {
         }
     });
 }
-// notationCLIVersion returns the semantic version of notation CLI
+// notationCLIVersion returns the semantic version of Notation CLI
 const notationCLIVersion = () => __awaiter(void 0, void 0, void 0, function* () {
     const { stdout: stdout } = yield exec.getExecOutput('notation', ['version']);
     let versionOutput = stdout.split("\n");
-    return String(semver.clean(versionOutput[2].split(":")[1].trim()));
+    let version = "";
+    for (let line of versionOutput) {
+        let arr = line.split(":");
+        if (arr[0].toLowerCase() === "version") {
+            // found the version line
+            if (arr.length < 2) {
+                throw new Error("Notation CLI version is empty");
+            }
+            version = arr[1].trim();
+            break;
+        }
+    }
+    if (version === "") {
+        throw new Error("Notation CLI version is empty");
+    }
+    return String(semver.clean(version));
 });
 exports.notationCLIVersion = notationCLIVersion;
 if (require.main === module) {
