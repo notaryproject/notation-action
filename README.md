@@ -79,7 +79,7 @@ Currently, [Azure Key Vault plugin for Notation](https://github.com/Azure/notati
       ca_certs=.github/cert-bundle/cert-bundle.crt
       self_signed=false
     timestamp_url: http://timestamp.digicert.com
-    timestamp_root_cert: ./sign/tsaRootCert/DigiCertTSARootSHA384.cer
+    timestamp_root_cert: .github/sign/tsaRootCert/DigiCertTSARootSHA384.cer
 ```
 
 Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0/spec.md#listing-referrers) in signing:
