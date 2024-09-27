@@ -45,8 +45,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.notationCLIVersion = void 0;
+exports.setup = setup;
 const core = __importStar(require("@actions/core"));
+const exec = __importStar(require("@actions/exec"));
 const tc = __importStar(require("@actions/tool-cache"));
+const semver = __importStar(require("semver"));
 const checksum_1 = require("./lib/checksum");
 const install_1 = require("./lib/install");
 // setup sets up the Notation CLI.
@@ -88,8 +93,29 @@ function setup() {
         }
     });
 }
+// notationCLIVersion returns the semantic version of Notation CLI
+const notationCLIVersion = () => __awaiter(void 0, void 0, void 0, function* () {
+    const { stdout: stdout } = yield exec.getExecOutput('notation', ['version']);
+    let versionOutput = stdout.split("\n");
+    let version = "";
+    for (let line of versionOutput) {
+        let arr = line.split(":");
+        if (arr[0].toLowerCase() === "version") {
+            // found the version line
+            if (arr.length < 2) {
+                throw new Error("Notation CLI version is empty");
+            }
+            version = arr[1].trim();
+            break;
+        }
+    }
+    if (version === "") {
+        throw new Error("Notation CLI version is empty");
+    }
+    return String(semver.clean(version));
+});
+exports.notationCLIVersion = notationCLIVersion;
 if (require.main === module) {
     setup();
 }
-module.exports = setup;
 //# sourceMappingURL=setup.js.map

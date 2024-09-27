@@ -117,6 +117,69 @@ jobs:
           timestamp_url: http://timestamp.digicert.com
           timestamp_root_cert: ./tests/e2e/sign/tsaRootCert/DigiCertTSARootSHA384.cer
       
+      - name: Sign artifact with force_referrers_tag set to true
+        uses: ./sign
+        with:
+          plugin_name: e2e-test-plugin
+          plugin_url: https://github.com/notaryproject/notation-action/raw/e2e-test-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
+          plugin_checksum: be8d035024d3a96afb4118af32f2e201f126c7254b02f7bcffb3e3149d744fd2
+          key_id: ${{ env.E2E_CERT }}
+          target_artifact_reference: ${{ env.target_artifact_reference }}
+          signature_format: cose
+          plugin_config: |-
+            keyFile=${{ env.E2E_KEY }}
+          force_referrers_tag: 'true'
+      
+      - name: Sign artifact with force_referrers_tag set to false
+        uses: ./sign
+        with:
+          plugin_name: e2e-test-plugin
+          plugin_url: https://github.com/notaryproject/notation-action/raw/e2e-test-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
+          plugin_checksum: be8d035024d3a96afb4118af32f2e201f126c7254b02f7bcffb3e3149d744fd2
+          key_id: ${{ env.E2E_CERT }}
+          target_artifact_reference: ${{ env.target_artifact_reference }}
+          signature_format: cose
+          plugin_config: |-
+            keyFile=${{ env.E2E_KEY }}
+          force_referrers_tag: 'false'
+
+      - name: Sign artifact with allow_referrers_api set to true
+        uses: ./sign
+        env:
+          NOTATION_EXPERIMENTAL: 1
+        with:
+          plugin_name: e2e-test-plugin
+          plugin_url: https://github.com/notaryproject/notation-action/raw/e2e-test-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
+          plugin_checksum: be8d035024d3a96afb4118af32f2e201f126c7254b02f7bcffb3e3149d744fd2
+          key_id: ${{ env.E2E_CERT }}
+          target_artifact_reference: ${{ env.target_artifact_reference }}
+          signature_format: cose
+          plugin_config: |-
+            keyFile=${{ env.E2E_KEY }}
+          allow_referrers_api: 'true'
+      
+      - name: Sign with force_referrers_tag set to invalid value
+        continue-on-error: true
+        id: invalid-force_referrers_tag
+        uses: ./sign
+        env:
+          E2E_SIGNING_KEY: ${{ secrets.E2E_SIGNING_KEY }}
+        with:
+          plugin_name: invalid-plugin
+          plugin_url: https://github.com/notaryproject/notation-action/raw/e2e-test-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
+          plugin_checksum: be8d035024d3a96afb4118af32f2e201f126c7254b02f7bcffb3e3149d744fd2
+          key_id: ${{ env.E2E_CERT }}
+          target_artifact_reference: ${{ env.target_artifact_reference }}
+          signature_format: cose
+          plugin_config: |-
+            keyFile=${{ env.E2E_KEY }}
+          force_referrers_tag: 'invalid'
+      - name: 'Should Fail: Sign with force_referrers_tag set to invalid value'
+        if: steps.invalid-force_referrers_tag.outcome != 'failure'
+        run: |
+            echo "Sign with force_referrers_tag set to invalid value should fail, but succeeded."
+            exit 1
+      
       - name: Sign artifact with invalid plugin name
         continue-on-error: true
         id: invalid-plugin-name
@@ -291,6 +354,21 @@ jobs:
           plugin_config: |-
             keyFile=${{ env.E2E_KEY }}
       
+      - name: Sign with older Notation and allow_referrers_api set to true
+        uses: ./sign
+        env:
+          NOTATION_EXPERIMENTAL: 1
+        with:
+          plugin_name: e2e-test-plugin
+          plugin_url: https://github.com/notaryproject/notation-action/raw/e2e-test-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
+          plugin_checksum: be8d035024d3a96afb4118af32f2e201f126c7254b02f7bcffb3e3149d744fd2
+          key_id: ${{ env.E2E_CERT }}
+          target_artifact_reference: ${{ env.target_artifact_reference }}
+          signature_format: cose
+          plugin_config: |-
+            keyFile=${{ env.E2E_KEY }}
+          allow_referrers_api: 'true'
+      
       - name: Sign artifact with timestamping using older Notation
         continue-on-error: true
         id: timestamping-with-older-notation
@@ -310,4 +388,24 @@ jobs:
         if: steps.timestamping-with-older-notation.outcome != 'failure'
         run: |
               echo "Sign artifact with timestamping using older Notation should fail, but succeeded."
+              exit 1
+
+      - name: Sign artifact with force_referrers_tag set using older Notation
+        continue-on-error: true
+        id: force_referrers_tag-set-with-older-notation
+        uses: ./sign
+        with:
+          plugin_name: e2e-test-plugin
+          plugin_url: https://github.com/notaryproject/notation-action/raw/e2e-test-plugin/tests/plugin_binaries/notation-e2e-test-plugin_0.1.0_linux_amd64.tar.gz
+          plugin_checksum: be8d035024d3a96afb4118af32f2e201f126c7254b02f7bcffb3e3149d744fd2
+          key_id: ${{ env.E2E_CERT }}
+          target_artifact_reference: ${{ env.target_artifact_reference }}
+          signature_format: cose
+          plugin_config: |-
+            keyFile=${{ env.E2E_KEY }}
+          force_referrers_tag: 'false'
+      - name: 'Should Fail: Sign artifact with force_referrers_tag set using older Notation'
+        if: steps.force_referrers_tag-set-with-older-notation.outcome != 'failure'
+        run: |
+              echo "Sign artifact with force_referrers_tag set using older Notation should fail, but succeeded."
               exit 1

@@ -17,13 +17,19 @@ import * as core from '@actions/core';
 import * as exec from '@actions/exec';
 import * as fs from 'fs';
 import * as path from 'path';
+import * as semver from 'semver';
 import {getConfigHome} from './lib/install';
+import { notationCLIVersion } from './setup';
 
 const X509 = "x509";
 
 // verify verifies the target artifact with Notation
 async function verify(): Promise<void> {
     try {
+        // notation CLI version
+        const notationVersion = await notationCLIVersion();
+        console.log("Notation CLI version is ", notationVersion);
+
         // inputs from user
         const target_artifact_ref = core.getInput('target_artifact_reference');
         const trust_policy = core.getInput('trust_policy'); // .github/trustpolicy/trustpolicy.json
@@ -63,9 +69,12 @@ async function verify(): Promise<void> {
 
         // verify core process
         let notationCommand: string[] = ['verify', '-v'];
-        if (allow_referrers_api.toLowerCase() === 'true') {
+        if (allow_referrers_api.toLowerCase() === 'true' && semver.lt(notationVersion, '1.2.0')) {
             // if process.env.NOTATION_EXPERIMENTAL is not set, notation would
             // fail the command as expected.
+            //
+            // Deprecated for Notation v1.2.0 or later.
+            console.log("'allow_referrers_api' set to true, try referrers api first");
             notationCommand.push('--allow-referrers-api');
         }
         for (const ref of targetArtifactReferenceList) {
