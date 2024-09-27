@@ -78,7 +78,7 @@ Currently, [Azure Key Vault plugin for Notation](https://github.com/Azure/notati
     plugin_config: |-
       ca_certs=.github/cert-bundle/cert-bundle.crt
       self_signed=false
-    timestamp_url: http://myTrustedTimestmapAuthority.com
+    timestamp_url: http://my.trusted.timestmap.authority.wabbit-networks.io
     timestamp_root_cert: .github/cert-bundle/tsa-root.crt
 ```
 
