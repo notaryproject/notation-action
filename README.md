@@ -116,7 +116,7 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
 ```
 
 > [!Note]
-> For Notation v1.2.0 or later, verify always uses the Referrers API first, if Referrers API is not supported, automatically fallback to the Referrers tag schema.
+> For Notation v1.2.0 or later, verify always uses the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0/spec.md#listing-referrers) first, if Referrers API is not supported, automatically fallback to the [Referrers tag schema](https://github.com/opencontainers/distribution-spec/blob/v1.1.0/spec.md#referrers-tag-schema).
 
 <details>
 
