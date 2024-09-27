@@ -54,7 +54,9 @@ Currently, [Azure Key Vault plugin for Notation](https://github.com/Azure/notati
     target_artifact_reference: <list_of_target_artifact_references_in_remote_registry>
     signature_format: <signature_envelope_format>
     plugin_config: <list_of_plugin_defined_configs>
-    allow_referrers_api: <boolean_flag_for_referrers_api>
+    force_referrers_tag: <boolean_flag_for_referrers_tag_schema>
+    timestamp_url: <url_of_RFC_3161_Timestamp_Authority_server>
+    timestamp_root_cert: <filepath_of_RFC_3161_Timestamp_Authority_root_certificate>
 ```
 
 <details>
@@ -62,7 +64,7 @@ Currently, [Azure Key Vault plugin for Notation](https://github.com/Azure/notati
 <summary>See an example (Click here).</summary>
 
 ```yaml
-- name: sign releasd artifact with notation-azure-kv plugin
+- name: sign releasd artifact with notation-azure-kv plugin and timestamping
   uses: notaryproject/notation-action/sign@v1
   with:
     plugin_name: azure-kv
@@ -76,6 +78,8 @@ Currently, [Azure Key Vault plugin for Notation](https://github.com/Azure/notati
     plugin_config: |-
       ca_certs=.github/cert-bundle/cert-bundle.crt
       self_signed=false
+    timestamp_url: http://timestamp.digicert.com
+    timestamp_root_cert: ./sign/tsaRootCert/DigiCertTSARootSHA384.cer
 ```
 
 Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0/spec.md#listing-referrers) in signing:
@@ -83,10 +87,8 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
 ```yaml
 - name: sign releasd artifact with notation-azure-kv plugin
   uses: notaryproject/notation-action/sign@v1
-  env:
-    NOTATION_EXPERIMENTAL: 1  # this is required by Notation to use Referrers API
   with:
-    allow_referrers_api: 'true'
+    force_referrers_tag: 'false' # use referrers api first, if supported.
     plugin_name: azure-kv
     plugin_url: https://github.com/Azure/notation-azure-kv/releases/download/v1.2.0/notation-azure-kv_1.2.0_linux_amd64.tar.gz
     plugin_checksum: 06bb5198af31ce11b08c4557ae4c2cbfb09878dfa6b637b7407ebc2d57b87b34
@@ -111,7 +113,6 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
     target_artifact_reference: <list_of_target_artifact_references_in_remote_registry>
     trust_policy: <file_path_to_user_defined_trustpolicy.json>
     trust_store: <dir_to_user_trust_store>
-    allow_referrers_api: <boolean_flag_for_referrers_api>
 ```
 
 <details>
@@ -130,8 +131,8 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
 ```
 
 > [!NOTE]
-> - `.github/trustpolicy/trustpolicy.json` MUST follow the Notation [trust policy specs](https://github.com/notaryproject/specifications/blob/v1.0.0/specs/trust-store-trust-policy.md#trust-policy).
-> - `.github/truststore` MUST follow the Notation [trust store specs](https://github.com/notaryproject/specifications/blob/v1.0.0/specs/trust-store-trust-policy.md#trust-store). See an example of trust store below.
+> - `.github/trustpolicy/trustpolicy.json` MUST follow the Notation [trust policy specs](https://github.com/notaryproject/specifications/blob/v1.1.0/specs/trust-store-trust-policy.md#trust-policy).
+> - `.github/truststore` MUST follow the Notation [trust store specs](https://github.com/notaryproject/specifications/blob/v1.1.0/specs/trust-store-trust-policy.md#trust-store). See an example of trust store below.
  
 ```
 .github/truststore
@@ -140,26 +141,14 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
     │   └── <my_trust_store1>
     │       ├── <my_certificate1>
     │       └── <my_certificate2>
-    └── signingAuthority
-        └── <my_trust_store2>
-            ├── <my_certificate3>
-            └── <my_certificate4>
-```
-
-Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0/spec.md#listing-referrers) in verification:
-
-```yaml
-- name: verify released artifact
-  uses: notaryproject/notation-action/verify@v1
-  env:
-    NOTATION_EXPERIMENTAL: 1  # this is required by Notation to use Referrers API
-  with:
-    allow_referrers_api: 'true'
-    target_artifact_reference: |-
-      myRegistry.azurecr.io/myRepo@sha256:aaabbb
-      myOtherRegistry.azurecr.io/myOtherRepo@sha256:cccddd
-    trust_policy: .github/trustpolicy/trustpolicy.json
-    trust_store: .github/truststore
+    ├── signingAuthority
+    |   └── <my_trust_store2>
+    |       ├── <my_certificate3>
+    |       └── <my_certificate4>
+    └── tsa
+        └── <tsa_trust_store>
+            ├── <tsa_certificate1>
+            └── <tsa_certificate2>
 ```
 
 </details>
