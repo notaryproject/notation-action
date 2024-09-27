@@ -115,6 +115,9 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
     trust_store: <dir_to_user_trust_store>
 ```
 
+> [!Note]
+> For Notation v1.2.0 or later, verify always uses the Referrers API first, if Referrers API is not supported, automatically fallback to the Referrers tag schema.
+
 <details>
 
 <summary>See an example (Click here).</summary>
