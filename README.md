@@ -72,14 +72,14 @@ Currently, [Azure Key Vault plugin for Notation](https://github.com/Azure/notati
     plugin_checksum: 06bb5198af31ce11b08c4557ae4c2cbfb09878dfa6b637b7407ebc2d57b87b34
     key_id: https://testnotationakv.vault.azure.net/keys/notationLeafCert/c585b8ad8fc542b28e41e555d9b3a1fd
     target_artifact_reference: |-
-      myRegistry.azurecr.io/myRepo@sha256:aaabbb
-      myOtherRegistry.azurecr.io/myOtherRepo@sha256:cccddd
+      myregistry.azurecr.io/myrepo@sha256:b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9
+      myotherregistry.azurecr.io/myotherrepo@sha256:aaad27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcaaa
     signature_format: cose
     plugin_config: |-
       ca_certs=.github/cert-bundle/cert-bundle.crt
       self_signed=false
-    timestamp_url: http://timestamp.digicert.com
-    timestamp_root_cert: .github/sign/tsaRootCert/DigiCertTSARootSHA384.cer
+    timestamp_url: http://myTrustedTimestmapAuthority.com
+    timestamp_root_cert: .github/cert-bundle/tsa-root.crt
 ```
 
 Example of using the [Referrers API](https://github.com/opencontainers/distribution-spec/blob/v1.1.0/spec.md#listing-referrers) in signing:
@@ -94,8 +94,8 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
     plugin_checksum: 06bb5198af31ce11b08c4557ae4c2cbfb09878dfa6b637b7407ebc2d57b87b34
     key_id: https://testnotationakv.vault.azure.net/keys/notationLeafCert/c585b8ad8fc542b28e41e555d9b3a1fd
     target_artifact_reference: |-
-      myRegistry.azurecr.io/myRepo@sha256:aaabbb
-      myOtherRegistry.azurecr.io/myOtherRepo@sha256:cccddd
+      myregistry.azurecr.io/myrepo@sha256:b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9
+      myotherregistry.azurecr.io/myotherrepo@sha256:aaad27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcaaa
     signature_format: cose
     plugin_config: |-
       ca_certs=.github/cert-bundle/cert-bundle.crt
@@ -127,8 +127,8 @@ Example of using the [Referrers API](https://github.com/opencontainers/distribut
   uses: notaryproject/notation-action/verify@v1
   with:
     target_artifact_reference: |-
-      myRegistry.azurecr.io/myRepo@sha256:aaabbb
-      myOtherRegistry.azurecr.io/myOtherRepo@sha256:cccddd
+      myregistry.azurecr.io/myrepo@sha256:b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9
+      myotherregistry.azurecr.io/myotherrepo@sha256:aaad27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcaaa
     trust_policy: .github/trustpolicy/trustpolicy.json
     trust_store: .github/truststore
 ```
