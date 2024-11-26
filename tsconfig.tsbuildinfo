@@ -1,0 +1,1 @@
+{"root":["./src/setup.ts","./src/sign.ts","./src/verify.ts","./src/lib/checksum.ts","./src/lib/install.ts"],"version":"5.7.2"}
