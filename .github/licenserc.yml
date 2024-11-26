@@ -40,6 +40,7 @@ header:
     - '**/data/**'
     - 'dist'
     - 'tests'
+    - 'tsconfig.tsbuildinfo'
 
   comment: on-failure
 
