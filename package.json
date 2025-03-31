@@ -16,6 +16,6 @@
         "@actions/exec": "^1.1.1",
         "@actions/tool-cache": "^2.0.2",
         "@types/node": "^22.13.13",
-        "@types/semver": "^7.5.8"
+        "@types/semver": "^7.7.0"
     }
 }
